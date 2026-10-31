@@ -29,10 +29,10 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W3-02 | W3 | Map, constraint wall, Gantt, log viewer | review | W3-01 | 45 | 12:45 |
 | REVIEWER-01 | REVIEWER | Review wave 1 (W2 → W1 → W3) | doing | wave 1 | 40 | 13:20 |
 | W1-05 | W1 | v1.1 alignment (§1) ✅ 2fc97ef, eval hook mock-only (§4) ✅ 4a7f00b; §2 replaced by W1-06; §3 after W1-06 | review (§1,§4) | v1.1 | 45 | 13:25 |
-| W2-03 | W2 | v1.1 alignment, call accounting (freeze), narrator, scripted failure modes | doing | v1.1 | 45 | 13:25 |
+| W2-03 | W2 | v1.1 alignment, call accounting (freeze), narrator, scripted failure modes | review ✅ a2a511f | v1.1 | 45 | 13:25 |
 | W3-03 | W3 | v1.1 alignment, chaos/kill/approve controls, eval page, replay | doing | v1.1 | 45 | 13:25 |
 | W1-06 | W1 | Adopt organisers' workbook limits (replaces W1-05 §2/§3 order) | doing | v1.2 | 40 | 13:40 |
-| W2-04 | W2 | Hard LLM call budget (ledger, RPM, no cascade), Flash-Lite, workbook charters | todo | W2-03 | 35 | 13:45 |
+| W2-04 | W2 | Hard LLM call budget (ledger, RPM, no cascade), Flash-Lite, workbook charters | doing | W2-03 | 35 | 13:45 |
 | W3-04 | W3 | Challenge limits panel + LLM budget meter | todo | W3-03 | 25 | 13:50 |
 | INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | approved 12:58 (starts when W1-06 + W2-04 are reviewed) | wave 2 | 45 | |
 
