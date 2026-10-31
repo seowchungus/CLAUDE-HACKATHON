@@ -57,7 +57,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | Reserve | 10 | — |
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
-## Releases (human, 14:05)
+## Releases (human, 13:58)
 - **INT-01 live smoke: RELEASED, max 20 calls** (key 1). W3: UA1575 + hero DL2463 ICT-ATL, then smoke step 10.
 - **EVAL RELEASED (W1-08 Part B): max 189 calls, key 1 only, starts only after REVIEWER marks the INT-01 live smoke PASS.** Frozen set, sequential shard on key 1 (`--keys 1`). Stop at the cap and report the N actually run; no extrapolation. Target done ≤ 14:50.
 - After the 15:00 reset (one fresh 480 for the project): hero recordings 20, demo + rehearsal 30, optional eval top-up toward N=30 only if done by 15:30.
@@ -92,5 +92,5 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - [x] INT-01 approved 12:58 ("proceed with the next step"); starts when W1-06 + W2-04 pass review
 - [x] Data decided (12:50): provided file + workbook
 - [x] Keys 2 and 3 in `.env` (12:57)
-- [x] Keys 2 and 3 are in the **same project** as key 1 (human, 14:0x): no extra capacity; pinned at cap in the ledger and config. Eval runs on key 1 only.
+- [x] Keys 2 and 3 are in the **same project** as key 1 (human, 13:57): no extra capacity; pinned at cap in the ledger and config. Eval runs on key 1 only.
 - [ ] Key 1 dashboard reading → `budget_cli --set GEMINI_API_KEY=<n>`
