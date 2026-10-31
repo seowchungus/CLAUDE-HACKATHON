@@ -10,7 +10,7 @@ negotiation:
 
 models:
   # Verified listed on the free tier by W2-01 (12:03). gemini-3.8-flash timed out / 503 on every call
-  # at 12:00, so negotiators run on the proposal's named backup 3.6 Flash (12:35, MANAGER).
+  # at 12:00, so negotiators run on the proposal's named backup 3.6 Flash (12:25, MANAGER).
   # Model parity kept: all three negotiators on the same model. Swap back with one line if 3.8 recovers.
   ATC: gemini-3.6-flash
   PILOT: gemini-3.6-flash

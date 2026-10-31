@@ -1,6 +1,6 @@
 # ACCORD BOARD
 
-T0 = 11:09 · Now: 12:40 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.1 (12:35)**
+T0 = 11:09 · Now: 12:25 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.1 (12:25)**
 Rule (12:25, human): major decisions (new workers/roles, starting a major phase) need the human's approval. Tasks within a phase MANAGER delegates directly.
 
 ## Milestones
@@ -17,7 +17,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | ID | Owner | Title | Status | Depends | Timebox | Target |
 |---|---|---|---|---|---|---|
 | MGR-00 | MANAGER | Scaffold, config, CONTRACTS, fixtures, onboarding, tasks | done | — | 30 | 11:39 |
-| MGR-03 | MANAGER | CONTRACTS v1.1 (REVIEWER-00 items 1–8), fixtures regenerated, models → 3.6 Flash | done | REVIEWER-00 | 15 | 12:40 |
+| MGR-03 | MANAGER | CONTRACTS v1.1 (REVIEWER-00 items 1–8), fixtures regenerated, models → 3.6 Flash | done | REVIEWER-00 | 15 | 12:25 |
 | REVIEWER-00 | REVIEWER | Audit contracts + fixtures | done (CHANGES → v1.1) | MGR-00 | 15 | 11:40 |
 | W1-01 | W1 | Types, config, hash-chained log, data prep | review | — | 35 | 11:55 |
 | W1-02 | W1 | Scenario builder, metrics, option generator | review | W1-01 | 40 | 12:35 |
@@ -39,9 +39,9 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 - Fixes from REVIEWER-01 CHANGES (folded into the next tasks)
 
 ## Decisions & assumptions
-- 12:35 Negotiators switched to `gemini-3.6-flash` (the proposal's named backup): 3.8 Flash timed out/503 on every call (W2-01). Parity kept. Backup = `gemini-flash-lite-latest`. README/pitch must say so.
-- 12:35 CONTRACTS v1.1: additive fixes from REVIEWER-00 (see changelog). W2's agreement-set rule adopted as the contract.
-- 12:35 Fixture bug (MANAGER's generator mutated a dict after hashing) fixed; fixtures regenerated.
+- 12:25 Negotiators switched to `gemini-3.6-flash` (the proposal's named backup): 3.8 Flash timed out/503 on every call (W2-01). Parity kept. Backup = `gemini-flash-lite-latest`. README/pitch must say so.
+- 12:25 CONTRACTS v1.1: additive fixes from REVIEWER-00 (see changelog). W2's agreement-set rule adopted as the contract.
+- 12:25 Fixture bug (MANAGER's generator mutated a dict after hashing) fixed; fixtures regenerated.
 - 12:10 Data: `data/raw/flights.csv` provided is PRE-FILTERED (358,774 rows, all qualifying). Banks, connections, AAR nominal and next-tail lookups only see delayed flights (undercount). **Open question to the human** (full Kaggle file or accept and disclose).
 - 11:30 Workers commit their own paths per task (path-limited); destructive git commands banned.
 - 11:17 Core types in `core/types.py` (W1), agent message types in `agents/schema.py` (W2).

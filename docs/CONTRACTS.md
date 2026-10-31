@@ -1,4 +1,4 @@
-# ACCORD Contracts (FROZEN v1.1, 2026-10-31 12:35 +08; v1.0 11:20)
+# ACCORD Contracts (FROZEN v1.1, 2026-10-31 12:25 +08; v1.0 11:20)
 
 Owner: MANAGER. Every worker builds against this file exactly.
 Changes after the freeze go through MANAGER only and are recorded in the "Changelog" at the bottom and in `.team/BOARD.md`.
@@ -455,4 +455,4 @@ Every number is measured from runs. If a field was not run, it is `null`, never 
 
 ## Changelog
 - v1.0 (11:20): initial freeze.
-- v1.1 (12:35), from REVIEWER-00, all additive: unpadded flight ids; provenance key convention and required keys; `counter_checked.failed` and non-null `check`; `approved.final_hash` = pre-approval head; `SUPERSEDED` final state; agreement-set/rank/tie rules pinned (W2's implementation); seq vs log seq; unsafe-blocked definition; `GET /api/runs/{id}/bundle`; chaos accumulates and supersedes the parent; approve 409/ESCALATE rules; log constructor writes seq 0 and resumes; `append` deep-copies. Fixtures regenerated to match.
+- v1.1 (12:25), from REVIEWER-00, all additive: unpadded flight ids; provenance key convention and required keys; `counter_checked.failed` and non-null `check`; `approved.final_hash` = pre-approval head; `SUPERSEDED` final state; agreement-set/rank/tie rules pinned (W2's implementation); seq vs log seq; unsafe-blocked definition; `GET /api/runs/{id}/bundle`; chaos accumulates and supersedes the parent; approve 409/ESCALATE rules; log constructor writes seq 0 and resumes; `append` deep-copies. Fixtures regenerated to match.
