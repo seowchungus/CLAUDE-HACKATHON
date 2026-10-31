@@ -1,0 +1,1943 @@
+{
+ "bundle": {
+  "scenario": {
+   "scenario_id": "2015-07-19_WN2433_SMF-LAX",
+   "seed": 837847060,
+   "fixture": false,
+   "row": {
+    "year": 2015,
+    "month": 7,
+    "day": 19,
+    "airline": "WN",
+    "flight_number": 2433,
+    "tail_number": "N216WR",
+    "origin": "SMF",
+    "destination": "LAX",
+    "scheduled_departure": 1600,
+    "departure_delay": 56.0,
+    "scheduled_arrival": 1720,
+    "arrival_delay": 80.0,
+    "distance": 373,
+    "scheduled_time": 80.0,
+    "air_time": 66.0,
+    "taxi_in": 6.0,
+    "taxi_out": 32.0,
+    "weather_delay": 0.0,
+    "late_aircraft_delay": 29.0,
+    "air_system_delay": 51.0
+   },
+   "disruption_type": "LATE_AIRCRAFT",
+   "disruption_min": 29,
+   "origin": {
+    "iata": "SMF",
+    "name": "Sacramento International Airport",
+    "city": "Sacramento",
+    "state": "CA",
+    "lat": 38.69542,
+    "lon": -121.59077
+   },
+   "destination": {
+    "iata": "LAX",
+    "name": "Los Angeles International Airport",
+    "city": "Los Angeles",
+    "state": "CA",
+    "lat": 33.94254,
+    "lon": -118.40807
+   },
+   "disrupted": {
+    "flight_id": "WN2433",
+    "airline": "WN",
+    "flight_number": 2433,
+    "tail_number": "N216WR",
+    "origin": "SMF",
+    "destination": "LAX",
+    "sched_dep_min": 960,
+    "sched_arr_min": 1040,
+    "est_arr_min": 1120,
+    "role": "disrupted",
+    "wake": "L",
+    "pax_connecting": null
+   },
+   "bank": [
+    {
+     "flight_id": "OO2871",
+     "airline": "OO",
+     "flight_number": 2871,
+     "tail_number": "N465SW",
+     "origin": "SAN",
+     "destination": "LAX",
+     "sched_dep_min": 920,
+     "sched_arr_min": 965,
+     "est_arr_min": 1140,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO4801",
+     "airline": "OO",
+     "flight_number": 4801,
+     "tail_number": "N825SK",
+     "origin": "SJC",
+     "destination": "LAX",
+     "sched_dep_min": 879,
+     "sched_arr_min": 965,
+     "est_arr_min": 1100,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL2776",
+     "airline": "DL",
+     "flight_number": 2776,
+     "tail_number": "N991AT",
+     "origin": "SFO",
+     "destination": "LAX",
+     "sched_dep_min": 900,
+     "sched_arr_min": 985,
+     "est_arr_min": 1108,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN4904",
+     "airline": "WN",
+     "flight_number": 4904,
+     "tail_number": "N475WN",
+     "origin": "SJC",
+     "destination": "LAX",
+     "sched_dep_min": 920,
+     "sched_arr_min": 995,
+     "est_arr_min": 1119,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6498",
+     "airline": "OO",
+     "flight_number": 6498,
+     "tail_number": "N136SY",
+     "origin": "BOI",
+     "destination": "LAX",
+     "sched_dep_min": 951,
+     "sched_arr_min": 1030,
+     "est_arr_min": 1208,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6496",
+     "airline": "OO",
+     "flight_number": 6496,
+     "tail_number": "N702SK",
+     "origin": "MSP",
+     "destination": "LAX",
+     "sched_dep_min": 908,
+     "sched_arr_min": 1035,
+     "est_arr_min": 1131,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN263",
+     "airline": "WN",
+     "flight_number": 263,
+     "tail_number": "N376SW",
+     "origin": "LAS",
+     "destination": "LAX",
+     "sched_dep_min": 965,
+     "sched_arr_min": 1035,
+     "est_arr_min": 1095,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL1248",
+     "airline": "DL",
+     "flight_number": 1248,
+     "tail_number": "N592NW",
+     "origin": "DTW",
+     "destination": "LAX",
+     "sched_dep_min": 930,
+     "sched_arr_min": 1050,
+     "est_arr_min": 1159,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN325",
+     "airline": "WN",
+     "flight_number": 325,
+     "tail_number": "N627SW",
+     "origin": "PHX",
+     "destination": "LAX",
+     "sched_dep_min": 985,
+     "sched_arr_min": 1065,
+     "est_arr_min": 1240,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6535",
+     "airline": "OO",
+     "flight_number": 6535,
+     "tail_number": "N778SK",
+     "origin": "OKC",
+     "destination": "LAX",
+     "sched_dep_min": 1000,
+     "sched_arr_min": 1071,
+     "est_arr_min": 1121,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN2869",
+     "airline": "WN",
+     "flight_number": 2869,
+     "tail_number": "N8629A",
+     "origin": "DEN",
+     "destination": "LAX",
+     "sched_dep_min": 1000,
+     "sched_arr_min": 1085,
+     "est_arr_min": 1193,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN2334",
+     "airline": "WN",
+     "flight_number": 2334,
+     "tail_number": "N7748A",
+     "origin": "SJC",
+     "destination": "LAX",
+     "sched_dep_min": 1020,
+     "sched_arr_min": 1090,
+     "est_arr_min": 1323,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN3150",
+     "airline": "WN",
+     "flight_number": 3150,
+     "tail_number": "N411WN",
+     "origin": "ATL",
+     "destination": "LAX",
+     "sched_dep_min": 980,
+     "sched_arr_min": 1090,
+     "est_arr_min": 1113,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO2880",
+     "airline": "OO",
+     "flight_number": 2880,
+     "tail_number": "N868CA",
+     "origin": "ABQ",
+     "destination": "LAX",
+     "sched_dep_min": 1035,
+     "sched_arr_min": 1100,
+     "est_arr_min": 1219,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL2758",
+     "airline": "DL",
+     "flight_number": 2758,
+     "tail_number": "N987AT",
+     "origin": "SFO",
+     "destination": "LAX",
+     "sched_dep_min": 1020,
+     "sched_arr_min": 1105,
+     "est_arr_min": 1265,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5532",
+     "airline": "OO",
+     "flight_number": 5532,
+     "tail_number": "N762SK",
+     "origin": "AUS",
+     "destination": "LAX",
+     "sched_dep_min": 1044,
+     "sched_arr_min": 1116,
+     "est_arr_min": 1287,
+     "role": "bank",
+     "wake": "H",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL2244",
+     "airline": "DL",
+     "flight_number": 2244,
+     "tail_number": "N919AT",
+     "origin": "SMF",
+     "destination": "LAX",
+     "sched_dep_min": 1039,
+     "sched_arr_min": 1130,
+     "est_arr_min": 1289,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    }
+   ],
+   "connections": [
+    {
+     "flight_id": "WN263",
+     "airline": "WN",
+     "flight_number": 263,
+     "tail_number": "N376SW",
+     "origin": "LAX",
+     "destination": "SMF",
+     "sched_dep_min": 1070,
+     "sched_arr_min": 1145,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "L",
+     "pax_connecting": 17
+    },
+    {
+     "flight_id": "WN2433",
+     "airline": "WN",
+     "flight_number": 2433,
+     "tail_number": "N216WR",
+     "origin": "LAX",
+     "destination": "MCI",
+     "sched_dep_min": 1075,
+     "sched_arr_min": 1390,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "H",
+     "pax_connecting": 14
+    },
+    {
+     "flight_id": "WN252",
+     "airline": "WN",
+     "flight_number": 252,
+     "tail_number": "N627SW",
+     "origin": "LAX",
+     "destination": "PHX",
+     "sched_dep_min": 1100,
+     "sched_arr_min": 1185,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "L",
+     "pax_connecting": 17
+    },
+    {
+     "flight_id": "WN4112",
+     "airline": "WN",
+     "flight_number": 4112,
+     "tail_number": "N362SW",
+     "origin": "LAX",
+     "destination": "SFO",
+     "sched_dep_min": 1120,
+     "sched_arr_min": 1195,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 23
+    },
+    {
+     "flight_id": "WN2423",
+     "airline": "WN",
+     "flight_number": 2423,
+     "tail_number": "N7748A",
+     "origin": "LAX",
+     "destination": "OAK",
+     "sched_dep_min": 1125,
+     "sched_arr_min": 1195,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 18
+    },
+    {
+     "flight_id": "WN2156",
+     "airline": "WN",
+     "flight_number": 2156,
+     "tail_number": "N8625A",
+     "origin": "LAX",
+     "destination": "OAK",
+     "sched_dep_min": 1185,
+     "sched_arr_min": 1260,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 21
+    },
+    {
+     "flight_id": "WN2349",
+     "airline": "WN",
+     "flight_number": 2349,
+     "tail_number": "N361SW",
+     "origin": "LAX",
+     "destination": "SJC",
+     "sched_dep_min": 1185,
+     "sched_arr_min": 1250,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "L",
+     "pax_connecting": 4
+    },
+    {
+     "flight_id": "WN389",
+     "airline": "WN",
+     "flight_number": 389,
+     "tail_number": "N7738A",
+     "origin": "LAX",
+     "destination": "LAS",
+     "sched_dep_min": 1190,
+     "sched_arr_min": 1250,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 11
+    }
+   ],
+   "base_eta_min": 1120,
+   "aar_nominal": 45,
+   "aar_reduced": 45,
+   "aircraft_size": "S",
+   "fuel_at_fix_min": 57.0,
+   "flight_crew_duty_remaining_min": 265,
+   "ramp_shift_end_min": 1192,
+   "next_departure_min": 1075,
+   "gates": [
+    {
+     "gate_id": "A1",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A2",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [
+      [
+       1078,
+       1170
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A3",
+     "concourse": "A",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [
+      [
+       1036,
+       1185
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A4",
+     "concourse": "A",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B1",
+     "concourse": "B",
+     "size": "L",
+     "taxi_path": [
+      "B"
+     ],
+     "occupied": [
+      [
+       1053,
+       1153
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B2",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "B"
+     ],
+     "occupied": [
+      [
+       1094,
+       1161
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B3",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "B",
+      "C"
+     ],
+     "occupied": [
+      [
+       1059,
+       1156
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B4",
+     "concourse": "B",
+     "size": "S",
+     "taxi_path": [
+      "B",
+      "C"
+     ],
+     "occupied": [
+      [
+       1071,
+       1213
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C1",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C"
+     ],
+     "occupied": [
+      [
+       1056,
+       1149
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C2",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [
+      [
+       1086,
+       1171
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C3",
+     "concourse": "C",
+     "size": "S",
+     "taxi_path": [
+      "D"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C4",
+     "concourse": "C",
+     "size": "S",
+     "taxi_path": [
+      "D"
+     ],
+     "occupied": [
+      [
+       1066,
+       1175
+      ]
+     ],
+     "out_of_service": false
+    }
+   ],
+   "taxiways": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "blocked_taxiways": [],
+   "turbulence_by_fp": {
+    "as_filed": 0.15,
+    "speed_reduction": 0.11,
+    "hold_10": 0.09,
+    "hold_20": 0.07,
+    "reroute_weather": 0.05
+   },
+   "chaos_applied": [],
+   "provenance": {
+    "row": "real",
+    "disruption_type": "real",
+    "disruption_min": "real",
+    "origin": "real",
+    "destination": "real",
+    "disrupted": "real",
+    "bank": "real",
+    "connections": "real",
+    "base_eta_min": "real",
+    "aar_nominal": "synthetic",
+    "aar_reduced": "synthetic",
+    "aircraft_size": "synthetic",
+    "fuel_at_fix_min": "synthetic",
+    "flight_crew_duty_remaining_min": "synthetic",
+    "ramp_shift_end_min": "synthetic",
+    "next_departure_min": "real",
+    "gates": "synthetic",
+    "taxiways": "synthetic",
+    "blocked_taxiways": "synthetic",
+    "turbulence_by_fp": "synthetic",
+    "chaos_applied": "synthetic",
+    "disrupted.wake": "synthetic",
+    "bank.wake": "synthetic",
+    "connections.wake": "synthetic",
+    "connections.pax_connecting": "synthetic",
+    "airport_limits": "synthetic",
+    "planned_gate": "synthetic",
+    "decision_time_min": "synthetic"
+   },
+   "airport_limits": {
+    "size_class": "Large hub",
+    "active_runways": 4,
+    "gates": 150,
+    "max_runway_ops_per_hour": 90,
+    "min_turnaround_min": 45,
+    "spare_gates_at_any_time": 3
+   },
+   "planned_gate": "C1",
+   "decision_time_min": 1103
+  },
+  "options": [
+   {
+    "option_id": "opt_1",
+    "eta_shift_min": 0,
+    "gate": "A1",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+0 min, gate A1, as filed",
+    "metrics": {
+     "eta_new_min": 1120,
+     "runway_slot_min": 1121,
+     "separation_margin_s": 60,
+     "fuel_at_landing_min": 45.0,
+     "extra_fuel_min": 0.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.15,
+     "misconnected_pax": 89,
+     "gate": "A1",
+     "gate_free_from_min": 886,
+     "gate_free_to_min": 1366,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -96,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 9,
+     "throughput_loss": 0,
+     "cost_J": 182.0,
+     "gate_change": true,
+     "gate_change_notice_min": 17,
+     "fuel_at_landing_kg": 1800.0
+    }
+   },
+   {
+    "option_id": "opt_2",
+    "eta_shift_min": 5,
+    "gate": "A4",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+5 min, gate A4, as filed",
+    "metrics": {
+     "eta_new_min": 1125,
+     "runway_slot_min": 1125,
+     "separation_margin_s": 180,
+     "fuel_at_landing_min": 40.0,
+     "extra_fuel_min": 5.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.15,
+     "misconnected_pax": 89,
+     "gate": "A4",
+     "gate_free_from_min": 891,
+     "gate_free_to_min": 1371,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -101,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 9,
+     "throughput_loss": 0,
+     "cost_J": 185.0,
+     "gate_change": true,
+     "gate_change_notice_min": 22,
+     "fuel_at_landing_kg": 1600.0
+    }
+   },
+   {
+    "option_id": "opt_3",
+    "eta_shift_min": 5,
+    "gate": "A4",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+5 min, gate A4, speed reduction",
+    "metrics": {
+     "eta_new_min": 1125,
+     "runway_slot_min": 1125,
+     "separation_margin_s": 180,
+     "fuel_at_landing_min": 43.5,
+     "extra_fuel_min": 1.5,
+     "hold_min": 0,
+     "turbulence_idx": 0.11,
+     "misconnected_pax": 89,
+     "gate": "A4",
+     "gate_free_from_min": 891,
+     "gate_free_to_min": 1371,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -101,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 9,
+     "throughput_loss": 0,
+     "cost_J": 181.4,
+     "gate_change": true,
+     "gate_change_notice_min": 22,
+     "fuel_at_landing_kg": 1740.0
+    }
+   },
+   {
+    "option_id": "opt_4",
+    "eta_shift_min": 10,
+    "gate": "A4",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate A4, speed reduction",
+    "metrics": {
+     "eta_new_min": 1130,
+     "runway_slot_min": 1130,
+     "separation_margin_s": 480,
+     "fuel_at_landing_min": 42.0,
+     "extra_fuel_min": 3.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.11,
+     "misconnected_pax": 89,
+     "gate": "A4",
+     "gate_free_from_min": 896,
+     "gate_free_to_min": 1376,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -106,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 9,
+     "throughput_loss": 0,
+     "cost_J": 182.6,
+     "gate_change": true,
+     "gate_change_notice_min": 27,
+     "fuel_at_landing_kg": 1680.0
+    }
+   },
+   {
+    "option_id": "opt_5",
+    "eta_shift_min": 10,
+    "gate": "C3",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate C3, weather reroute",
+    "metrics": {
+     "eta_new_min": 1130,
+     "runway_slot_min": 1130,
+     "separation_margin_s": 480,
+     "fuel_at_landing_min": 37.0,
+     "extra_fuel_min": 8.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.05,
+     "misconnected_pax": 89,
+     "gate": "C3",
+     "gate_free_from_min": 896,
+     "gate_free_to_min": 1376,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -106,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 9,
+     "throughput_loss": 0,
+     "cost_J": 185.4,
+     "gate_change": true,
+     "gate_change_notice_min": 27,
+     "fuel_at_landing_kg": 1480.0
+    }
+   },
+   {
+    "option_id": "opt_6",
+    "eta_shift_min": 20,
+    "gate": "C3",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+20 min, gate C3, weather reroute",
+    "metrics": {
+     "eta_new_min": 1140,
+     "runway_slot_min": 1142,
+     "separation_margin_s": 60,
+     "fuel_at_landing_min": 27.0,
+     "extra_fuel_min": 18.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.05,
+     "misconnected_pax": 125,
+     "gate": "C3",
+     "gate_free_from_min": 906,
+     "gate_free_to_min": 1386,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -116,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 7,
+     "throughput_loss": 0,
+     "cost_J": 265.4,
+     "gate_change": true,
+     "gate_change_notice_min": 37,
+     "fuel_at_landing_kg": 1080.0
+    }
+   },
+   {
+    "option_id": "opt_7",
+    "eta_shift_min": 25,
+    "gate": "C1",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+25 min, gate C1, speed reduction",
+    "metrics": {
+     "eta_new_min": 1145,
+     "runway_slot_min": 1145,
+     "separation_margin_s": 240,
+     "fuel_at_landing_min": 30.5,
+     "extra_fuel_min": 14.5,
+     "hold_min": 0,
+     "turbulence_idx": 0.11,
+     "misconnected_pax": 125,
+     "gate": "C1",
+     "gate_free_from_min": 1149,
+     "gate_free_to_min": 1391,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -121,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 6,
+     "throughput_loss": 0,
+     "cost_J": 263.8,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1220.0
+    }
+   }
+  ],
+  "checks": {
+   "opt_1": {
+    "option_id": "opt_1",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 60.0,
+      "threshold": 0.0,
+      "detail": "margin +60 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 45.0,
+      "threshold": 30.0,
+      "detail": "fuel 45.0 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H4_gate_validity",
+      "passed": false,
+      "value": null,
+      "threshold": null,
+      "detail": "gate change C1->A1 notice 17 min < 20 min (workbook)"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 265.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 265 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.15,
+      "threshold": 0.7,
+      "detail": "turbulence 0.15 < 0.7"
+     }
+    ]
+   },
+   "opt_2": {
+    "option_id": "opt_2",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 180.0,
+      "threshold": 0.0,
+      "detail": "margin +180 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 40.0,
+      "threshold": 30.0,
+      "detail": "fuel 40.0 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible; change notice 22 min"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 260.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 260 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.15,
+      "threshold": 0.7,
+      "detail": "turbulence 0.15 < 0.7"
+     }
+    ]
+   },
+   "opt_3": {
+    "option_id": "opt_3",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 180.0,
+      "threshold": 0.0,
+      "detail": "margin +180 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 43.5,
+      "threshold": 30.0,
+      "detail": "fuel 43.5 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible; change notice 22 min"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 260.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 260 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.11,
+      "threshold": 0.7,
+      "detail": "turbulence 0.11 < 0.7"
+     }
+    ]
+   },
+   "opt_4": {
+    "option_id": "opt_4",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 480.0,
+      "threshold": 0.0,
+      "detail": "margin +480 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 42.0,
+      "threshold": 30.0,
+      "detail": "fuel 42.0 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible; change notice 27 min"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 255.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 255 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.11,
+      "threshold": 0.7,
+      "detail": "turbulence 0.11 < 0.7"
+     }
+    ]
+   },
+   "opt_5": {
+    "option_id": "opt_5",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 480.0,
+      "threshold": 0.0,
+      "detail": "margin +480 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 37.0,
+      "threshold": 30.0,
+      "detail": "fuel 37.0 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate C3 free and size-compatible; change notice 27 min"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 255.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 255 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.05,
+      "threshold": 0.7,
+      "detail": "turbulence 0.05 < 0.7"
+     }
+    ]
+   },
+   "opt_6": {
+    "option_id": "opt_6",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 60.0,
+      "threshold": 0.0,
+      "detail": "margin +60 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 7.0,
+      "threshold": 45.0,
+      "detail": "7 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": false,
+      "value": 27.0,
+      "threshold": 30.0,
+      "detail": "fuel 27.0 min < 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate C3 free and size-compatible; change notice 37 min"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 245.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 245 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.05,
+      "threshold": 0.7,
+      "detail": "turbulence 0.05 < 0.7"
+     }
+    ]
+   },
+   "opt_7": {
+    "option_id": "opt_7",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 240.0,
+      "threshold": 0.0,
+      "detail": "margin +240 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 6.0,
+      "threshold": 45.0,
+      "detail": "6 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 30.5,
+      "threshold": 30.0,
+      "detail": "fuel 30.5 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate C1 free and size-compatible"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 240.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 240 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.11,
+      "threshold": 0.7,
+      "detail": "turbulence 0.11 < 0.7"
+     }
+    ]
+   },
+   "opt_fcfs": {
+    "option_id": "opt_fcfs",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 60.0,
+      "threshold": 0.0,
+      "detail": "margin +60 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 9.0,
+      "threshold": 45.0,
+      "detail": "9 arrivals <= reduced AAR 45"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 45.0,
+      "threshold": 30.0,
+      "detail": "fuel 45.0 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H4_gate_validity",
+      "passed": false,
+      "value": null,
+      "threshold": null,
+      "detail": "gate change C1->A1 notice 17 min < 20 min (workbook)"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 265.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 265 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.15,
+      "threshold": 0.7,
+      "detail": "turbulence 0.15 < 0.7"
+     }
+    ]
+   }
+  },
+  "fallback": {
+   "status": "PLAN",
+   "option_id": "opt_3",
+   "cost_J": 181.4,
+   "ranking": [
+    [
+     "opt_3",
+     181.4
+    ],
+    [
+     "opt_4",
+     182.6
+    ],
+    [
+     "opt_2",
+     185.0
+    ],
+    [
+     "opt_5",
+     185.4
+    ],
+    [
+     "opt_7",
+     263.8
+    ]
+   ],
+   "weights": {
+    "w_d_bank_delay_added": 1.0,
+    "w_f_extra_fuel": 0.8,
+    "w_c_misconnected_pax": 2.0,
+    "w_o_ramp_overtime": 0.5,
+    "w_t_turbulence": 20.0,
+    "w_q_throughput_loss": 5.0
+   },
+   "reason": "min J among 5 feasible options"
+  },
+  "fcfs": {
+   "option_id": "opt_fcfs",
+   "eta_shift_min": 0,
+   "gate": "A1",
+   "fp_adjustment": "as_filed",
+   "source": "fcfs",
+   "proposed_by": null,
+   "parent_option": null,
+   "label": "+0 min, gate A1, as filed",
+   "metrics": {
+    "eta_new_min": 1120,
+    "runway_slot_min": 1121,
+    "separation_margin_s": 60,
+    "fuel_at_landing_min": 45.0,
+    "extra_fuel_min": 0.0,
+    "hold_min": 0,
+    "turbulence_idx": 0.15,
+    "misconnected_pax": 89,
+    "gate": "A1",
+    "gate_free_from_min": 886,
+    "gate_free_to_min": 1366,
+    "taxi_path_ok": true,
+    "turnaround_buffer_min": -96,
+    "ramp_overtime_min": 0,
+    "bank_delay_added_min": 1,
+    "arrivals_this_hour": 9,
+    "throughput_loss": 0,
+    "cost_J": 182.0,
+    "gate_change": true,
+    "gate_change_notice_min": 17,
+    "fuel_at_landing_kg": 1800.0
+   }
+  }
+ },
+ "map": {
+  "focus_airport": "LAX",
+  "airports": [
+   {
+    "iata": "ABQ",
+    "name": "Albuquerque International Sunport",
+    "lat": 35.04022,
+    "lon": -106.60919,
+    "role": "other"
+   },
+   {
+    "iata": "ATL",
+    "name": "Hartsfield-Jackson Atlanta International Airport",
+    "lat": 33.64044,
+    "lon": -84.42694,
+    "role": "other"
+   },
+   {
+    "iata": "AUS",
+    "name": "Austin-Bergstrom International Airport",
+    "lat": 30.19453,
+    "lon": -97.66987,
+    "role": "other"
+   },
+   {
+    "iata": "BOI",
+    "name": "Boise Airport (Boise Air Terminal)",
+    "lat": 43.56444,
+    "lon": -116.22278,
+    "role": "other"
+   },
+   {
+    "iata": "DEN",
+    "name": "Denver International Airport",
+    "lat": 39.85841,
+    "lon": -104.667,
+    "role": "other"
+   },
+   {
+    "iata": "DTW",
+    "name": "Detroit Metropolitan Airport",
+    "lat": 42.21206,
+    "lon": -83.34884,
+    "role": "other"
+   },
+   {
+    "iata": "LAS",
+    "name": "McCarran International Airport",
+    "lat": 36.08036,
+    "lon": -115.15233,
+    "role": "other"
+   },
+   {
+    "iata": "LAX",
+    "name": "Los Angeles International Airport",
+    "lat": 33.94254,
+    "lon": -118.40807,
+    "role": "destination"
+   },
+   {
+    "iata": "MCI",
+    "name": "Kansas City International Airport",
+    "lat": 39.29761,
+    "lon": -94.71391,
+    "role": "other"
+   },
+   {
+    "iata": "MSP",
+    "name": "Minneapolis-Saint Paul International Airport",
+    "lat": 44.88055,
+    "lon": -93.21692,
+    "role": "other"
+   },
+   {
+    "iata": "OAK",
+    "name": "Oakland International Airport",
+    "lat": 37.72129,
+    "lon": -122.22072,
+    "role": "other"
+   },
+   {
+    "iata": "OKC",
+    "name": "Will Rogers World Airport",
+    "lat": 35.39309,
+    "lon": -97.60073,
+    "role": "other"
+   },
+   {
+    "iata": "PHX",
+    "name": "Phoenix Sky Harbor International Airport",
+    "lat": 33.43417,
+    "lon": -112.00806,
+    "role": "other"
+   },
+   {
+    "iata": "SAN",
+    "name": "San Diego International Airport (Lindbergh Field)",
+    "lat": 32.73356,
+    "lon": -117.18966,
+    "role": "other"
+   },
+   {
+    "iata": "SFO",
+    "name": "San Francisco International Airport",
+    "lat": 37.619,
+    "lon": -122.37484,
+    "role": "other"
+   },
+   {
+    "iata": "SJC",
+    "name": "Norman Y. Mineta San José International Airport",
+    "lat": 37.36186,
+    "lon": -121.92901,
+    "role": "other"
+   },
+   {
+    "iata": "SMF",
+    "name": "Sacramento International Airport",
+    "lat": 38.69542,
+    "lon": -121.59077,
+    "role": "origin"
+   }
+  ],
+  "flights": [
+   {
+    "flight_id": "WN2433",
+    "role": "disrupted",
+    "origin": "SMF",
+    "destination": "LAX",
+    "origin_lat": 38.69542,
+    "origin_lon": -121.59077,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 960,
+    "sched_arr_min": 1040,
+    "est_arr_min": 1120,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO2871",
+    "role": "bank",
+    "origin": "SAN",
+    "destination": "LAX",
+    "origin_lat": 32.73356,
+    "origin_lon": -117.18966,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 920,
+    "sched_arr_min": 965,
+    "est_arr_min": 1140,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO4801",
+    "role": "bank",
+    "origin": "SJC",
+    "destination": "LAX",
+    "origin_lat": 37.36186,
+    "origin_lon": -121.92901,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 879,
+    "sched_arr_min": 965,
+    "est_arr_min": 1100,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL2776",
+    "role": "bank",
+    "origin": "SFO",
+    "destination": "LAX",
+    "origin_lat": 37.619,
+    "origin_lon": -122.37484,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 900,
+    "sched_arr_min": 985,
+    "est_arr_min": 1108,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN4904",
+    "role": "bank",
+    "origin": "SJC",
+    "destination": "LAX",
+    "origin_lat": 37.36186,
+    "origin_lon": -121.92901,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 920,
+    "sched_arr_min": 995,
+    "est_arr_min": 1119,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6498",
+    "role": "bank",
+    "origin": "BOI",
+    "destination": "LAX",
+    "origin_lat": 43.56444,
+    "origin_lon": -116.22278,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 951,
+    "sched_arr_min": 1030,
+    "est_arr_min": 1208,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6496",
+    "role": "bank",
+    "origin": "MSP",
+    "destination": "LAX",
+    "origin_lat": 44.88055,
+    "origin_lon": -93.21692,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 908,
+    "sched_arr_min": 1035,
+    "est_arr_min": 1131,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN263",
+    "role": "bank",
+    "origin": "LAS",
+    "destination": "LAX",
+    "origin_lat": 36.08036,
+    "origin_lon": -115.15233,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 965,
+    "sched_arr_min": 1035,
+    "est_arr_min": 1095,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL1248",
+    "role": "bank",
+    "origin": "DTW",
+    "destination": "LAX",
+    "origin_lat": 42.21206,
+    "origin_lon": -83.34884,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 930,
+    "sched_arr_min": 1050,
+    "est_arr_min": 1159,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN325",
+    "role": "bank",
+    "origin": "PHX",
+    "destination": "LAX",
+    "origin_lat": 33.43417,
+    "origin_lon": -112.00806,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 985,
+    "sched_arr_min": 1065,
+    "est_arr_min": 1240,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6535",
+    "role": "bank",
+    "origin": "OKC",
+    "destination": "LAX",
+    "origin_lat": 35.39309,
+    "origin_lon": -97.60073,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1000,
+    "sched_arr_min": 1071,
+    "est_arr_min": 1121,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2869",
+    "role": "bank",
+    "origin": "DEN",
+    "destination": "LAX",
+    "origin_lat": 39.85841,
+    "origin_lon": -104.667,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1000,
+    "sched_arr_min": 1085,
+    "est_arr_min": 1193,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2334",
+    "role": "bank",
+    "origin": "SJC",
+    "destination": "LAX",
+    "origin_lat": 37.36186,
+    "origin_lon": -121.92901,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1020,
+    "sched_arr_min": 1090,
+    "est_arr_min": 1323,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN3150",
+    "role": "bank",
+    "origin": "ATL",
+    "destination": "LAX",
+    "origin_lat": 33.64044,
+    "origin_lon": -84.42694,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 980,
+    "sched_arr_min": 1090,
+    "est_arr_min": 1113,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO2880",
+    "role": "bank",
+    "origin": "ABQ",
+    "destination": "LAX",
+    "origin_lat": 35.04022,
+    "origin_lon": -106.60919,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1035,
+    "sched_arr_min": 1100,
+    "est_arr_min": 1219,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL2758",
+    "role": "bank",
+    "origin": "SFO",
+    "destination": "LAX",
+    "origin_lat": 37.619,
+    "origin_lon": -122.37484,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1020,
+    "sched_arr_min": 1105,
+    "est_arr_min": 1265,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5532",
+    "role": "bank",
+    "origin": "AUS",
+    "destination": "LAX",
+    "origin_lat": 30.19453,
+    "origin_lon": -97.66987,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1044,
+    "sched_arr_min": 1116,
+    "est_arr_min": 1287,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL2244",
+    "role": "bank",
+    "origin": "SMF",
+    "destination": "LAX",
+    "origin_lat": 38.69542,
+    "origin_lon": -121.59077,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 1039,
+    "sched_arr_min": 1130,
+    "est_arr_min": 1289,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN263",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "SMF",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 38.69542,
+    "dest_lon": -121.59077,
+    "sched_dep_min": 1070,
+    "sched_arr_min": 1145,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2433",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "MCI",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 39.29761,
+    "dest_lon": -94.71391,
+    "sched_dep_min": 1075,
+    "sched_arr_min": 1390,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN252",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "PHX",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 33.43417,
+    "dest_lon": -112.00806,
+    "sched_dep_min": 1100,
+    "sched_arr_min": 1185,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN4112",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "SFO",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 37.619,
+    "dest_lon": -122.37484,
+    "sched_dep_min": 1120,
+    "sched_arr_min": 1195,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2423",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "OAK",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 37.72129,
+    "dest_lon": -122.22072,
+    "sched_dep_min": 1125,
+    "sched_arr_min": 1195,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2156",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "OAK",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 37.72129,
+    "dest_lon": -122.22072,
+    "sched_dep_min": 1185,
+    "sched_arr_min": 1260,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN2349",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "SJC",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 37.36186,
+    "dest_lon": -121.92901,
+    "sched_dep_min": 1185,
+    "sched_arr_min": 1250,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN389",
+    "role": "connection",
+    "origin": "LAX",
+    "destination": "LAS",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 36.08036,
+    "dest_lon": -115.15233,
+    "sched_dep_min": 1190,
+    "sched_arr_min": 1250,
+    "est_arr_min": null,
+    "position_estimated": true
+   }
+  ],
+  "now_min": 1010
+ }
+}
