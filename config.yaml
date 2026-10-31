@@ -91,6 +91,7 @@ workbook_deviations:                    # shown in the UI "Challenge limits" pan
   - "Severe turbulence threshold (H7) is ours; the workbook doesn't define one."
   - "Flight crew duty already used before this leg is synthetic (seeded); the 13 h cap is the workbook's."
   - "Remaining flight-crew duty is floored at a seeded 10-40 min: a crew already out of duty would not have been dispatched."
+  - "Gate wait (ours): if the chosen gate frees up within 30 min of in-block, the aircraft waits on the ramp (gate_wait_min adds to connections, crew duty, turnaround and overtime); a gate busy for longer fails H4. The workbook has no ramp-wait rule."
 
 fallback_weights:                    # J = sum(w * metric); shown in UI
   w_d_bank_delay_added: 1.0

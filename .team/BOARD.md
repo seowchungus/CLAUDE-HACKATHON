@@ -1,6 +1,6 @@
 # ACCORD BOARD
 
-T0 = 11:09 · Now: 13:22 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
+T0 = 11:09 · Now: 13:58 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
 Rule (12:25, human): major decisions (new workers/roles, starting a major phase) need the human's approval. Tasks within a phase MANAGER delegates directly.
 
 ## Milestones
@@ -28,19 +28,19 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W3-01 | W3 | API (mock) + console skeleton + negotiation room | changes → W3-01-fix | — | 45 | 12:00 |
 | W3-02 | W3 | Map, constraint wall, Gantt, log viewer | changes → W3-01-fix | W3-01 | 45 | 12:45 |
 | REVIEWER-01 | REVIEWER | Review wave 1 (W2 → W1 → W3) | done (W2 changes, W1 approved, W3 changes) | wave 1 | 40 | 13:20 |
-| W1-05 | W1 | v1.1 alignment (§1) ✅ 2fc97ef, eval hook (§4) ✅ 4a7f00b, heroes (§3) ✅ 6cf34a4 (WN2433 SMF-LAX, OO6476 AUS-SFO) | review (REVIEWER-02) | v1.1 | 45 | 13:25 |
-| W2-03 | W2 | v1.1 alignment, call accounting (freeze), narrator, scripted failure modes | review (a2a511f) | v1.1 | 45 | 13:25 |
-| W3-01-fix | W3 | **SECURITY: path traversal serves .env** + 4 review items | review (d6c0e1c, 46445da) | REVIEWER 13:10 | 20 | 13:30 |
-| W3-03 | W3 | v1.1 alignment, chaos/kill/approve controls, eval page, replay | review (ae58f41) | v1.1 | 45 | 13:25 |
-| W1-06 | W1 | Adopt organisers' workbook limits (replaces W1-05 §2/§3 order) | review (d80aa92, 2b0bc3f) | v1.2 | 40 | 13:40 |
-| W2-04 | W2 | Hard LLM call budget (ledger, RPM, no cascade), Flash-Lite, workbook charters | review (f625531) | W2-03 | 35 | 13:45 |
-| W3-04 | W3 | Challenge limits panel + LLM budget meter | doing (server side in 46445da; UI todo) | W3-03 | 25 | 13:50 |
-| W1-07 | W1 | Role tension on heroes, frozen eval set, bad-day replay (no LLM) | doing (§1 partly in 9f2af7d: gate_wait_min; goldens/heroes not re-run; §2 §3 todo) | W1-06 | 40 | 13:55 |
+| W1-05 | W1 | v1.1 alignment, eval hook, heroes | done ✅ (APPROVED, REVIEWER-02 W1-05_06) | v1.1 | 45 | 13:25 |
+| W2-03 | W2 | v1.1 alignment, call accounting, narrator, scripted failure modes | done ✅ (W2-03_04 items 2–3 ✅) | v1.1 | 45 | 13:25 |
+| W3-01-fix | W3 | SECURITY path traversal + 4 review items | done ✅ (items 1–5 ✅); MOCK approve item → W3-03-fix (b5c0ff6), re-review | REVIEWER | 20 | 13:30 |
+| W3-03 | W3 | v1.1 alignment, chaos/kill/approve, eval page, replay | done (+W3-03-fix b5c0ff6), re-review | v1.1 | 45 | 13:25 |
+| W1-06 | W1 | Adopt organisers' workbook limits | done ✅ (APPROVED, REVIEWER-02 W1-05_06) | v1.2 | 40 | 13:40 |
+| W2-04 | W2 | Hard LLM call budget | CHANGES item 1 (ledger fail-open) → fixed in W2-04-fix3 (13:38), re-review | W2-03 | 35 | 13:45 |
+| W3-04 | W3 | Challenge limits panel + LLM budget meter | review (b5c0ff6) | W3-03 | 25 | 13:50 |
+| W1-07 | W1 | Role tension, frozen eval set, bad-day replay | review (3928d7b, b921633); REVIEWER's 3 WIP items addressed per W1 | W1-06 | 40 | 13:55 |
 | REVIEWER-02 | REVIEWER | Review wave 2: W2-03+W2-04 → W1-05+W1-06 → W3-01-fix+W3-03 → W1-07 | todo | wave 2 | 30 | 13:55 |
-| W3-05 | W3 | Eval page: mock ≠ MEASURED (SCRIPTED badge), bad-day card | todo | W3-03 | 10 | 13:55 |
-| W2-05 | W2 | INT-01 on-call + grounding check (`ungrounded`), per-run call count | todo | W2-04 | 30 | 14:00 |
-| W1-08 | W1 | A: replace committed mock results.json with `--llm none` on frozen set · B: live eval N=30 (needs EVAL RELEASED) | todo | W1-07, INT-01 | 10 + 45 | |
-| INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | approved 12:58 (gates: W1-06, W2-04, W3-01-fix reviewed) | wave 2 | 45 | |
+| W3-05 | W3 | Eval page: mock ≠ MEASURED, bad-day card | review | W3-03 | 10 | 13:55 |
+| W2-05 | W2 | INT-01 on-call + grounding check, per-run call count | review | W2-04 | 30 | 14:00 |
+| W1-08 | W1 | A ✅ add3187 results.json = `--llm none`, n=30 · B: live eval N=30 | A review · B waits for EVAL RELEASED | W1-07, INT-01 | 10 + 45 | |
+| INT-01 | W3 lead | Live integration + smoke | in progress: live producer on real data with ACCORD_LLM=mock/killed (7dcd565); live Gemini smoke waits for the 20-call release | wave 2 | 45 | |
 
 ### Queued (needs phase approval)
 - W1-06 live eval N=30 + B0/B1 (B2/B3 if quota), sharded across keys
@@ -58,6 +58,9 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
 ## Decisions & assumptions
+- 13:58 Heroes are now **2015-12-30_DL2463_ICT-ATL** (score 10) and **2015-03-02_OO6476_AUS-SFO**. WN2433 SMF-LAX was dropped as a hero (its golden is kept and excluded from eval). The eval set is frozen: `eval/eval_set.json`, sha256 4474f237…, N=30, committed before any eval run.
+- 13:58 Bad day (deterministic only): ATL 2015-12-30, 438 arrivals. Compare B0 vs B1 only on rows where B1 has a feasible plan (`bad_day.B0_on_B1_planned`); B0's all-rows total looks cheaper partly because it breaks hard rules (161 infeasible). Pitch: B1 cuts bank delay 5443→2973 min at the cost of more misconnects and overtime.
+- 13:58 Gate wait ≤ 30 min is our rule: added to `workbook_deviations` and the README.
 - 13:22 Handover: work continues in a fresh clone (`~/Desktop/CLAUDE-HACKATHON`); new chats for W1/W2/W3/REVIEWER restart from task files + status. Fresh clone needs `data/raw/*` + `.env` before data-dependent tests (30 fail on missing `data/qualifying.parquet`; agents + api tests pass).
 - 13:22 Commit 9f2af7d ("shaun's commit") swept several owners' paths, incl. W1-07 WIP in `core/` and a **mock** `eval/results.json` that the Eval page labels MEASURED. Fix: W3-05 (UI label), W1-08a (replace with `--llm none`). REVIEWER checks the core changes as part of W1-07.
 - 13:10 Free-tier day resets 00:00 PT = **15:00 +08 today** (W2): every key returns to 0 → fresh 480/key for the 15:00–16:09 demo window. Plan: integration + eval on today's remaining budget; demo/rehearsal after 15:00.

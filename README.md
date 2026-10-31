@@ -27,6 +27,7 @@ Under construction (hackathon build). Evaluation results and limitations are fil
 - Separation and fuel rules are simplified illustrations, **not ICAO or certified values**.
 - 2015 DOT data has no aircraft types, gate assignments, ATC flow programmes, radar tracks or holding data. Map positions are interpolated from schedule times.
 - One runway modelled per airport; no network effect beyond connections at the destination.
+- Gate wait is our rule, not the workbook's: an aircraft may wait up to 30 min on the ramp for its gate to free up; longer and the gate is invalid (H4).
 - Operational limits (capacity, wake, fuel, crew, gates) follow the organisers' workbook `challenge2_operational_constraints.xlsx`; our deviations from it are listed in `config.yaml` (`workbook_deviations`) and in the console.
 - The provided flights file contains delayed flights only (as issued by the organisers; October 2015 is not included), so arrival banks and connections show delayed traffic only.
 - Free-tier models (Gemini 3.5 Flash Lite, 500 requests/day) limit the evaluation size; a hard call budget is enforced in code. LLM behaviour is stochastic.
