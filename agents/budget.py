@@ -2,7 +2,8 @@
 
 Ledger `runs/llm_budget.json` = {date_pacific, keys: {ENV_NAME: used}, recent: {ENV_NAME: [epoch_s...]}},
 shared by every process (server, eval, CLIs) under an exclusive fcntl lock. The day rolls over at
-midnight America/Los_Angeles. A new ledger starts each key at llm_budget.used_before_ledger.
+midnight America/Los_Angeles. A new ledger starts each key at llm_budget.used_before_ledger (loud warning).
+A corrupt ledger fails CLOSED: every reserve is refused until a human repairs it with budget_cli --set.
 Only env-var NAMES are stored or printed, never the keys themselves.
 """
 import asyncio
@@ -10,6 +11,7 @@ import contextlib
 import fcntl
 import json
 import os
+import sys
 import time
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
@@ -28,6 +30,10 @@ class LLMBudget(BaseModel):
 
 
 LEDGER_ENV = "ACCORD_LLM_LEDGER"   # overrides llm_budget.ledger (tests point it at a tmp file)
+
+
+class LedgerCorrupt(Exception):
+    """The ledger exists but can't be read: the count is unknown, so nothing may be reserved."""
 
 
 def _bcfg(cfg: dict | None) -> dict:
@@ -51,8 +57,9 @@ def next_reset(b: dict, now: float) -> datetime:
 
 
 @contextlib.contextmanager
-def _ledger(b: dict, now: float):
-    """Exclusive, cross-process access to the ledger; yields the dict and writes it back atomically."""
+def _ledger(b: dict, now: float, repair: bool = False):
+    """Exclusive, cross-process access to the ledger; yields the dict and writes it back atomically.
+    Raises LedgerCorrupt on an unreadable ledger (left untouched) unless repair=True (budget_cli --set)."""
     path = repo_path(b["ledger"])
     os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
     with open(path + ".lock", "a+") as lock:
@@ -63,10 +70,18 @@ def _ledger(b: dict, now: float):
                 try:
                     with open(path, encoding="utf-8") as f:
                         data = json.load(f)
-                except ValueError:
+                    if not isinstance(data, dict) or not isinstance(data.get("keys"), dict):
+                        raise ValueError("ledger has no 'keys' object")
+                except ValueError as e:
+                    if not repair:
+                        print(f"LLM_BUDGET ledger {path} is corrupt ({e}); refusing every LLM call until "
+                              "repaired with: python -m agents.budget_cli --set GEMINI_API_KEY=<n>", file=sys.stderr)
+                        raise LedgerCorrupt(str(e)) from e
                     data = None
             today = _day(b, now)
             if data is None:   # new ledger: start from today's dashboard readings
+                print(f"LLM_BUDGET new ledger {path} seeded from config readings "
+                      f"{b.get('used_before_ledger')}; correct with budget_cli --set", file=sys.stderr)
                 data = {"date_pacific": today, "keys": dict(b.get("used_before_ledger") or {}), "recent": {}}
             elif data.get("date_pacific") != today:   # Pacific midnight passed: fresh daily quota
                 data = {"date_pacific": today, "keys": {k: 0 for k in data.get("keys", {})}, "recent": {}}
@@ -100,8 +115,11 @@ def reserve_ex(key_name: str, cfg: dict | None = None, now: float | None = None)
     """Atomically count one request against the daily cap. -> (allowed, used_after, cap)."""
     b = _bcfg(cfg)
     now = time.time() if now is None else now
-    with _ledger(b, now) as data:
-        outcome, used, _ = _try_reserve(data, b, key_name, now, check_rpm=False)
+    try:
+        with _ledger(b, now) as data:
+            outcome, used, _ = _try_reserve(data, b, key_name, now, check_rpm=False)
+    except LedgerCorrupt:
+        return False, int(b["per_key_daily_cap"]), int(b["per_key_daily_cap"])
     return outcome == "ok", used, int(b["per_key_daily_cap"])
 
 
@@ -117,8 +135,11 @@ async def acquire(key_name: str, cfg: dict | None = None, clock=time.time,
     b = _bcfg(cfg)
     while True:
         now = clock()
-        with _ledger(b, now) as data:
-            outcome, used, wait = _try_reserve(data, b, key_name, now, check_rpm=True)
+        try:
+            with _ledger(b, now) as data:
+                outcome, used, wait = _try_reserve(data, b, key_name, now, check_rpm=True)
+        except LedgerCorrupt:
+            return False, int(b["per_key_daily_cap"]), int(b["per_key_daily_cap"])
         if outcome != "rpm":
             return outcome == "ok", used, int(b["per_key_daily_cap"])
         await sleep(wait)
@@ -127,9 +148,12 @@ async def acquire(key_name: str, cfg: dict | None = None, clock=time.time,
 def budget_status(cfg: dict | None = None, now: float | None = None) -> LLMBudget:
     b = _bcfg(cfg)
     now = time.time() if now is None else now
-    with _ledger(b, now) as data:
-        used = dict(data["keys"])
     cap = int(b["per_key_daily_cap"])
+    try:
+        with _ledger(b, now) as data:
+            used = dict(data["keys"])
+    except LedgerCorrupt:   # unknown count -> report every key as exhausted
+        used = {n: cap for n in (b.get("used_before_ledger") or {})}
     names = list(dict.fromkeys([*(b.get("used_before_ledger") or {}), *used]))
     keys = {n: {"used_today": int(used.get(n, 0)), "cap": cap, "remaining": max(0, cap - int(used.get(n, 0))),
                 "rpm_cap": int(b["per_key_rpm_cap"])} for n in names}
@@ -145,5 +169,5 @@ def set_used(key_name: str, n: int, cfg: dict | None = None, now: float | None =
     """Correct the ledger to the dashboard reading (MANAGER/human use only)."""
     b = _bcfg(cfg)
     now = time.time() if now is None else now
-    with _ledger(b, now) as data:
+    with _ledger(b, now, repair=True) as data:
         data["keys"][key_name] = int(n)

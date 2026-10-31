@@ -158,3 +158,34 @@ def test_tests_never_touch_real_ledger(tmp_path):
     budget.set_used("GEMINI_API_KEY_2", 1)
     assert digest() == before
     assert os.path.exists(os.environ[budget.LEDGER_ENV]) and os.environ[budget.LEDGER_ENV] != real
+
+
+def test_corrupt_ledger_fails_closed(cfg, capsys):
+    budget.reserve("GEMINI_API_KEY", cfg, now=NOON)                      # 212
+    path = os.environ[budget.LEDGER_ENV]
+    open(path, "w").write("{not json")
+    assert budget.reserve_ex("GEMINI_API_KEY", cfg, now=NOON) == (False, 480, 480)
+    assert asyncio.run(budget.acquire("GEMINI_API_KEY", cfg, clock=lambda: NOON)) == (False, 480, 480)
+    assert budget.budget_status(cfg, now=NOON).keys["GEMINI_API_KEY"]["remaining"] == 0
+    assert open(path).read() == "{not json"                              # never re-seeded silently
+    assert "corrupt" in capsys.readouterr().err
+    budget.set_used("GEMINI_API_KEY", 230, cfg, now=NOON)                # human repair
+    assert budget.reserve_ex("GEMINI_API_KEY", cfg, now=NOON) == (True, 231, 480)
+
+
+def test_corrupt_ledger_run_falls_back_with_no_request(cfg):
+    open(os.environ[budget.LEDGER_ENV], "w").write("[]")
+    llm = GeminiClient(cfg)
+    models = install(llm, [])
+    co = Coordinator(load_bundle(), "run_corrupt", cfg, llm=llm)
+
+    async def go():
+        return [e async for e in co.run()]
+    ev = asyncio.run(go())
+    assert models.requests == []
+    assert [e for e in ev if e["type"] == "fallback"][0]["data"]["reason"] == "LLM_ERROR"
+
+
+def test_new_ledger_seed_is_loud(cfg, capsys):
+    budget.budget_status(cfg, now=NOON)
+    assert "seeded from config readings" in capsys.readouterr().err
