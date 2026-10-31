@@ -353,6 +353,20 @@ class RunManager:
             raise HTTPException(422, "action must be APPROVE|OVERRIDE with an option_id")
 
         if run.replays_fixture:
+            # mirror Coordinator.approve: the checker overrides the human too
+            checks: dict = {}
+            for ev in run.events:
+                if ev["type"] == "options":
+                    checks.update(ev["data"].get("checks") or {})
+                elif ev["type"] == "counter_checked" and ev["data"].get("accepted") and ev["data"].get("check"):
+                    checks[ev["data"]["option_id"]] = ev["data"]["check"]
+            if option_id not in checks or option_id == "opt_fcfs":
+                raise HTTPException(400, f"unknown option {option_id}")
+            if not checks[option_id].get("feasible"):
+                failed = [r["constraint_id"] for r in checks[option_id].get("results", []) if not r.get("passed")]
+                raise HTTPException(400, f"{option_id} is infeasible: fails {', '.join(failed)}")
+            if action == "APPROVE" and option_id != awaiting["data"].get("option_id"):
+                raise HTTPException(400, "APPROVE must name the decided option; use OVERRIDE to pick another")
             signed = run.log_entries[-1]["hash"]
             payload = {"action": action, "option_id": option_id, "by": by, "note": note, "final_hash": signed}
             entry = self._append_mock_log(run, "approved", "HUMAN", payload)
@@ -455,7 +469,9 @@ def limits(scenario_id: str | None = None) -> dict:
     }
     airport = None
     if MOCK:
-        airport = read_json(FIXTURES / "scenario_bundle.json")["bundle"]["scenario"].get("airport_limits") or None
+        fx = read_json(FIXTURES / "scenario_bundle.json")["bundle"]["scenario"]
+        airport = fx.get("airport_limits") or None
+        scenario_id = scenario_id or fx["scenario_id"]  # pre-v1.2 fixture: look its destination up in the table
     dest = scenario_id.rsplit("-", 1)[-1] if scenario_id else None
     if airport is None and dest and LIMITS_PATH.exists():
         try:

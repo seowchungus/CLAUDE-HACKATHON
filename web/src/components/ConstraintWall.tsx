@@ -1,6 +1,8 @@
 import type { CheckReport, Option } from "../types";
 import { CONSTRAINTS, shortC } from "../types";
 import { decidedPlan, type RunState } from "../useRunStream";
+import { fuelText, GateChangeBadge } from "./DecisionPanel";
+import { C_SOURCE } from "./Limits";
 
 interface Props {
   st: RunState;
@@ -21,8 +23,9 @@ export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props)
           <tr className="text-xs text-slate-400">
             <th className="px-2 text-left">option</th>
             {CONSTRAINTS.map((c) => (
-              <th key={c} className="px-1" title={c}>
+              <th key={c} className="cursor-help px-1" title={`${c}\nsource: ${C_SOURCE[c].src === "workbook" ? "organisers' workbook" : "ours (not in the workbook)"}\n${C_SOURCE[c].note}`}>
                 {shortC(c)}
+                <sup className={`ml-0.5 text-[8px] ${C_SOURCE[c].src === "workbook" ? "text-sky-400" : "text-amber-400"}`}>{C_SOURCE[c].src === "workbook" ? "WB" : "ours"}</sup>
                 <div className="text-[9px] font-normal text-slate-500">{c.split("_").slice(1).join(" ")}</div>
               </th>
             ))}
@@ -47,7 +50,9 @@ export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props)
                   {id === fallbackId && <span className="ml-1 rounded bg-amber-700 px-1 text-[10px]">B1</span>}
                   {o.source === "counter" && <span className="ml-1 rounded bg-violet-800 px-1 text-[10px]">counter·{o.proposed_by}</span>}
                   {id === planId && <span className="ml-1 rounded bg-emerald-700 px-1 text-[10px]">PLAN</span>}
+                  <GateChangeBadge o={o} />
                   <div className="text-[11px] text-slate-400">{o.label}</div>
+                  <div className="text-[10px] text-slate-500">gate {o.metrics.gate} · fuel @ land {fuelText(o)}</div>
                 </td>
                 {CONSTRAINTS.map((c) => {
                   const r = rep?.results.find((x) => x.constraint_id === c);
@@ -69,7 +74,7 @@ export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props)
         </tbody>
       </table>
       <div className="mt-1 text-[11px] text-slate-500">
-        Hover a cell for the checker's detail. B0 = first-come-first-served baseline (not a candidate) · B1 = deterministic fallback choice (min J).
+        Hover a cell for the checker's detail. B0 = first-come-first-served baseline (not a candidate) · B1 = deterministic fallback choice (min J). WB = limit from the organisers' workbook; ours = our rule (see Challenge limits).
       </div>
     </div>
   );

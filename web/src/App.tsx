@@ -4,6 +4,7 @@ import { ConstraintWall } from "./components/ConstraintWall";
 import { ChaosMenu, DemoMenu } from "./components/Controls";
 import { DecisionPanel } from "./components/DecisionPanel";
 import { EvalPage } from "./components/EvalPage";
+import { BudgetMeter, budgetTotals, LimitsPanel } from "./components/Limits";
 import { Gantt } from "./components/Gantt";
 import { ChainBadge, LogDrawer, useChain } from "./components/LogDrawer";
 import { NegotiationRoom } from "./components/NegotiationRoom";
@@ -97,6 +98,7 @@ export default function App() {
   };
 
   const llmOn = health?.llm_enabled ?? true;
+  const budgetOut = budgetTotals(health)?.exhausted ?? false;
   const plan = decidedPlan(st);
   const tentOpt = st.options.find((o) => o.option_id === st.tentative?.option_id) ?? null;
   const chaosOn = (st.started?.chaos_applied.length ?? 0) > 0;
@@ -123,7 +125,7 @@ export default function App() {
               ))}
             </select>
             <button onClick={() => start()} disabled={!sid} className="rounded bg-sky-600 px-4 py-1 font-bold hover:bg-sky-500 disabled:opacity-40">
-              ▶ Run
+              {budgetOut && llmOn ? "▶ Run (fallback only: LLM budget exhausted)" : "▶ Run"}
             </button>
             <ChaosMenu s={sc?.bundle.scenario ?? null} disabled={!runId} onInject={chaos} />
             <button onClick={toggleKill} title="Simulate an LLM outage: the deterministic fallback takes over"
@@ -138,6 +140,7 @@ export default function App() {
           </>
         )}
         <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
+          <BudgetMeter health={health} />
           <span className={llmOn ? "text-emerald-400" : "font-bold text-red-400"}>LLM {llmOn ? "enabled" : "disabled"}</span>
           {st.started?.parent_run_id && <span className="text-amber-400">re-run of {st.started.parent_run_id}</span>}
           {st.runId && <span className="font-mono">{st.runId}</span>}
@@ -189,7 +192,8 @@ export default function App() {
             <Panel title="Decision" className="col-span-5">
               <DecisionPanel st={st} onSigned={() => chain.refresh()} />
             </Panel>
-            <Panel title="Constraint wall" className="col-span-7">
+            <div className="col-span-7 flex flex-col gap-3">
+            <Panel title="Constraint wall">
               {sc && (
                 <ConstraintWall
                   st={st}
@@ -200,6 +204,8 @@ export default function App() {
                 />
               )}
             </Panel>
+            {sc && <LimitsPanel scenarioId={sc.bundle.scenario.scenario_id} airport={sc.bundle.scenario.airport_limits} dest={sc.bundle.scenario.destination.iata} />}
+            </div>
           </main>
           {logOpen && runId && <LogDrawer runId={runId} entries={chain.entries} verify={chain.verify} onClose={() => setLogOpen(false)} />}
         </>

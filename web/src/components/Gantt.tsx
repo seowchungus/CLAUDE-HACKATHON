@@ -1,5 +1,6 @@
 import type { Option, Scenario } from "../types";
 import { hhmm } from "../types";
+import { fuelText, GateChangeBadge } from "./DecisionPanel";
 
 const LABEL_W = 52;
 const W = 520;
@@ -25,6 +26,15 @@ export function Gantt({ s, opt, isPlan }: { s: Scenario; opt: Option | null; isP
   for (let t = t0; t <= t1; t += 30) ticks.push(t);
 
   return (
+    <div>
+    {opt && (
+      <div className="flex flex-wrap items-center gap-x-2 px-2 pt-1 text-[11px] text-slate-400">
+        <span className="font-mono text-slate-200">{opt.option_id}</span>
+        <span>gate {opt.metrics.gate}{s.planned_gate && s.planned_gate !== opt.metrics.gate ? ` (planned ${s.planned_gate})` : ""}</span>
+        <GateChangeBadge o={opt} />
+        <span>fuel @ land {fuelText(opt)}</span>
+      </div>
+    )}
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full" style={{ fontFamily: "ui-monospace, monospace" }}>
       <defs>
         <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -102,5 +112,6 @@ export function Gantt({ s, opt, isPlan }: { s: Scenario; opt: Option | null; isP
         );
       })}
     </svg>
+    </div>
   );
 }

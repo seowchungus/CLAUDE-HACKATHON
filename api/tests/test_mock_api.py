@@ -50,6 +50,12 @@ def test_replay_chain_and_approve_rules():
         rid = _start(c)
         v = c.get(f"/api/runs/{rid}/verify").json()
         assert v["ok"] and v["n_entries"] == 29
+        # the checker overrides the human (REVIEWER W3-01-fix_03 item 1): infeasible, wrong, unknown
+        for action, oid in (("OVERRIDE", "opt_5"), ("APPROVE", "opt_1"), ("OVERRIDE", "opt_zz"), ("OVERRIDE", "opt_fcfs")):
+            bad = c.post(f"/api/runs/{rid}/approve", json={"action": action, "option_id": oid, "by": "t"})
+            assert bad.status_code == 400, (action, oid)
+        assert "H" in c.post(f"/api/runs/{rid}/approve", json={"action": "OVERRIDE", "option_id": "opt_5", "by": "t"}).json()["detail"]
+        assert c.get(f"/api/runs/{rid}/verify").json()["n_entries"] == 29
         r = c.post(f"/api/runs/{rid}/approve", json={"action": "APPROVE", "option_id": "opt_c1", "by": "t"})
         assert r.status_code == 200 and r.json()["final_hash"] == v["head_hash"]
         v2 = c.get(f"/api/runs/{rid}/verify").json()
