@@ -8,7 +8,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, ValidationError, create_model
 
-from core.types import AgentRole, ConstraintId
+from core.types import AgentRole, ConstraintId, Metrics
 
 MAX_ROUNDS_HARD = 3   # the protocol never allows more; config MAX_ROUNDS is asserted <= this
 
@@ -19,11 +19,7 @@ ACTIONS_BY_ROUND: dict[int, tuple[str, ...]] = {
 }
 PHASE_BY_ROUND = {1: "PROPOSE", 2: "RESPOND", 3: "BALLOT"}
 COUNTER_PARAMS = ("eta_shift_min", "gate", "fp_adjustment")
-METRIC_NAMES = ("eta_new_min", "runway_slot_min", "separation_margin_s", "fuel_at_landing_min",
-                "extra_fuel_min", "hold_min", "turbulence_idx", "misconnected_pax", "gate",
-                "gate_free_from_min", "gate_free_to_min", "taxi_path_ok", "turnaround_buffer_min",
-                "ramp_overtime_min", "bank_delay_added_min", "arrivals_this_hour", "throughput_loss",
-                "cost_J")
+METRIC_NAMES = tuple(Metrics.model_fields)   # every metric an agent may cite as opt_id.metric
 RATIONALE_MAX = 300
 
 

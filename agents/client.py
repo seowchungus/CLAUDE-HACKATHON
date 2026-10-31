@@ -7,6 +7,7 @@ import asyncio
 import json
 import os
 import random
+import sys
 import time
 from typing import Callable, Protocol
 
@@ -23,14 +24,18 @@ class LLMClient(Protocol):
                        call: AgentCall | None = None) -> AgentMessage: ...
 
 
-def _api_keys() -> list[str]:
-    """GEMINI_API_KEY, _2, _3 from .env (process env overrides). Never logged."""
+KEY_NAMES = ("GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3")
+CALLS_TODAY = 0   # real API requests made by THIS process (incl. retries); the budget ledger has the cross-process count
+
+
+def _api_keys() -> list[tuple[str, str]]:
+    """[(env name, key)] for GEMINI_API_KEY, _2, _3 from .env (process env overrides). Keys are never logged."""
     file_vals = dotenv_values(repo_path(".env")) if os.path.exists(repo_path(".env")) else {}
     keys = []
-    for name in ("GEMINI_API_KEY", "GEMINI_API_KEY_2", "GEMINI_API_KEY_3"):
+    for name in KEY_NAMES:
         v = os.environ.get(name) or file_vals.get(name)
         if v and v.strip() and "your" not in v.lower():
-            keys.append(v.strip())
+            keys.append((name, v.strip()))
     return keys
 
 
@@ -39,78 +44,108 @@ def _is_429(e: Exception) -> bool:
 
 
 def _is_transient(e: Exception) -> bool:
-    """429 rate limit or 503 overload: back off, then switch to models.backup."""
+    """429 rate limit or 503 overload: back off (max_429_retries times), then fail as rate_limited."""
     return _is_429(e) or getattr(e, "code", None) in (500, 503) or "UNAVAILABLE" in str(e)[:300]
 
 
+def parse_json_text(text: str):
+    """Parse a JSON object from model text (prompt-only mode may wrap it in ``` fences or prose)."""
+    t = (text or "").strip()
+    if t.startswith("```"):
+        t = t.split("\n", 1)[1] if "\n" in t else t[3:]
+        t = t.rsplit("```", 1)[0]
+    try:
+        return json.loads(t)
+    except ValueError:
+        a, b = t.find("{"), t.rfind("}")
+        if a >= 0 and b > a:
+            return json.loads(t[a:b + 1])
+        raise
+
+
+def make_llm(mode: str | None = None, config: dict | None = None):
+    """For the API/UI: mode None or "live" -> GeminiClient; "mock"/"normal"/"deadlock"/"unsafe"/
+    "hallucinate" -> scripted MockLLMClient."""
+    if mode in (None, "live"):
+        return GeminiClient(config)
+    return MockLLMClient("normal" if mode == "mock" else mode, config=config)
+
+
 class GeminiClient:
-    """google-genai async client. JSON-schema output, per-call timeout, 1 schema retry, 429 back-off,
-    switch to models.backup after max_429_retries. Each role uses its own key when several exist."""
+    """google-genai async client, one request per agent call (+ at most 1 schema retry and
+    max_429_retries back-offs). No model cascade. JSON-schema output when the model supports it
+    (config `structured_output: {model: bool}`, default true), else prompt-only JSON + code validation."""
 
     ROLE_KEY_INDEX = {"ATC": 0, "PILOT": 1, "GROUND": 2, "NARRATOR": 0}
+    scripted = False
     THINKING_LEVEL = "low"   # ranking a precomputed table needs little reasoning; keeps latency < timeout
 
     def __init__(self, config: dict | None = None):
         from google import genai
-        self._genai = genai
         self.cfg = config or load_config()
-        self.keys = _api_keys()
-        if not self.keys:
+        keys = _api_keys()
+        if not keys:
             raise RuntimeError("GEMINI_API_KEY missing in .env")
-        self._clients = [genai.Client(api_key=k) for k in self.keys]
+        self.key_names = [n for n, _ in keys]
+        self._clients = {n: genai.Client(api_key=k) for n, k in keys}
         self.n_calls = 0
         self._no_thinking: set[str] = set()   # models that reject thinking_config
+        print(f"LLM_CLIENT keys={self.key_names} calls_this_process={CALLS_TODAY}", file=sys.stderr)
 
     def model_for(self, role: str) -> str:
         return self.cfg["models"][role]
 
-    def _client(self, role: str, bump: int = 0):
-        return self._clients[(self.ROLE_KEY_INDEX.get(role, 0) + bump) % len(self._clients)]
+    def structured(self, model: str) -> bool:
+        return bool((self.cfg.get("structured_output") or {}).get(model, True))
 
-    async def _generate(self, role: str, model: str, prompt: str, schema: dict | None, key_bump: int):
+    def _keys_for(self, role: str) -> list[str]:
+        i = self.ROLE_KEY_INDEX.get(role, 0) % len(self.key_names)
+        return self.key_names[i:] + self.key_names[:i]
+
+    async def _raw_request(self, key_name: str, model: str, prompt: str, schema: dict | None):
+        """Exactly one real API request."""
         from google.genai import types
+        global CALLS_TODAY
         neg = self.cfg["negotiation"]
         kw = dict(temperature=neg["temperature"])
         if schema is not None:
             kw.update(response_mime_type="application/json", response_json_schema=schema)
         if model not in self._no_thinking:
             kw["thinking_config"] = types.ThinkingConfig(thinking_level=self.THINKING_LEVEL)
+        self.n_calls += 1
+        CALLS_TODAY += 1
         try:
             return await asyncio.wait_for(
-                self._client(role, key_bump).aio.models.generate_content(
+                self._clients[key_name].aio.models.generate_content(
                     model=model, contents=prompt, config=types.GenerateContentConfig(**kw)),
                 timeout=neg["call_timeout_s"])
         except Exception as e:  # noqa: BLE001
             if getattr(e, "code", None) == 400 and "hinking" in str(e) and model not in self._no_thinking:
                 self._no_thinking.add(model)
-                return await self._generate(role, model, prompt, schema, key_bump)
+                raise _RetryWithoutThinking() from e
             raise
 
+    async def _request(self, role: str, model: str, prompt: str, schema: dict | None):
+        key = self._keys_for(role)[0]
+        try:
+            return await self._raw_request(key, model, prompt, schema)
+        except _RetryWithoutThinking:
+            return await self._raw_request(key, model, prompt, schema)
+
     async def _generate_with_backoff(self, role: str, prompt: str, schema: dict | None):
-        """Returns (resp, model_used). 429/503: exponential back-off, then models.backup after
-        max_429_retries. A timeout on the primary model goes straight to the backup (one attempt)."""
+        """429/503: back off max_429_retries times, then raise (-> rate_limited). Timeouts raise."""
         rl = self.cfg["rate_limit"]
         model = self.model_for(role)
-        backup = self.cfg["models"]["backup"]
         delay = rl["backoff_initial_s"]
-        attempt = 0
-        while True:
+        for attempt in range(rl["max_429_retries"] + 1):
             try:
-                self.n_calls += 1
-                return await self._generate(role, model, prompt, schema, key_bump=attempt), model
-            except asyncio.TimeoutError:
-                if model == backup:
-                    raise
-                model = backup
+                return await self._request(role, model, prompt, schema)
             except Exception as e:  # noqa: BLE001
-                if not _is_transient(e) or (model == backup and attempt > rl["max_429_retries"]):
+                if not _is_transient(e) or attempt >= rl["max_429_retries"]:
                     raise
-                attempt += 1
-                if attempt > rl["max_429_retries"] and model != backup:
-                    model = backup
-                    continue
                 await asyncio.sleep(min(delay, rl["backoff_max_s"]) * (0.8 + 0.4 * random.random()))
                 delay *= 2
+        raise RuntimeError("unreachable")
 
     async def position(self, role: str, prompt: str, response_model: type, round: int,
                        call: AgentCall | None = None) -> AgentMessage:
@@ -120,23 +155,33 @@ class GeminiClient:
         if not killswitch.llm_enabled():
             return AgentMessage(agent=role, round=round, status="killed", position=None, model=model,
                                 latency_ms=0, errors=["LLM disabled by kill switch"])
-        schema = response_model.model_json_schema()
+        json_schema = response_model.model_json_schema()
+        if self.structured(model):
+            schema, base_prompt = json_schema, prompt
+        else:   # prompt-only JSON: the schema goes into the prompt, code validates
+            schema = None
+            base_prompt = (prompt + "\n\nReturn ONLY a JSON object (no prose, no code fences) matching this "
+                           "JSON schema:\n" + json.dumps(json_schema, separators=(",", ":")))
         tin = tout = 0
         errors: list[str] = []
-        cur_prompt = prompt
+        cur_prompt = base_prompt
         retries_allowed = self.cfg["negotiation"]["schema_retries"]
         for attempt in range(retries_allowed + 1):
             if not killswitch.llm_enabled():
                 return AgentMessage(agent=role, round=round, status="killed", position=None, model=model,
                                     latency_ms=ms(), errors=["LLM disabled by kill switch"], retries=attempt)
             try:
-                resp, model = await self._generate_with_backoff(role, cur_prompt, schema)
+                resp = await self._generate_with_backoff(role, cur_prompt, schema)
             except asyncio.TimeoutError:
                 return AgentMessage(agent=role, round=round, status="timeout", position=None, model=model,
                                     latency_ms=ms(), errors=["call timed out"], retries=attempt,
                                     tokens_in=tin or None, tokens_out=tout or None)
+            except BudgetExhausted as e:
+                return AgentMessage(agent=role, round=round, status="rate_limited", position=None, model=model,
+                                    latency_ms=ms(), errors=[str(e)], retries=attempt,
+                                    tokens_in=tin or None, tokens_out=tout or None)
             except Exception as e:  # noqa: BLE001
-                status = "rate_limited" if _is_429(e) else "error"
+                status = "rate_limited" if _is_transient(e) else "error"
                 return AgentMessage(agent=role, round=round, status=status, position=None, model=model,
                                     latency_ms=ms(), errors=[f"{type(e).__name__}: {str(e)[:200]}"],
                                     retries=attempt, tokens_in=tin or None, tokens_out=tout or None)
@@ -145,7 +190,7 @@ class GeminiClient:
                 tin += um.prompt_token_count or 0
                 tout += (um.candidates_token_count or 0) + (getattr(um, "thoughts_token_count", 0) or 0)
             try:
-                raw = json.loads(resp.text or "")
+                raw = parse_json_text(resp.text or "")
                 pos, errors = validate_position(raw, call.ctx) if call else _plain_validate(raw)
             except (ValueError, TypeError) as e:
                 pos, errors = None, [f"invalid JSON: {str(e)[:120]}"]
@@ -153,7 +198,7 @@ class GeminiClient:
                 return AgentMessage(agent=role, round=round, status="ok", position=pos, model=model,
                                     latency_ms=ms(), tokens_in=tin or None, tokens_out=tout or None,
                                     retries=attempt)
-            cur_prompt = (prompt + "\n\nYour previous answer was rejected by the validator:\n- "
+            cur_prompt = (base_prompt + "\n\nYour previous answer was rejected by the validator:\n- "
                           + "\n- ".join(errors[:8]) + "\nAnswer again with valid JSON only.")
         return AgentMessage(agent=role, round=round, status="schema_fail", position=None, model=model,
                             latency_ms=ms(), errors=errors, tokens_in=tin or None, tokens_out=tout or None,
@@ -163,8 +208,16 @@ class GeminiClient:
         """Plain-text call (narrator). Returns (text, model)."""
         if not killswitch.llm_enabled():
             raise RuntimeError("LLM disabled by kill switch")
-        resp, model = await self._generate_with_backoff(role, prompt, None)
-        return (resp.text or "").strip(), model
+        resp = await self._generate_with_backoff(role, prompt, None)
+        return (resp.text or "").strip(), self.model_for(role)
+
+
+class _RetryWithoutThinking(Exception):
+    pass
+
+
+class BudgetExhausted(Exception):
+    pass
 
 
 def _plain_validate(raw: dict):
@@ -190,10 +243,17 @@ ROLE_CITES = {"ATC": "bank_delay_added_min", "PILOT": "misconnected_pax", "GROUN
 
 
 class MockLLMClient:
-    """mode: "normal" (consensus by R2), "deadlock" (PILOT and GROUND reject everything after R1),
-    "unsafe" (all agents push an infeasible option first; the checker must veto it)."""
+    """Scripted agents (labelled `scripted: true` in run_started). mode:
+    "normal" (consensus by R2), "deadlock" (PILOT and GROUND reject everything after R1 -> fallback),
+    "unsafe" (all agents push an H3-failing option -> veto -> fallback),
+    "hallucinate" (PILOT cites a non-existent option/gate in R1 -> validation rejects it -> REJECT)."""
+
+    MODES = ("normal", "deadlock", "unsafe", "hallucinate")
+    scripted = True
 
     def __init__(self, mode: str = "normal", config: dict | None = None, top_k: int = 3):
+        if mode not in self.MODES:
+            raise ValueError(f"unknown mock mode {mode!r}; one of {self.MODES}")
         self.mode = mode
         self.cfg = config or load_config()
         self.top_k = top_k
@@ -239,8 +299,6 @@ class MockLLMClient:
             ok = tentative is not None and tentative in acceptable
             if self.mode == "deadlock" and role in ("PILOT", "GROUND"):
                 ok, acceptable = False, []
-            if self.mode == "unsafe" and v["ballot"]:
-                ok = tentative is not None   # rubber-stamps whatever is on the ballot
             action = "ACCEPT" if ok else "REJECT"
             if ok and tentative not in acceptable:
                 acceptable = [tentative] + acceptable
@@ -265,10 +323,20 @@ class MockLLMClient:
         pos = AgentPosition(agent=role, round=round, action=action, ranking=ranking,
                             acceptable=acceptable, counter=counter, red_lines=red, cites=cites,
                             rationale=rationale[:300])
-        vpos, errors = validate_position(pos.model_dump(mode="json"), call.ctx)
+        raw = pos.model_dump(mode="json")
+        retries = 0
+        if self.mode == "hallucinate" and role == "PILOT" and round == 1:
+            # scripted failure case §8.4 #3: a non-existent option and gate. Gemini's enum schema makes
+            # this unlikely live, so it is shown scripted. The mock "retries" once, as the real client would.
+            raw["ranking"] = ["opt_9"] + raw["ranking"]
+            raw["cites"] = raw["cites"] + ["opt_4.gate_Z9"]
+            raw["rationale"] = "PILOT prefers opt_9 at gate Z9 (see opt_4.gate_Z9)."
+            self.n_calls += 1
+            retries = 1
+        vpos, errors = validate_position(raw, call.ctx)
         if vpos is None:
             return AgentMessage(agent=role, round=round, status="schema_fail", position=None, model="mock",
-                                latency_ms=1, errors=errors)
+                                latency_ms=1, errors=errors, retries=retries)
         return AgentMessage(agent=role, round=round, status="ok", position=vpos, model="mock", latency_ms=1,
                             tokens_in=0, tokens_out=0)
 

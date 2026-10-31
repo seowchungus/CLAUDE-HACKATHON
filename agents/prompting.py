@@ -6,7 +6,7 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from core.config import load_config
 from core.types import CheckReport, Option, Scenario
-from agents._compat import counter_allowed_values
+from core.options import counter_allowed_values
 from agents.charters import charter_for
 from agents.schema import (ACTIONS_BY_ROUND, METRIC_NAMES, PHASE_BY_ROUND, AgentPosition, ValidationCtx,
                            build_position_model, metric_refs_for)

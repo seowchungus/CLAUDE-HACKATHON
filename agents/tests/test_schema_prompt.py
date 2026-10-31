@@ -1,6 +1,7 @@
 import pytest
 
-from agents._compat import counter_allowed_values, load_bundle
+from agents.bundles import load_bundle
+from core.options import counter_allowed_values
 from agents.prompting import ROLE_SPLIT_MARKER, ROLES, RoundState, build_call, render_prompt
 from agents.schema import ValidationCtx, build_position_model, metric_refs_for, validate_position
 

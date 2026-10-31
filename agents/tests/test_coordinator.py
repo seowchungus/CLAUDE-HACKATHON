@@ -6,7 +6,7 @@ import pytest
 from core.config import load_config, repo_path
 from core.log import verify_chain
 from agents import killswitch
-from agents._compat import load_bundle
+from agents.bundles import load_bundle
 from agents.client import MockLLMClient
 from agents.coordinator import Coordinator
 from agents.schema import AgentMessage
@@ -80,9 +80,10 @@ def test_shape_matches_fixture(cfg):
     ours = {}
     for e in evs:
         ours.setdefault(e["type"], set(e["data"]))
+    additive = {"run_started": {"scripted"}}       # documented additive keys (W2-03 §4)
     for e in fixture:
         if e["type"] in ours:
-            assert ours[e["type"]] == set(e["data"]), e["type"]
+            assert ours[e["type"]] - additive.get(e["type"], set()) == set(e["data"]), e["type"]
     optional = {"narration", "veto", "counter_checked"}
     assert {e["type"] for e in fixture} - set(ours) <= optional
 

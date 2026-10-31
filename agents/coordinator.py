@@ -11,7 +11,10 @@ from core.config import load_config
 from core.log import ConsensusLog, verify_chain
 from core.types import CheckReport, FallbackResult, Option, ScenarioBundle
 from agents import killswitch
-from agents._compat import check_option, counter_allowed_values, make_option, solve
+from core.constraints import check_option
+from core.fallback import solve
+from core.options import counter_allowed_values, make_option
+from agents.narrator import narrate
 from agents.prompting import ROLES, RoundState, build_call, phase_of
 from agents.schema import MAX_ROUNDS_HARD, AgentMessage, AgentPosition, Counter
 
@@ -42,7 +45,7 @@ class Coordinator:
         self.run_id = run_id
         self.parent_run_id = parent_run_id
         self.llm = llm if llm is not None else default_llm(self.cfg)
-        self.narrator = narrator
+        self.narrator = narrator or (lambda b, evs: narrate(b, evs, llm=self.llm, cfg=self.cfg))
         self.options: list[Option] = list(bundle.options)
         self.checks: dict[str, CheckReport] = dict(bundle.checks)
         self.allowed = counter_allowed_values(self.s)
@@ -56,6 +59,9 @@ class Coordinator:
         self._seq = 0
         self._queue: asyncio.Queue | None = None
         self._n_counters = 0
+        self._task: asyncio.Task | None = None
+        self._cancelling = False
+        self._t0 = time.monotonic()
 
     # ------------------------------------------------------------------ events
     def _emit(self, type_: str, data: dict, actor: str = "COORDINATOR",
@@ -90,7 +96,7 @@ class Coordinator:
     # ------------------------------------------------------------------ public
     async def run(self) -> AsyncIterator[dict]:
         self._queue = asyncio.Queue()
-        task = asyncio.create_task(self._drive_safe())
+        self._task = asyncio.create_task(self._drive_safe())
         try:
             while True:
                 env = await self._queue.get()
@@ -98,9 +104,29 @@ class Coordinator:
                     break
                 yield env
         finally:
-            if not task.done():
-                task.cancel()
+            if not self._task.done():
+                self._task.cancel()
             self._queue = None
+
+    async def cancel(self, reason: str = "SUPERSEDED") -> bool:
+        """Stop in-flight calls and end the run (W3 calls this when chaos starts a child run).
+        Returns False if the run had already finished."""
+        if self.finished:
+            return False
+        self._cancelling = True
+        if self._task is not None and not self._task.done():
+            self._task.cancel()
+            try:
+                await self._task
+            except (asyncio.CancelledError, Exception):  # noqa: BLE001
+                pass
+        self._emit("run_ended", {"final_state": reason, "rounds_used": self.rounds_used,
+                                 "latency_ms": int((time.monotonic() - self._t0) * 1000),
+                                 "chain_ok": verify_chain(self.log.path).ok, "n_llm_calls": self.n_llm_calls})
+        self.finished = True
+        if self._queue is not None:
+            self._queue.put_nowait(_DONE)
+        return True
 
     async def approve(self, action: Literal["APPROVE", "OVERRIDE"], option_id: str, by: str,
                       note: str = "") -> dict:
@@ -121,9 +147,11 @@ class Coordinator:
 
     # ------------------------------------------------------------------ state machine
     async def _drive_safe(self):
-        t0 = time.monotonic()
+        t0 = self._t0 = time.monotonic()
         try:
             await self._drive(t0)
+        except asyncio.CancelledError:
+            return
         except Exception as e:  # noqa: BLE001 - any coordinator bug degrades to the safe fallback
             self._emit("error", {"message": f"{type(e).__name__}: {e}"[:300], "fatal": True}, actor="SYSTEM")
             if self.decision is None:
@@ -131,7 +159,7 @@ class Coordinator:
             if not self.finished:
                 self._finish(t0)
         finally:
-            if self._queue is not None:
+            if self._queue is not None and not self._cancelling:
                 self._queue.put_nowait(_DONE)
 
     async def _drive(self, t0: float):
@@ -139,6 +167,7 @@ class Coordinator:
         self._emit("run_started", {"scenario_id": self.s.scenario_id, "max_rounds": self.max_rounds,
                                    "llm_enabled": killswitch.llm_enabled(), "models": models,
                                    "parent_run_id": self.parent_run_id,
+                                   "scripted": bool(getattr(self.llm, "scripted", False)),
                                    "chaos_applied": [c.model_dump(mode="json") for c in self.s.chaos_applied]})
         self._emit("options", self._options_payload(), actor="CHECKER", constraint_ids=ALL_CONSTRAINTS)
 
@@ -252,7 +281,7 @@ class Coordinator:
     def _check_counter(self, rnd: int, agent: str, c: Counter) -> dict:
         base = self._opt(c.base_option)
         payload = {"round": rnd, "agent": agent, "counter": c.model_dump(mode="json"),
-                   "accepted": False, "option_id": None, "reason": "", "check": None}
+                   "accepted": False, "option_id": None, "reason": "", "check": None, "failed": []}
         if base is None:
             payload["reason"] = f"unknown base option {c.base_option}"
         elif c.value not in self.allowed.get(c.param, []):
@@ -269,8 +298,8 @@ class Coordinator:
                 try:
                     opt = make_option(self.s, oid, int(params["eta_shift_min"]), str(params["gate"]),
                                       str(params["fp_adjustment"]), source="counter", proposed_by=agent,
-                                      parent_option=base.option_id, known=self.options)
-                    rep = check_option(self.s, opt, base_check=self.checks.get(base.option_id))
+                                      parent_option=base.option_id)
+                    rep = check_option(self.s, opt)
                 except Exception as e:  # noqa: BLE001
                     payload["reason"] = f"could not evaluate counter: {e}"[:200]
                     self._emit("counter_checked", payload, actor="CHECKER")
@@ -284,6 +313,7 @@ class Coordinator:
                     self._emit("counter_checked", payload, actor="CHECKER", constraint_ids=ALL_CONSTRAINTS)
                     return payload
                 failed = [r for r in rep.results if not r.passed]
+                payload["failed"] = [r.constraint_id for r in failed]
                 payload["reason"] = "; ".join(f"{r.constraint_id}: {r.detail}" for r in failed)[:300]
                 self._emit("counter_checked", payload, actor="CHECKER",
                            constraint_ids=[r.constraint_id for r in failed])
@@ -367,7 +397,7 @@ class Coordinator:
         if self.narrator is None:
             return
         try:
-            text = await self.narrator(self)
+            text = await self.narrator(self.bundle, list(self.envelopes))
         except Exception:  # noqa: BLE001 - narration is optional
             return
         if text:

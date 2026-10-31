@@ -7,7 +7,7 @@ import asyncio
 import json
 
 from core.config import load_config
-from agents._compat import FIXTURE_BUNDLE, load_bundle
+from agents.bundles import FIXTURE_BUNDLE, load_bundle
 from agents.prompting import ROLES, RoundState, build_call
 
 

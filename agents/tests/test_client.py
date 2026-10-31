@@ -1,7 +1,7 @@
 import asyncio
 
 from agents import killswitch
-from agents._compat import load_bundle
+from agents.bundles import load_bundle
 from agents.client import MockLLMClient
 from agents.prompting import ROLES, RoundState, build_call
 
