@@ -1,28 +1,46 @@
 # ACCORD runtime configuration. Owner: MANAGER. Workers read, never edit.
 # Changes go through MANAGER and are noted in .team/BOARD.md.
+# Limits marked [WB] come from the organisers' workbook data/raw/challenge2_operational_constraints.xlsx
+# ("Use the limits in this workbook. Any limit you change must be stated in your demo.").
+# Every deviation from the workbook is listed under `workbook_deviations` and must be shown in the UI and README.
 
 negotiation:
-  MAX_ROUNDS: 3              # hard limit, enforced in agents/coordinator.py. Round MAX_ROUNDS is ballot-only.
+  MAX_ROUNDS: 3              # hard limit, enforced in agents/coordinator.py. Round MAX_ROUNDS is ballot-only. [WB rules_of_play: 3 turns]
   counters_allowed_rounds: [1, 2]
   call_timeout_s: 20
   schema_retries: 1          # 1 retry on schema failure; a 2nd failure counts as REJECT
   temperature: 0.2
 
 models:
-  # Verified listed on the free tier by W2-01 (12:03). gemini-3.8-flash timed out / 503 on every call
-  # at 12:00, so negotiators run on the proposal's named backup 3.6 Flash (12:25, MANAGER).
-  # Model parity kept: all three negotiators on the same model. Swap back with one line if 3.8 recovers.
-  ATC: gemini-3.6-flash
-  PILOT: gemini-3.6-flash
-  GROUND: gemini-3.6-flash
-  NARRATOR: gemini-flash-lite-latest
-  backup: gemini-flash-lite-latest   # used on persistent 429/503
-  ablation_B3: gemini-3.8-flash      # model ablation, only if it becomes responsive
+  # 12:50 (human decision): all three negotiators on Gemini 3.5 Flash Lite (free tier: 15 RPM, 500 RPD).
+  # 3.8 Flash has 20 RPD (exhausted); parity kept. W2 verifies the exact string with models.list() (no generation call).
+  ATC: gemini-3.5-flash-lite
+  PILOT: gemini-3.5-flash-lite
+  GROUND: gemini-3.5-flash-lite
+  NARRATOR: gemini-3.5-flash-lite
+  narrator_llm: false        # narrator uses the deterministic template (saves quota; cut-list item #2)
+  backup: null               # NO model cascade: a backup model would hit a different quota silently
+  ablation_B3: null          # skipped (quota)
+
+llm_budget:                  # HARD guard, enforced in agents/client.py before every real request (incl. retries)
+  enforce: true
+  ledger: runs/llm_budget.json          # shared by every process (server, eval, CLIs); file-locked
+  per_key_daily_cap: 480                # dashboard limit 500/day; 20 margin. Calls beyond it are refused (= REJECT -> fallback)
+  per_key_rpm_cap: 12                   # dashboard limit 15/min; process-wide limiter waits instead of erroring
+  daily_reset_tz: America/Los_Angeles   # free-tier RPD resets at midnight Pacific
+  used_before_ledger:                   # dashboard reading at 12:45 +08, counted against today's cap
+    GEMINI_API_KEY: 211
+  allocation:                           # planning only (MANAGER releases each); total 269 of 269 available
+    integration_smoke: 20
+    hero_recordings: 20
+    demo_and_rehearsal: 30
+    eval: 189                           # ~N=20-25 at 7-9 calls/scenario on one key; more keys -> N=30
+    reserve: 10
 
 rate_limit:
   backoff_initial_s: 2
   backoff_max_s: 30
-  max_429_retries: 4
+  max_429_retries: 1         # back off once, then fail fast as rate_limited (no retry storms)
 
 options:
   eta_shifts_min: [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
@@ -30,38 +48,58 @@ options:
   n_candidates_min: 6
   n_candidates_max: 8
 
+workbook:
+  path: data/raw/challenge2_operational_constraints.xlsx
+  extracted: data/airport_limits.json   # written by data/prep.py (W1)
+  default_size_class: Non-hub           # airports missing from the workbook
+
 thresholds:
-  fuel_final_reserve_min: 30         # H3
-  turbulence_severe: 0.7             # H7: turbulence_idx must be < this
-  ramp_overtime_hard_cap_min: 60     # H5 hard cap; below cap is soft (costed)
-  wake_separation_s:                 # H1 (leader -> follower). Illustrative, NOT ICAO.
-    H-L: 180
+  fuel_final_reserve_min: 30            # H3 [WB fuel_and_crew: final reserve 30 min of holding fuel]
+  fuel_spare_on_arrival_min: 45         # [WB: assumed spare fuel on arrival 45 min of holding]
+  fuel_burn_kg_per_h: {narrowbody: 2400, widebody: 6500}   # [WB] holding burn; widebody = wake H
+  contingency_fuel_pct: 5               # [WB] informational; already inside the planned trip fuel
+  flight_crew_max_duty_min: 780         # H5 [WB: 13 h from report time]
+  ground_shift_min: 480                 # [WB: 8 h shift]
+  ground_overtime_cost_multiplier: 1.5  # [WB: overtime costs 1.5x] -> applied in cost_J
+  ramp_overtime_hard_cap_min: 60        # LEGACY until W1-06 lands: workbook has no cap; W1-06 makes ramp overtime cost-only
+  gate_change_notice_min: 20            # H4 [WB: gate change at least 20 min before arrival]
+  turbulence_severe: 0.7                # H7 (ours; workbook silent)
+  wake_separation_s:                    # H1 [WB wake_separation, min_time_s]. H=Heavy, M=Large, L=Small
+    H-H: 120
     H-M: 120
-    H-H: 90
-    M-L: 90
+    H-L: 120
+    M-L: 60
     M-M: 60
     M-H: 60
     L-L: 60
     L-M: 60
     L-H: 60
-  min_turnaround_min: 35
-  aar_weather_factor:                # synthetic rule: reduced AAR = nominal * factor
+  arrival_share_of_runway_ops: 0.5      # deviation: arrivals get half of max_runway_ops_per_hour [WB]
+  aar_weather_factor:                   # ours (synthetic rule): reduced arrival rate = nominal * factor
     light: 0.85    # WEATHER_DELAY 16-30
     moderate: 0.7  # 31-60
     severe: 0.5    # > 60
+  min_turnaround_min: 35                # LEGACY default until W1-06 lands; then per airport from the workbook (35/45)
+
+workbook_deviations:                    # shown in the UI "Challenge limits" panel and the README
+  - "Arrival capacity = 50% of the workbook's max runway ops per hour (the rest is departures); weather reduces it by 0.85/0.7/0.5 by WEATHER_DELAY band (our rule)."
+  - "Wake: the workbook's same-runway departure times are applied to arrivals. Super (A380) is not modelled: the 2015 data has no aircraft types; wake category is synthetic."
+  - "Gate-change notice is measured from the decision time (aircraft at the arrival fix, synthetic, 15-25 min before ETA)."
+  - "Severe turbulence threshold (H7) is ours; the workbook doesn't define one."
+  - "Flight crew duty already used before this leg is synthetic (seeded); the 13 h cap is the workbook's."
 
 fallback_weights:                    # J = sum(w * metric); shown in UI
   w_d_bank_delay_added: 1.0
   w_f_extra_fuel: 0.8
   w_c_misconnected_pax: 2.0
-  w_o_ramp_overtime: 0.5
+  w_o_ramp_overtime: 0.5             # multiplied by ground_overtime_cost_multiplier
   w_t_turbulence: 20.0
   w_q_throughput_loss: 5.0
 
 scenario:
   bank_window_min: 90
   connection_window_min: [30, 150]
-  gates_per_airport: 12
+  gates_per_airport: 12              # gates modelled around the flight; spare (free) gates per workbook
   taxiways: [A, B, C, D]
 
 paths:

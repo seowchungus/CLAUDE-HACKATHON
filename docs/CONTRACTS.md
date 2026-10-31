@@ -1,4 +1,4 @@
-# ACCORD Contracts (FROZEN v1.1, 2026-10-31 12:25 +08; v1.0 11:20)
+# ACCORD Contracts (FROZEN v1.2, 2026-10-31 12:55 +08; v1.1 12:25; v1.0 11:20)
 
 Owner: MANAGER. Every worker builds against this file exactly.
 Changes after the freeze go through MANAGER only and are recorded in the "Changelog" at the bottom and in `.team/BOARD.md`.
@@ -29,7 +29,7 @@ The fixtures are hand-made and labelled `"fixture": true`. They are not real DOT
   `ConstraintId = Literal["H1_wake_separation", "H2_runway_capacity", "H3_fuel_reserve", "H4_gate_validity", "H5_crew_duty", "H6_taxiway_reachability", "H7_severe_turbulence"]`
 - **Flight plan adjustments:** `FPAdj = Literal["as_filed", "speed_reduction", "hold_10", "hold_20", "reroute_weather"]`
 - **Counter grid:** `eta_shift_min ∈ config.options.eta_shifts_min` (0..60 step 5), `gate ∈ scenario gate_ids`, `fp_adjustment ∈ FPAdj`.
-- **Provenance:** `Provenance = Literal["real", "real_derived", "estimated", "synthetic"]`. Every non-real field is listed in `Scenario.provenance` and the UI shows a `SYNTHETIC` tag next to it. *(v1.1)* Keys are top-level field names, plus dotted `<field>.<subfield>` keys for sub-fields of nested/list items. **Required keys:** `row, disruption_type, disruption_min, origin, destination, disrupted, bank, connections, base_eta_min, aar_nominal, aar_reduced, aircraft_size, fuel_at_fix_min, flight_crew_duty_remaining_min, ramp_shift_end_min, next_departure_min, gates, taxiways, blocked_taxiways, turbulence_by_fp, chaos_applied, disrupted.wake, bank.wake, connections.wake, connections.pax_connecting`. `apply_chaos` sets every field it touches to `synthetic`.
+- **Provenance:** `Provenance = Literal["real", "real_derived", "estimated", "synthetic"]`. Every non-real field is listed in `Scenario.provenance` and the UI shows a `SYNTHETIC` tag next to it. *(v1.1)* Keys are top-level field names, plus dotted `<field>.<subfield>` keys for sub-fields of nested/list items. **Required keys:** `row, disruption_type, disruption_min, origin, destination, disrupted, bank, connections, base_eta_min, aar_nominal, aar_reduced, aircraft_size, fuel_at_fix_min, flight_crew_duty_remaining_min, ramp_shift_end_min, next_departure_min, gates, taxiways, blocked_taxiways, turbulence_by_fp, chaos_applied, disrupted.wake, bank.wake, connections.wake, connections.pax_connecting`, and from v1.2 `airport_limits, planned_gate, decision_time_min`. `apply_chaos` sets every field it touches to `synthetic`.
 - Thresholds, weights and model names come from `config.yaml`, loaded with `core.config.load_config() -> dict` (W1 provides it).
 
 ---
@@ -129,6 +129,11 @@ class Scenario(BaseModel):
     turbulence_by_fp: dict[str, float]    # SYNTHETIC: FPAdj -> turbulence_idx in [0,1]
     chaos_applied: list[ChaosEvent] = []
     provenance: dict[str, Provenance]     # field name -> provenance, for EVERY field above except ids
+    # --- v1.2 (organisers' workbook), all with defaults so v1.1 data still parses ---
+    airport_limits: dict = {}        # destination's workbook row: {size_class, active_runways, gates, max_runway_ops_per_hour,
+                                     #   min_turnaround_min, spare_gates_at_any_time}; provenance "synthetic" (organiser-provided)
+    planned_gate: str | None = None  # SYNTHETIC: gate assigned before the disruption; any other gate is a gate change
+    decision_time_min: int | None = None  # SYNTHETIC: when the plan is decided (aircraft at the arrival fix)
 
 class Metrics(BaseModel):            # computed by core.metrics, never by an LLM
     eta_new_min: int
@@ -149,6 +154,10 @@ class Metrics(BaseModel):            # computed by core.metrics, never by an LLM
     arrivals_this_hour: int
     throughput_loss: int             # max(0, arrivals_this_hour - aar_reduced) or slots lost
     cost_J: float                    # fallback weighted cost (config.fallback_weights)
+    # --- v1.2 ---
+    gate_change: bool = False                 # gate != scenario.planned_gate
+    gate_change_notice_min: int | None = None # eta_new_min - decision_time_min when gate_change, else None (H4 needs >= 20)
+    fuel_at_landing_kg: float | None = None   # fuel_at_landing_min x workbook burn rate (display only)
 
 class Option(BaseModel):
     option_id: str
@@ -356,7 +365,8 @@ Invariants the UI may rely on: at most 3 `round_started`; `round == 3` never has
 
 | Method & path | Body | Response |
 |---|---|---|
-| `GET /api/health` | | `{ok: true, llm_enabled: bool, models: {...}, data_loaded: bool, mock: bool}` |
+| `GET /api/health` | | `{ok: true, llm_enabled: bool, models: {...}, data_loaded: bool, mock: bool, llm_budget: LLMBudget}` *(v1.2: `llm_budget` added)* |
+| `GET /api/limits` | | *(v1.2)* `{workbook: {wake_separation, fuel_and_crew, rules_of_play}, airport: <airport_limits of the current scenario or null>, deviations: [str]}` from `config.yaml` + `data/airport_limits.json`, for the "Challenge limits" panel |
 | `GET /api/scenarios?limit=&airport=&date=` | | `[ScenarioSummary]` |
 | `GET /api/scenarios/{scenario_id}` | | `{bundle: ScenarioBundle, map: MapPayload}` |
 | `POST /api/runs` | `{scenario_id, chaos?: [ChaosEvent], parent_run_id?: str}` | `{run_id}` |
@@ -399,6 +409,17 @@ class MapPayload(BaseModel):
 Bank flights whose origin is missing from `airports.csv` are dropped from the map payload (not from the scenario).
 
 ---
+
+### 4.4 LLM budget *(v1.2)*: `agents/budget.py` (W2 owns)
+```python
+class LLMBudget(BaseModel):
+    keys: dict[str, dict]   # key env name -> {used_today, cap, remaining, rpm_cap}; never the key itself
+    enforce: bool
+    resets_at: str          # ISO time of the next daily reset
+def budget_status() -> LLMBudget
+def reserve(key_name: str) -> bool   # called before EVERY real request incl. retries; False -> refuse (status "rate_limited")
+```
+Ledger file `runs/llm_budget.json` (gitignored), shared by all processes with a file lock. A refused call counts as REJECT, so the run falls back safely.
 
 ## 5. Consensus log: `core/log.py` (W1 owns)
 
@@ -455,4 +476,5 @@ Every number is measured from runs. If a field was not run, it is `null`, never 
 
 ## Changelog
 - v1.0 (11:20): initial freeze.
+- v1.2 (12:55): organisers' workbook adopted (human decision). Additive fields `Scenario.airport_limits/planned_gate/decision_time_min`, `Metrics.gate_change/gate_change_notice_min/fuel_at_landing_kg`; H4 includes the 20-min gate-change notice; H5 = flight crew 13 h duty only (ramp overtime is a cost); `GET /api/limits`; `/health.llm_budget`; §4.4 LLM budget guard.
 - v1.1 (12:25), from REVIEWER-00, all additive: unpadded flight ids; provenance key convention and required keys; `counter_checked.failed` and non-null `check`; `approved.final_hash` = pre-approval head; `SUPERSEDED` final state; agreement-set/rank/tie rules pinned (W2's implementation); seq vs log seq; unsafe-blocked definition; `GET /api/runs/{id}/bundle`; chaos accumulates and supersedes the parent; approve 409/ESCALATE rules; log constructor writes seq 0 and resumes; `append` deep-copies. Fixtures regenerated to match.
