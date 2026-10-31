@@ -1,6 +1,6 @@
 # ACCORD BOARD
 
-T0 = 11:09 · Now: 15:05 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
+T0 = 11:09 · Now: 15:46 · **FEATURE FROZEN 15:39** (bug/label fixes only) · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
 Rule (12:25, human): major decisions (new workers/roles, starting a major phase) need the human's approval. Tasks within a phase MANAGER delegates directly.
 
 ## Milestones
@@ -65,6 +65,8 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - After the 15:00 reset (one fresh 480 for the project): hero recordings 20, demo + rehearsal 30, optional eval top-up toward N=30 only if done by 15:30.
 
 ## Decisions & assumptions
+- 15:45 Eval page shows all-30 rates (60%/40%, p50 5.3 s) with no LLM_ERROR context → W3-10 display-only banner (post-freeze label fix, no number changes); present evidence from slide 3 (PITCH.md updated).
+- 15:43 After the 15:00 reset the ledger un-pinned keys 2/3 (same project as key 1): re-pinned at 480 with budget_cli; all calls go through key 1 (0/480 at 15:43).
 - 14:5x Updated challenge brief (clarifications): "pick ANY row of flights.csv", one turn = one message per agent, ≤3 turns then fallback with the reason logged; workbook values are synthetic. Only gap: the console offers a fixed list of 50 and the heroes aren't in it → W1-09 + W3-07. README cites the organisers' "synthetic planning limits" wording.
 - 14:38 (human) **Re-run skipped.** W1-08c was blocked by W1's permission check (0 calls). We report the 18 flights that negotiated (18/18 consensus R2, 0 unsafe, 43% ungrounded, regret +1.0 J) and disclose the 12 LLM_ERROR rows (README + pitch). Quota after 15:00: hero recordings 20, rehearsal 30.
 - 14:32 (human) W1-08b (655213e): all 12/30 fallbacks were LLM_ERROR ("Event loop is closed"; W2 fixed it in cac78e9 at 14:17, after the eval started). On the 18 rows where the agents actually negotiated, all 18 reached CONSENSUS in R2; unsafe blocked 0, executed 0; ungrounded 0.427. **Do not quote 0.60/0.40.** W1-08c: re-run the 12 rows NOW on today's remaining key-1 budget (~107 calls, stop at 480), note the first-pass bug in results.json, report the n that actually negotiated.

@@ -36,5 +36,9 @@ Every number below is measured from the repo (`eval/results.json` 655213e, live)
 ## Slides (max 4)
 1. Problem + status-quo numbers. 2. Architecture: 3 agents → coordinator (≤3 rounds) → checker H1–H7 → fallback → human; hash-chained log. 3. Evaluation table (18/18 consensus R2, 0 unsafe executed, 43% ungrounded, regret +1.0) + bad day. 4. Limits + deviations.
 
+## Eval page (15:45)
+Present evidence **from slide 3**, not the console's Eval page. The page's tiles are over all 30 flights (consensus 60%, fallback 40%, p50 5.3 s, J 71.96), including the 12 LLM_ERROR rows. W3-10 adds a context banner. If a judge opens the page, say: "those rates include the 12 bug-hit flights; on the 18 that negotiated, 18/18 agreed in round 2."
+
 ## Do not say
+- "60% consensus" or "40% fallback" as the agents' agreement rate · a median latency of 5.3 s (real negotiations: ~52 s)
 - "all 2015 flights" · "beats the optimiser" (unless measured) · "a live veto was shown" · "certified / ICAO" · any number not in `eval/results.json` or `data/status_quo.json`.
