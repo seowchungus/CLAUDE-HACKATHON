@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+body { background: #020617; color: #e2e8f0; font-family: ui-sans-serif, system-ui, sans-serif; }
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+.shake { animation: shake 0.5s ease-in-out 2; }
+
+@keyframes flashin {
+  from { background-color: rgba(250, 204, 21, 0.35); }
+  to { background-color: transparent; }
+}
+.flash { animation: flashin 1.6s ease-out; }
