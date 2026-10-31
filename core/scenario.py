@@ -75,6 +75,39 @@ def airport_limits(iata: str) -> dict:
 
 
 @functools.lru_cache(maxsize=1)
+@functools.lru_cache(maxsize=1)
+def _airports_without_coords() -> dict[str, Airport]:
+    """airports.csv rows with no LATITUDE/LONGITUDE (e.g. ECP): name/city/state are real, lat/lon are a 0.0
+    placeholder. They build scenarios; the map drops them (core.mapdata only uses airports())."""
+    out: dict[str, Airport] = {}
+    with open(repo_path(f"{load_config()['paths']['raw_dir']}/airports.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            if r["IATA_CODE"] not in airports():
+                out[r["IATA_CODE"]] = Airport(iata=r["IATA_CODE"], name=r["AIRPORT"], city=r["CITY"],
+                                              state=r["STATE"], lat=0.0, lon=0.0)
+    return out
+
+
+@functools.lru_cache(maxsize=1)
+def _raw_keys() -> pl.DataFrame:
+    """Key columns of data/raw/flights.csv in file order (row i here is data row i of the CSV, 0-based)."""
+    path = repo_path(load_config()["paths"]["raw_dir"] + "/flights.csv")
+    return pl.read_csv(path, columns=["YEAR", "MONTH", "DAY", "AIRLINE", "FLIGHT_NUMBER", "ORIGIN_AIRPORT",
+                                      "DESTINATION_AIRPORT"],
+                       schema_overrides={"AIRLINE": pl.Utf8, "ORIGIN_AIRPORT": pl.Utf8,
+                                         "DESTINATION_AIRPORT": pl.Utf8})
+
+
+def scenario_id_for_row(row: int) -> str:
+    """The scenario_id for 0-based data row `row` of data/raw/flights.csv (file order, header excluded), which
+    build_scenario / build_bundle accept. IndexError if out of range."""
+    df = _raw_keys()
+    if not 0 <= row < df.height:
+        raise IndexError(f"row {row} out of range 0..{df.height - 1}")
+    y, m, d, airline, fn, o, dest = df.row(row)
+    return make_scenario_id(f"{y}-{m:02d}-{d:02d}", airline, fn, o, dest)
+
+
 def dev_scenario_ids() -> list[str]:
     import json
     try:
@@ -200,9 +233,10 @@ def build_scenario(scenario_id: str) -> Scenario:
     sid = make_scenario_id(date, airline, fn, origin, dest)
     seed = make_seed(date, airline, fn)
     rng = random.Random(seed)
-    aps = airports()
+    aps = {**_airports_without_coords(), **airports()}
     if origin not in aps or dest not in aps:
-        raise KeyError(f"airport coordinates missing for {origin} or {dest}")
+        raise KeyError(f"airport {origin if origin not in aps else dest} is not in airports.csv")
+    no_coords = {c for c in (origin, dest) if c in _airports_without_coords()}
 
     row = DotRow(
         year=r["YEAR"], month=r["MONTH"], day=r["DAY"], airline=airline, flight_number=fn,
@@ -321,6 +355,10 @@ def build_scenario(scenario_id: str) -> Scenario:
         "connections.pax_connecting": "synthetic",
         "airport_limits": "synthetic", "planned_gate": "synthetic", "decision_time_min": "synthetic",
     }
+    if origin in no_coords:
+        provenance["origin"] = "synthetic"  # lat/lon placeholder 0.0 (airports.csv has none); map drops it
+    if dest in no_coords:
+        provenance["destination"] = "synthetic"
     return Scenario(
         scenario_id=sid, seed=seed, row=row, disruption_type=dtype, disruption_min=dmin,
         origin=aps[origin], destination=aps[dest], disrupted=disrupted, bank=bank, connections=connections,
