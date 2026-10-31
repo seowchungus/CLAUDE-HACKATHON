@@ -158,8 +158,9 @@ def make_llm(kind: str, keys: list[int] | None):
     from agents.client import GeminiClient
     client = GeminiClient(load_config())
     if keys:
-        client._clients = [client._clients[i - 1] for i in keys if 0 < i <= len(client._clients)]
-        client.keys = [client.keys[i - 1] for i in keys if 0 < i <= len(client.keys)]
+        names = [client.key_names[i - 1] for i in keys if 0 < i <= len(client.key_names)]
+        client.key_names = names
+        client._clients = {n: client._clients[n] for n in names}
         if not client._clients:
             raise SystemExit(f"none of keys {keys} are configured")
     return client
@@ -299,8 +300,17 @@ def _bad_day() -> dict | None:
         return None
 
 
+ROW_CALL_MARGIN = 10  # most calls one row can take: 3 rounds x 3 roles + a retry
+
+
+def _used(key_index: int) -> int:
+    from agents import budget
+    name = "GEMINI_API_KEY" + ("" if key_index == 1 else f"_{key_index}")
+    return budget.budget_status().keys[name]["used_today"]
+
+
 def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
-        shard: tuple[int, int] | None = None) -> dict:
+        shard: tuple[int, int] | None = None, stop_at_used: int | None = None) -> dict:
     es = load_eval_set()
     ids = es["scenario_ids"][:n]  # only the frozen set (n < 30 = its first n rows, for quick checks)
     if shard:
@@ -309,9 +319,15 @@ def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
     llm = make_llm(llm_kind, keys)
     per = []
     for sid in ids:
+        if stop_at_used is not None and _used((keys or [1])[0]) + ROW_CALL_MARGIN > stop_at_used:
+            print(f"budget ceiling {stop_at_used} reached; stopping after {len(per)} rows (n is the rows run)")
+            break
         if llm is not None and hasattr(llm, "_countered"):  # fresh mock state per scenario
             llm = make_llm(llm_kind, keys)
         per.append(evaluate_row(sid, llm))
+        if llm_kind == "live":
+            print(f"[{len(per)}/{len(ids)}] {sid} {per[-1].get('final_state') or per[-1].get('error')} "
+                  f"used={_used((keys or [1])[0])}", flush=True)
     return assemble(per, es["seed"], llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
 
 
@@ -325,6 +341,8 @@ def main() -> None:
     ap.add_argument("--shard", default="", help="i/k: run rows with index %% k == i-1")
     ap.add_argument("--confirm-live", action="store_true", help="required with --llm live (spends quota)")
     ap.add_argument("--out", default="")
+    ap.add_argument("--stop-at-used", type=int, default=None,
+                    help="live: stop before a row if the first key's ledger would pass this (e.g. 229+189=418)")
     a = ap.parse_args()
     if a.freeze:
         es = freeze_eval_set(a.n, a.seed)
@@ -339,7 +357,7 @@ def main() -> None:
     out = a.out or ("runs/eval_mock.json" if a.llm == "mock"
                     else f"eval/results_partial_{shard[0]}of{shard[1]}.json" if shard
                     else load_config()["paths"]["eval_results"])
-    res = run(a.n, a.llm, keys, shard)
+    res = run(a.n, a.llm, keys, shard, a.stop_at_used)
     with open(repo_path(out), "w", encoding="utf-8") as fh:
         json.dump(res, fh, indent=1)
     s = res["summary"]
