@@ -439,11 +439,25 @@ async def replay(name: str, request: Request):
 
 
 # ---- serve the built console at /
-DIST = ROOT / "web" / "dist"
+DIST = (ROOT / "web" / "dist").resolve()
+
+
+def safe_dist_file(path: str) -> Path | None:
+    """A file under DIST for this request path, or None. Rejects any path that resolves outside DIST
+    (decoded ../, %2e%2e, absolute paths, symlinks out)."""
+    try:
+        f = (DIST / path).resolve()
+    except (OSError, ValueError):
+        return None
+    return f if f.is_relative_to(DIST) and f.is_file() else None
+
+
 if DIST.exists():
     app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
 
     @app.get("/{path:path}", include_in_schema=False)
     def spa(path: str):
-        f = DIST / path
-        return FileResponse(f if path and f.is_file() else DIST / "index.html")
+        if path.startswith("api/"):
+            raise HTTPException(404, "not found")
+        return FileResponse(safe_dist_file(path) or DIST / "index.html")
+
