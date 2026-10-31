@@ -327,6 +327,12 @@ export interface EvalResults {
     latency_ms: number | null; run_id: string | null; [k: string]: unknown;
   }[];
   measured: boolean;
+  llm?: "live" | "mock" | "none" | string;
+  bad_day?: {
+    airport: string; date: string; n_flights: number;
+    B0: Record<string, unknown> | null; B1: Record<string, unknown> | null;
+    b0_infeasible: number | null; b1_escalate: number | null;
+  } | null;
 }
 
 export interface MapAirport { iata: string; name: string; lat: number; lon: number; role: "origin" | "destination" | "other" }
