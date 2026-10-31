@@ -88,10 +88,11 @@ export function budgetTotals(h: Health | null) {
   const b = h?.llm_budget;
   if (!b) return null;
   const ks = Object.values(b.keys);
-  const used = ks.reduce((a, k) => a + k.used_today, 0);
-  const cap = ks.reduce((a, k) => a + k.cap, 0);
+  if (!ks.length) return null;
+  // headline = the key with the most headroom (the one the next call will use); pinned/exhausted keys only show in the tooltip
+  const best = ks.reduce((a, k) => (k.remaining > a.remaining ? k : a));
   const remaining = ks.reduce((a, k) => a + Math.max(0, k.remaining), 0);
-  return { b, used, cap, remaining, exhausted: b.enforce && remaining <= 0 };
+  return { b, used: best.used_today, cap: best.cap, remaining, exhausted: b.enforce && remaining <= 0 };
 }
 
 /** Header meter: "Flash-Lite 223/480 today". Hidden when the server reports no budget. */
@@ -111,7 +112,7 @@ export function BudgetMeter({ health }: { health: Health | null }) {
   ].join("\n");
   return (
     <span title={tip} className={`flex cursor-help items-center gap-1.5 text-xs ${text}`}>
-      {model || "LLM"} {t.used}/{t.cap} today{keys.length > 1 ? ` (${keys.length} keys)` : ""}
+      {model || "LLM"} {t.used}/{t.cap} today{t.remaining > t.cap - t.used ? ` (+${t.remaining - (t.cap - t.used)} on other keys)` : ""}
       <span className="h-2 w-16 overflow-hidden rounded bg-slate-800">
         <span className={`block h-2 ${tone}`} style={{ width: `${Math.min(100, frac * 100)}%` }} />
       </span>
