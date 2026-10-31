@@ -11,7 +11,7 @@ Spec: [ACCORD_proposal.md](ACCORD_proposal.md) · Interfaces: [docs/CONTRACTS.md
 ```bash
 python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
 cp .env.example .env            # add GEMINI_API_KEY (free tier)
-# put flights.csv, airlines.csv, airports.csv (US DOT 2015) in data/raw/
+# put flights.csv, airlines.csv, airports.csv (US DOT 2015) and challenge2_operational_constraints.xlsx in data/raw/
 python data/prep.py             # -> data/qualifying.parquet
 python -m core.cli --dev 0      # options + checker grid + fallback, no LLM
 uvicorn api.server:app --port 8000
