@@ -57,6 +57,11 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | Reserve | 10 | — |
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
+## Releases (human, 14:05)
+- **INT-01 live smoke: RELEASED, max 20 calls** (key 1). W3: UA1575 + hero DL2463 ICT-ATL, then smoke step 10.
+- **EVAL RELEASED (W1-08 Part B): max 189 calls, key 1 only, starts only after REVIEWER marks the INT-01 live smoke PASS.** Frozen set, sequential shard on key 1 (`--keys 1`). Stop at the cap and report the N actually run; no extrapolation. Target done ≤ 14:50.
+- After the 15:00 reset (one fresh 480 for the project): hero recordings 20, demo + rehearsal 30, optional eval top-up toward N=30 only if done by 15:30.
+
 ## Decisions & assumptions
 - 13:58 Heroes are now **2015-12-30_DL2463_ICT-ATL** (score 10) and **2015-03-02_OO6476_AUS-SFO**. WN2433 SMF-LAX was dropped as a hero (its golden is kept and excluded from eval). The eval set is frozen: `eval/eval_set.json`, sha256 4474f237…, N=30, committed before any eval run.
 - 13:58 Bad day (deterministic only): ATL 2015-12-30, 438 arrivals. Compare B0 vs B1 only on rows where B1 has a feasible plan (`bad_day.B0_on_B1_planned`); B0's all-rows total looks cheaper partly because it breaks hard rules (161 infeasible). Pitch: B1 cuts bank delay 5443→2973 min at the cost of more misconnects and overtime.
