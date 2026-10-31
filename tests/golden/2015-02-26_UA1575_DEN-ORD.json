@@ -1370,7 +1370,8 @@
      "cost_J": 215.8,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1800.0
+     "fuel_at_landing_kg": 1800.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -1403,18 +1404,19 @@
      "cost_J": 217.8,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1600.0
+     "fuel_at_landing_kg": 1600.0,
+     "gate_wait_min": 0
     }
    },
    {
     "option_id": "opt_3",
     "eta_shift_min": 5,
-    "gate": "B3",
+    "gate": "A3",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+5 min, gate B3, speed reduction",
+    "label": "+5 min, gate A3, speed reduction",
     "metrics": {
      "eta_new_min": 884,
      "runway_slot_min": 885,
@@ -1424,30 +1426,31 @@
      "hold_min": 0,
      "turbulence_idx": 0.5,
      "misconnected_pax": 101,
-     "gate": "B3",
-     "gate_free_from_min": 655,
-     "gate_free_to_min": 1020,
+     "gate": "A3",
+     "gate_free_from_min": 906,
+     "gate_free_to_min": 1146,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -40,
+     "turnaround_buffer_min": -51,
      "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 15,
      "throughput_loss": 0,
      "cost_J": 214.2,
-     "gate_change": false,
-     "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1740.0
+     "gate_change": true,
+     "gate_change_notice_min": 22,
+     "fuel_at_landing_kg": 1740.0,
+     "gate_wait_min": 11
     }
    },
    {
     "option_id": "opt_4",
     "eta_shift_min": 10,
-    "gate": "B3",
+    "gate": "A4",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+10 min, gate B3, speed reduction",
+    "label": "+10 min, gate A4, speed reduction",
     "metrics": {
      "eta_new_min": 889,
      "runway_slot_min": 890,
@@ -1457,19 +1460,20 @@
      "hold_min": 0,
      "turbulence_idx": 0.5,
      "misconnected_pax": 101,
-     "gate": "B3",
-     "gate_free_from_min": 660,
-     "gate_free_to_min": 1020,
+     "gate": "A4",
+     "gate_free_from_min": 908,
+     "gate_free_to_min": 1148,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -45,
+     "turnaround_buffer_min": -53,
      "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 17,
      "throughput_loss": 0,
      "cost_J": 215.4,
-     "gate_change": false,
-     "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1680.0
+     "gate_change": true,
+     "gate_change_notice_min": 27,
+     "fuel_at_landing_kg": 1680.0,
+     "gate_wait_min": 8
     }
    },
    {
@@ -1502,7 +1506,8 @@
      "cost_J": 213.2,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1480.0
+     "fuel_at_landing_kg": 1480.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -1535,7 +1540,8 @@
      "cost_J": 218.6,
      "gate_change": true,
      "gate_change_notice_min": 32,
-     "fuel_at_landing_kg": 1620.0
+     "fuel_at_landing_kg": 1620.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -1568,7 +1574,8 @@
      "cost_J": 249.2,
      "gate_change": true,
      "gate_change_notice_min": 37,
-     "fuel_at_landing_kg": 1080.0
+     "fuel_at_landing_kg": 1080.0,
+     "gate_wait_min": 0
     }
    }
   ],
@@ -1731,15 +1738,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B3 free and size-compatible"
+      "detail": "gate A3 free and size-compatible after 11 min ramp wait; change notice 22 min"
      },
      {
       "option_id": "opt_3",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 478.0,
+      "value": 467.0,
       "threshold": 0.0,
-      "detail": "flight crew duty left 478 min >= 0 of 13 h max (workbook)"
+      "detail": "flight crew duty left 467 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_3",
@@ -1793,15 +1800,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B3 free and size-compatible"
+      "detail": "gate A4 free and size-compatible after 8 min ramp wait; change notice 27 min"
      },
      {
       "option_id": "opt_4",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 473.0,
+      "value": 465.0,
       "threshold": 0.0,
-      "detail": "flight crew duty left 473 min >= 0 of 13 h max (workbook)"
+      "detail": "flight crew duty left 465 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_4",
@@ -2136,7 +2143,8 @@
     "cost_J": 215.8,
     "gate_change": false,
     "gate_change_notice_min": null,
-    "fuel_at_landing_kg": 1800.0
+    "fuel_at_landing_kg": 1800.0,
+    "gate_wait_min": 0
    }
   }
  },

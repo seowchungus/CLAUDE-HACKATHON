@@ -2196,7 +2196,8 @@
      "cost_J": 5.45,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1800.0
+     "fuel_at_landing_kg": 1800.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -2229,7 +2230,8 @@
      "cost_J": 191.2,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1600.0
+     "fuel_at_landing_kg": 1600.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -2262,18 +2264,19 @@
      "cost_J": 187.6,
      "gate_change": true,
      "gate_change_notice_min": 28,
-     "fuel_at_landing_kg": 1740.0
+     "fuel_at_landing_kg": 1740.0,
+     "gate_wait_min": 0
     }
    },
    {
     "option_id": "opt_4",
     "eta_shift_min": 10,
-    "gate": "B2",
+    "gate": "A2",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+10 min, gate B2, speed reduction",
+    "label": "+10 min, gate A2, speed reduction",
     "metrics": {
      "eta_new_min": 927,
      "runway_slot_min": 929,
@@ -2283,9 +2286,9 @@
      "hold_min": 0,
      "turbulence_idx": 0.12,
      "misconnected_pax": 134,
-     "gate": "B2",
+     "gate": "A2",
      "gate_free_from_min": 696,
-     "gate_free_to_min": 1176,
+     "gate_free_to_min": 1067,
      "taxi_path_ok": true,
      "turnaround_buffer_min": -86,
      "ramp_overtime_min": 13,
@@ -2293,9 +2296,10 @@
      "arrivals_this_hour": 34,
      "throughput_loss": 0,
      "cost_J": 283.55,
-     "gate_change": true,
-     "gate_change_notice_min": 33,
-     "fuel_at_landing_kg": 1680.0
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1680.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -2328,7 +2332,8 @@
      "cost_J": 288.75,
      "gate_change": true,
      "gate_change_notice_min": 33,
-     "fuel_at_landing_kg": 1400.0
+     "fuel_at_landing_kg": 1400.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -2361,7 +2366,8 @@
      "cost_J": 286.35,
      "gate_change": false,
      "gate_change_notice_min": null,
-     "fuel_at_landing_kg": 1480.0
+     "fuel_at_landing_kg": 1480.0,
+     "gate_wait_min": 0
     }
    },
    {
@@ -2394,7 +2400,8 @@
      "cost_J": 311.75,
      "gate_change": true,
      "gate_change_notice_min": 53,
-     "fuel_at_landing_kg": 1020.0
+     "fuel_at_landing_kg": 1020.0,
+     "gate_wait_min": 0
     }
    }
   ],
@@ -2619,7 +2626,7 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B2 free and size-compatible; change notice 33 min"
+      "detail": "gate A2 free and size-compatible"
      },
      {
       "option_id": "opt_4",
@@ -2962,7 +2969,8 @@
     "cost_J": 5.45,
     "gate_change": false,
     "gate_change_notice_min": null,
-    "fuel_at_landing_kg": 1800.0
+    "fuel_at_landing_kg": 1800.0,
+    "gate_wait_min": 0
    }
   }
  },

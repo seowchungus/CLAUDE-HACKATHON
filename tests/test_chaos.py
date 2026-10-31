@@ -61,3 +61,15 @@ def test_golden_files_validate():
         x = json.load(open(os.path.join(d, f)))
         ScenarioBundle.model_validate(x["bundle"])
         MapPayload.model_validate(x["map"])
+
+
+def test_golden_files_match_generator():
+    """Goldens are replayed by W2 fixture mode / W3 mock / hero recordings, so they must equal what core builds
+    today. If this fails after a core change, regenerate: python -m core.cli --export <id> tests/golden/<id>.json"""
+    d = "tests/golden"
+    for f in sorted(os.listdir(d)):
+        if f.endswith(".json"):
+            x = json.load(open(os.path.join(d, f)))
+            sid = x["bundle"]["scenario"]["scenario_id"]
+            assert build_bundle(sid).model_dump(mode="json") == x["bundle"], f"stale golden {f}"
+            assert map_payload(build_bundle(sid).scenario).model_dump(mode="json") == x["map"], f"stale map {f}"
