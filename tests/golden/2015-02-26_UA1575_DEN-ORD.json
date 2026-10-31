@@ -1,0 +1,3562 @@
+{
+ "bundle": {
+  "scenario": {
+   "scenario_id": "2015-02-26_UA1575_DEN-ORD",
+   "seed": 2863525826,
+   "fixture": false,
+   "row": {
+    "year": 2015,
+    "month": 2,
+    "day": 26,
+    "airline": "UA",
+    "flight_number": 1575,
+    "tail_number": "N69819",
+    "origin": "DEN",
+    "destination": "ORD",
+    "scheduled_departure": 1000,
+    "departure_delay": 86.0,
+    "scheduled_arrival": 1331,
+    "arrival_delay": 68.0,
+    "distance": 888,
+    "scheduled_time": 151.0,
+    "air_time": 112.0,
+    "taxi_in": 11.0,
+    "taxi_out": 10.0,
+    "weather_delay": 68.0,
+    "late_aircraft_delay": 0.0,
+    "air_system_delay": 0.0
+   },
+   "disruption_type": "WEATHER",
+   "disruption_min": 68,
+   "origin": {
+    "iata": "DEN",
+    "name": "Denver International Airport",
+    "city": "Denver",
+    "state": "CO",
+    "lat": 39.85841,
+    "lon": -104.667
+   },
+   "destination": {
+    "iata": "ORD",
+    "name": "Chicago O'Hare International Airport",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.9796,
+    "lon": -87.90446
+   },
+   "disrupted": {
+    "flight_id": "UA1575",
+    "airline": "UA",
+    "flight_number": 1575,
+    "tail_number": "N69819",
+    "origin": "DEN",
+    "destination": "ORD",
+    "sched_dep_min": 600,
+    "sched_arr_min": 811,
+    "est_arr_min": 879,
+    "role": "disrupted",
+    "wake": "M",
+    "pax_connecting": null
+   },
+   "bank": [
+    {
+     "flight_id": "OO4983",
+     "airline": "OO",
+     "flight_number": 4983,
+     "tail_number": "N103SY",
+     "origin": "DCA",
+     "destination": "ORD",
+     "sched_dep_min": 645,
+     "sched_arr_min": 721,
+     "est_arr_min": 912,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "F91069",
+     "airline": "F9",
+     "flight_number": 1069,
+     "tail_number": "N216FR",
+     "origin": "ATL",
+     "destination": "ORD",
+     "sched_dep_min": 665,
+     "sched_arr_min": 725,
+     "est_arr_min": 911,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5359",
+     "airline": "OO",
+     "flight_number": 5359,
+     "tail_number": "N973SW",
+     "origin": "MKG",
+     "destination": "ORD",
+     "sched_dep_min": 737,
+     "sched_arr_min": 737,
+     "est_arr_min": 830,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO4821",
+     "airline": "OO",
+     "flight_number": 4821,
+     "tail_number": "N915EV",
+     "origin": "CVG",
+     "destination": "ORD",
+     "sched_dep_min": 720,
+     "sched_arr_min": 738,
+     "est_arr_min": 837,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV4716",
+     "airline": "EV",
+     "flight_number": 4716,
+     "tail_number": "N14902",
+     "origin": "ATW",
+     "destination": "ORD",
+     "sched_dep_min": 675,
+     "sched_arr_min": 740,
+     "est_arr_min": 825,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV6011",
+     "airline": "EV",
+     "flight_number": 6011,
+     "tail_number": "N14116",
+     "origin": "GRB",
+     "destination": "ORD",
+     "sched_dep_min": 677,
+     "sched_arr_min": 740,
+     "est_arr_min": 940,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6334",
+     "airline": "OO",
+     "flight_number": 6334,
+     "tail_number": "N679SA",
+     "origin": "SGF",
+     "destination": "ORD",
+     "sched_dep_min": 639,
+     "sched_arr_min": 740,
+     "est_arr_min": 925,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ2990",
+     "airline": "MQ",
+     "flight_number": 2990,
+     "tail_number": "N933MQ",
+     "origin": "LEX",
+     "destination": "ORD",
+     "sched_dep_min": 711,
+     "sched_arr_min": 745,
+     "est_arr_min": 994,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO4993",
+     "airline": "OO",
+     "flight_number": 4993,
+     "tail_number": "N986SW",
+     "origin": "FAR",
+     "destination": "ORD",
+     "sched_dep_min": 627,
+     "sched_arr_min": 746,
+     "est_arr_min": 897,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV6064",
+     "airline": "EV",
+     "flight_number": 6064,
+     "tail_number": "N14568",
+     "origin": "MSP",
+     "destination": "ORD",
+     "sched_dep_min": 655,
+     "sched_arr_min": 747,
+     "est_arr_min": 899,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV4115",
+     "airline": "EV",
+     "flight_number": 4115,
+     "tail_number": "N13538",
+     "origin": "CVG",
+     "destination": "ORD",
+     "sched_dep_min": 731,
+     "sched_arr_min": 749,
+     "est_arr_min": 936,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3269",
+     "airline": "MQ",
+     "flight_number": 3269,
+     "tail_number": "N505MQ",
+     "origin": "BNA",
+     "destination": "ORD",
+     "sched_dep_min": 650,
+     "sched_arr_min": 749,
+     "est_arr_min": 927,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV5819",
+     "airline": "EV",
+     "flight_number": 5819,
+     "tail_number": "N14923",
+     "origin": "LIT",
+     "destination": "ORD",
+     "sched_dep_min": 636,
+     "sched_arr_min": 750,
+     "est_arr_min": 927,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ2981",
+     "airline": "MQ",
+     "flight_number": 2981,
+     "tail_number": "N818MQ",
+     "origin": "RIC",
+     "destination": "ORD",
+     "sched_dep_min": 666,
+     "sched_arr_min": 750,
+     "est_arr_min": 923,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3437",
+     "airline": "MQ",
+     "flight_number": 3437,
+     "tail_number": "N838MQ",
+     "origin": "TVC",
+     "destination": "ORD",
+     "sched_dep_min": 728,
+     "sched_arr_min": 750,
+     "est_arr_min": 910,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3501",
+     "airline": "MQ",
+     "flight_number": 3501,
+     "tail_number": "N665MQ",
+     "origin": "CWA",
+     "destination": "ORD",
+     "sched_dep_min": 667,
+     "sched_arr_min": 750,
+     "est_arr_min": 782,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5250",
+     "airline": "OO",
+     "flight_number": 5250,
+     "tail_number": "N975SW",
+     "origin": "XNA",
+     "destination": "ORD",
+     "sched_dep_min": 647,
+     "sched_arr_min": 750,
+     "est_arr_min": 943,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5349",
+     "airline": "OO",
+     "flight_number": 5349,
+     "tail_number": "N982SW",
+     "origin": "DLH",
+     "destination": "ORD",
+     "sched_dep_min": 653,
+     "sched_arr_min": 750,
+     "est_arr_min": 879,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5447",
+     "airline": "OO",
+     "flight_number": 5447,
+     "tail_number": "N934SW",
+     "origin": "MKE",
+     "destination": "ORD",
+     "sched_dep_min": 697,
+     "sched_arr_min": 750,
+     "est_arr_min": 798,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3138",
+     "airline": "MQ",
+     "flight_number": 3138,
+     "tail_number": "N814MQ",
+     "origin": "LIT",
+     "destination": "ORD",
+     "sched_dep_min": 644,
+     "sched_arr_min": 755,
+     "est_arr_min": 823,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3220",
+     "airline": "MQ",
+     "flight_number": 3220,
+     "tail_number": "N511MQ",
+     "origin": "PIT",
+     "destination": "ORD",
+     "sched_dep_min": 729,
+     "sched_arr_min": 769,
+     "est_arr_min": 973,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1238",
+     "airline": "AA",
+     "flight_number": 1238,
+     "tail_number": "N3MFAA",
+     "origin": "FLL",
+     "destination": "ORD",
+     "sched_dep_min": 630,
+     "sched_arr_min": 770,
+     "est_arr_min": 812,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3395",
+     "airline": "MQ",
+     "flight_number": 3395,
+     "tail_number": "N500MQ",
+     "origin": "MEM",
+     "destination": "ORD",
+     "sched_dep_min": 657,
+     "sched_arr_min": 770,
+     "est_arr_min": 916,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3546",
+     "airline": "MQ",
+     "flight_number": 3546,
+     "tail_number": "N612MQ",
+     "origin": "CMI",
+     "destination": "ORD",
+     "sched_dep_min": 714,
+     "sched_arr_min": 775,
+     "est_arr_min": 924,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1075",
+     "airline": "AA",
+     "flight_number": 1075,
+     "tail_number": "N3KJAA",
+     "origin": "DCA",
+     "destination": "ORD",
+     "sched_dep_min": 705,
+     "sched_arr_min": 776,
+     "est_arr_min": 998,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV5963",
+     "airline": "EV",
+     "flight_number": 5963,
+     "tail_number": "N26545",
+     "origin": "CLT",
+     "destination": "ORD",
+     "sched_dep_min": 708,
+     "sched_arr_min": 781,
+     "est_arr_min": 879,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO2640",
+     "airline": "OO",
+     "flight_number": 2640,
+     "tail_number": "N423SW",
+     "origin": "ICT",
+     "destination": "ORD",
+     "sched_dep_min": 660,
+     "sched_arr_min": 781,
+     "est_arr_min": 933,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5227",
+     "airline": "OO",
+     "flight_number": 5227,
+     "tail_number": "N118SY",
+     "origin": "DCA",
+     "destination": "ORD",
+     "sched_dep_min": 705,
+     "sched_arr_min": 781,
+     "est_arr_min": 887,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3158",
+     "airline": "MQ",
+     "flight_number": 3158,
+     "tail_number": "N602MQ",
+     "origin": "SGF",
+     "destination": "ORD",
+     "sched_dep_min": 690,
+     "sched_arr_min": 783,
+     "est_arr_min": 982,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5436",
+     "airline": "OO",
+     "flight_number": 5436,
+     "tail_number": "N928EV",
+     "origin": "MBS",
+     "destination": "ORD",
+     "sched_dep_min": 770,
+     "sched_arr_min": 785,
+     "est_arr_min": 866,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "F91257",
+     "airline": "F9",
+     "flight_number": 1257,
+     "tail_number": "N202FR",
+     "origin": "MIA",
+     "destination": "ORD",
+     "sched_dep_min": 650,
+     "sched_arr_min": 790,
+     "est_arr_min": 862,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA329",
+     "airline": "AA",
+     "flight_number": 329,
+     "tail_number": "N3EJAA",
+     "origin": "LGA",
+     "destination": "ORD",
+     "sched_dep_min": 693,
+     "sched_arr_min": 795,
+     "est_arr_min": 926,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3489",
+     "airline": "MQ",
+     "flight_number": 3489,
+     "tail_number": "N822MQ",
+     "origin": "FSD",
+     "destination": "ORD",
+     "sched_dep_min": 695,
+     "sched_arr_min": 795,
+     "est_arr_min": 1034,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3093",
+     "airline": "MQ",
+     "flight_number": 3093,
+     "tail_number": "N902MQ",
+     "origin": "TUL",
+     "destination": "ORD",
+     "sched_dep_min": 686,
+     "sched_arr_min": 800,
+     "est_arr_min": 936,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV3953",
+     "airline": "EV",
+     "flight_number": 3953,
+     "tail_number": "N16178",
+     "origin": "SYR",
+     "destination": "ORD",
+     "sched_dep_min": 722,
+     "sched_arr_min": 806,
+     "est_arr_min": 965,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1516",
+     "airline": "AA",
+     "flight_number": 1516,
+     "tail_number": "N202AA",
+     "origin": "MSP",
+     "destination": "ORD",
+     "sched_dep_min": 721,
+     "sched_arr_min": 810,
+     "est_arr_min": 876,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1537",
+     "airline": "AA",
+     "flight_number": 1537,
+     "tail_number": "N3HJAA",
+     "origin": "MCO",
+     "destination": "ORD",
+     "sched_dep_min": 705,
+     "sched_arr_min": 818,
+     "est_arr_min": 853,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3062",
+     "airline": "MQ",
+     "flight_number": 3062,
+     "tail_number": "N698MQ",
+     "origin": "OKC",
+     "destination": "ORD",
+     "sched_dep_min": 695,
+     "sched_arr_min": 819,
+     "est_arr_min": 941,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA2279",
+     "airline": "AA",
+     "flight_number": 2279,
+     "tail_number": "N4YFAA",
+     "origin": "AUS",
+     "destination": "ORD",
+     "sched_dep_min": 662,
+     "sched_arr_min": 820,
+     "est_arr_min": 933,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5403",
+     "airline": "OO",
+     "flight_number": 5403,
+     "tail_number": "N937SW",
+     "origin": "SPI",
+     "destination": "ORD",
+     "sched_dep_min": 756,
+     "sched_arr_min": 820,
+     "est_arr_min": 992,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3415",
+     "airline": "MQ",
+     "flight_number": 3415,
+     "tail_number": "N648MQ",
+     "origin": "OMA",
+     "destination": "ORD",
+     "sched_dep_min": 725,
+     "sched_arr_min": 824,
+     "est_arr_min": 1006,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA187",
+     "airline": "AA",
+     "flight_number": 187,
+     "tail_number": "N3LSAA",
+     "origin": "BOS",
+     "destination": "ORD",
+     "sched_dep_min": 716,
+     "sched_arr_min": 830,
+     "est_arr_min": 920,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA331",
+     "airline": "AA",
+     "flight_number": 331,
+     "tail_number": "N3ATAA",
+     "origin": "LGA",
+     "destination": "ORD",
+     "sched_dep_min": 735,
+     "sched_arr_min": 837,
+     "est_arr_min": 1041,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV3831",
+     "airline": "EV",
+     "flight_number": 3831,
+     "tail_number": "N13914",
+     "origin": "ALB",
+     "destination": "ORD",
+     "sched_dep_min": 747,
+     "sched_arr_min": 837,
+     "est_arr_min": 901,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV6160",
+     "airline": "EV",
+     "flight_number": 6160,
+     "tail_number": "N11565",
+     "origin": "PIT",
+     "destination": "ORD",
+     "sched_dep_min": 793,
+     "sched_arr_min": 839,
+     "est_arr_min": 986,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3638",
+     "airline": "MQ",
+     "flight_number": 3638,
+     "tail_number": "N503MQ",
+     "origin": "COU",
+     "destination": "ORD",
+     "sched_dep_min": 763,
+     "sched_arr_min": 843,
+     "est_arr_min": 964,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5431",
+     "airline": "OO",
+     "flight_number": 5431,
+     "tail_number": "N967SW",
+     "origin": "MKE",
+     "destination": "ORD",
+     "sched_dep_min": 794,
+     "sched_arr_min": 847,
+     "est_arr_min": 892,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3043",
+     "airline": "MQ",
+     "flight_number": 3043,
+     "tail_number": "N647MQ",
+     "origin": "FNT",
+     "destination": "ORD",
+     "sched_dep_min": 833,
+     "sched_arr_min": 850,
+     "est_arr_min": 1106,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3256",
+     "airline": "MQ",
+     "flight_number": 3256,
+     "tail_number": "N664MQ",
+     "origin": "FAR",
+     "destination": "ORD",
+     "sched_dep_min": 736,
+     "sched_arr_min": 850,
+     "est_arr_min": 1003,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV3949",
+     "airline": "EV",
+     "flight_number": 3949,
+     "tail_number": "N25134",
+     "origin": "PNS",
+     "destination": "ORD",
+     "sched_dep_min": 702,
+     "sched_arr_min": 853,
+     "est_arr_min": 1042,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6254",
+     "airline": "OO",
+     "flight_number": 6254,
+     "tail_number": "N130SY",
+     "origin": "MCI",
+     "destination": "ORD",
+     "sched_dep_min": 766,
+     "sched_arr_min": 859,
+     "est_arr_min": 947,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV6045",
+     "airline": "EV",
+     "flight_number": 6045,
+     "tail_number": "N29917",
+     "origin": "TUL",
+     "destination": "ORD",
+     "sched_dep_min": 751,
+     "sched_arr_min": 865,
+     "est_arr_min": 1112,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL1562",
+     "airline": "DL",
+     "flight_number": 1562,
+     "tail_number": "N931DN",
+     "origin": "MSP",
+     "destination": "ORD",
+     "sched_dep_min": 782,
+     "sched_arr_min": 869,
+     "est_arr_min": 997,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO6449",
+     "airline": "OO",
+     "flight_number": 6449,
+     "tail_number": "N971SW",
+     "origin": "MSN",
+     "destination": "ORD",
+     "sched_dep_min": 815,
+     "sched_arr_min": 870,
+     "est_arr_min": 903,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3613",
+     "airline": "MQ",
+     "flight_number": 3613,
+     "tail_number": "N522MQ",
+     "origin": "ATL",
+     "destination": "ORD",
+     "sched_dep_min": 807,
+     "sched_arr_min": 875,
+     "est_arr_min": 1015,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ2950",
+     "airline": "MQ",
+     "flight_number": 2950,
+     "tail_number": "N624MQ",
+     "origin": "RST",
+     "destination": "ORD",
+     "sched_dep_min": 805,
+     "sched_arr_min": 881,
+     "est_arr_min": 1051,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "UA265",
+     "airline": "UA",
+     "flight_number": 265,
+     "tail_number": "N522UA",
+     "origin": "MCO",
+     "destination": "ORD",
+     "sched_dep_min": 765,
+     "sched_arr_min": 882,
+     "est_arr_min": 916,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "EV4647",
+     "airline": "EV",
+     "flight_number": 4647,
+     "tail_number": "N13566",
+     "origin": "CID",
+     "destination": "ORD",
+     "sched_dep_min": 818,
+     "sched_arr_min": 887,
+     "est_arr_min": 1055,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3298",
+     "airline": "MQ",
+     "flight_number": 3298,
+     "tail_number": "N688MQ",
+     "origin": "XNA",
+     "destination": "ORD",
+     "sched_dep_min": 779,
+     "sched_arr_min": 887,
+     "est_arr_min": 1032,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ2925",
+     "airline": "MQ",
+     "flight_number": 2925,
+     "tail_number": "N620MQ",
+     "origin": "MHK",
+     "destination": "ORD",
+     "sched_dep_min": 788,
+     "sched_arr_min": 890,
+     "est_arr_min": 1155,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3464",
+     "airline": "MQ",
+     "flight_number": 3464,
+     "tail_number": "N517MQ",
+     "origin": "DSM",
+     "destination": "ORD",
+     "sched_dep_min": 810,
+     "sched_arr_min": 894,
+     "est_arr_min": 1161,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1620",
+     "airline": "AA",
+     "flight_number": 1620,
+     "tail_number": "N3GBAA",
+     "origin": "RDU",
+     "destination": "ORD",
+     "sched_dep_min": 821,
+     "sched_arr_min": 895,
+     "est_arr_min": 1049,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "F91060",
+     "airline": "F9",
+     "flight_number": 1060,
+     "tail_number": "N205FR",
+     "origin": "PHX",
+     "destination": "ORD",
+     "sched_dep_min": 635,
+     "sched_arr_min": 895,
+     "est_arr_min": 1021,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "MQ3114",
+     "airline": "MQ",
+     "flight_number": 3114,
+     "tail_number": "N639MQ",
+     "origin": "DTW",
+     "destination": "ORD",
+     "sched_dep_min": 870,
+     "sched_arr_min": 895,
+     "est_arr_min": 1001,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "OO5208",
+     "airline": "OO",
+     "flight_number": 5208,
+     "tail_number": "N127SY",
+     "origin": "DCA",
+     "destination": "ORD",
+     "sched_dep_min": 825,
+     "sched_arr_min": 898,
+     "est_arr_min": 1000,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1452",
+     "airline": "AA",
+     "flight_number": 1452,
+     "tail_number": "N3MGAA",
+     "origin": "DCA",
+     "destination": "ORD",
+     "sched_dep_min": 828,
+     "sched_arr_min": 900,
+     "est_arr_min": 1051,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    }
+   ],
+   "connections": [
+    {
+     "flight_id": "UA1612",
+     "airline": "UA",
+     "flight_number": 1612,
+     "tail_number": "N24729",
+     "origin": "ORD",
+     "destination": "ALB",
+     "sched_dep_min": 851,
+     "sched_arr_min": 1022,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 21
+    },
+    {
+     "flight_id": "UA1658",
+     "airline": "UA",
+     "flight_number": 1658,
+     "tail_number": "N14242",
+     "origin": "ORD",
+     "destination": "RDU",
+     "sched_dep_min": 852,
+     "sched_arr_min": 1027,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 10
+    },
+    {
+     "flight_id": "UA1260",
+     "airline": "UA",
+     "flight_number": 1260,
+     "tail_number": "N68842",
+     "origin": "ORD",
+     "destination": "TPA",
+     "sched_dep_min": 853,
+     "sched_arr_min": 1077,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 18
+    },
+    {
+     "flight_id": "UA112",
+     "airline": "UA",
+     "flight_number": 112,
+     "tail_number": "N69819",
+     "origin": "ORD",
+     "destination": "DEN",
+     "sched_dep_min": 900,
+     "sched_arr_min": 1002,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 17
+    },
+    {
+     "flight_id": "UA1585",
+     "airline": "UA",
+     "flight_number": 1585,
+     "tail_number": "N17730",
+     "origin": "ORD",
+     "destination": "LGA",
+     "sched_dep_min": 900,
+     "sched_arr_min": 1088,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 11
+    },
+    {
+     "flight_id": "UA1622",
+     "airline": "UA",
+     "flight_number": 1622,
+     "tail_number": "N14118",
+     "origin": "ORD",
+     "destination": "EWR",
+     "sched_dep_min": 902,
+     "sched_arr_min": 1092,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "L",
+     "pax_connecting": 16
+    },
+    {
+     "flight_id": "UA1145",
+     "airline": "UA",
+     "flight_number": 1145,
+     "tail_number": "N79521",
+     "origin": "ORD",
+     "destination": "LAX",
+     "sched_dep_min": 914,
+     "sched_arr_min": 1071,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 8
+    },
+    {
+     "flight_id": "UA688",
+     "airline": "UA",
+     "flight_number": 688,
+     "tail_number": "N823UA",
+     "origin": "ORD",
+     "destination": "LGA",
+     "sched_dep_min": 960,
+     "sched_arr_min": 1147,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 17
+    }
+   ],
+   "base_eta_min": 879,
+   "aar_nominal": 45,
+   "aar_reduced": 22,
+   "aircraft_size": "M",
+   "fuel_at_fix_min": 53.4,
+   "flight_crew_duty_remaining_min": 81,
+   "ramp_shift_end_min": 915,
+   "next_departure_min": 900,
+   "gates": [
+    {
+     "gate_id": "A1",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [
+      [
+       854,
+       894
+      ],
+      [
+       986,
+       1061
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A2",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [
+      [
+       852,
+       897
+      ],
+      [
+       875,
+       951
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A3",
+     "concourse": "A",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [
+      [
+       827,
+       903
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A4",
+     "concourse": "A",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [
+      [
+       968,
+       1013
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B1",
+     "concourse": "B",
+     "size": "L",
+     "taxi_path": [
+      "B"
+     ],
+     "occupied": [
+      [
+       915,
+       983
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B2",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "B"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B3",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "B",
+      "C"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B4",
+     "concourse": "B",
+     "size": "S",
+     "taxi_path": [
+      "B",
+      "C"
+     ],
+     "occupied": [
+      [
+       822,
+       909
+      ],
+      [
+       971,
+       1060
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C1",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C"
+     ],
+     "occupied": [
+      [
+       858,
+       899
+      ],
+      [
+       873,
+       939
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C2",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [
+      [
+       866,
+       940
+      ],
+      [
+       913,
+       997
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C3",
+     "concourse": "C",
+     "size": "S",
+     "taxi_path": [
+      "D"
+     ],
+     "occupied": [
+      [
+       959,
+       1032
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C4",
+     "concourse": "C",
+     "size": "S",
+     "taxi_path": [
+      "D"
+     ],
+     "occupied": [
+      [
+       850,
+       898
+      ]
+     ],
+     "out_of_service": false
+    }
+   ],
+   "taxiways": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "blocked_taxiways": [],
+   "turbulence_by_fp": {
+    "as_filed": 0.54,
+    "speed_reduction": 0.5,
+    "hold_10": 0.48,
+    "hold_20": 0.46,
+    "reroute_weather": 0.19
+   },
+   "chaos_applied": [],
+   "provenance": {
+    "row": "real",
+    "disruption_type": "real",
+    "disruption_min": "real",
+    "origin": "real",
+    "destination": "real",
+    "disrupted": "real",
+    "bank": "real",
+    "connections": "real",
+    "base_eta_min": "real",
+    "aar_nominal": "real_derived",
+    "aar_reduced": "synthetic",
+    "aircraft_size": "synthetic",
+    "fuel_at_fix_min": "synthetic",
+    "flight_crew_duty_remaining_min": "synthetic",
+    "ramp_shift_end_min": "synthetic",
+    "next_departure_min": "real",
+    "gates": "synthetic",
+    "taxiways": "synthetic",
+    "blocked_taxiways": "synthetic",
+    "turbulence_by_fp": "synthetic",
+    "chaos_applied": "synthetic",
+    "disrupted.wake": "synthetic",
+    "bank.wake": "synthetic",
+    "connections.wake": "synthetic",
+    "connections.pax_connecting": "synthetic"
+   }
+  },
+  "options": [
+   {
+    "option_id": "opt_1",
+    "eta_shift_min": 0,
+    "gate": "A4",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+0 min, gate A4, as filed",
+    "metrics": {
+     "eta_new_min": 879,
+     "runway_slot_min": 882,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 41.4,
+     "extra_fuel_min": 0.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.54,
+     "misconnected_pax": 101,
+     "gate": "A4",
+     "gate_free_from_min": 650,
+     "gate_free_to_min": 968,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -25,
+     "ramp_overtime_min": 5,
+     "bank_delay_added_min": 3,
+     "arrivals_this_hour": 15,
+     "throughput_loss": 0,
+     "cost_J": 218.3
+    }
+   },
+   {
+    "option_id": "opt_2",
+    "eta_shift_min": 5,
+    "gate": "A4",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+5 min, gate A4, as filed",
+    "metrics": {
+     "eta_new_min": 884,
+     "runway_slot_min": 885,
+     "separation_margin_s": 136,
+     "fuel_at_landing_min": 36.4,
+     "extra_fuel_min": 5.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.54,
+     "misconnected_pax": 101,
+     "gate": "A4",
+     "gate_free_from_min": 655,
+     "gate_free_to_min": 968,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -30,
+     "ramp_overtime_min": 10,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 15,
+     "throughput_loss": 0,
+     "cost_J": 222.8
+    }
+   },
+   {
+    "option_id": "opt_3",
+    "eta_shift_min": 5,
+    "gate": "A4",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+5 min, gate A4, speed reduction",
+    "metrics": {
+     "eta_new_min": 884,
+     "runway_slot_min": 885,
+     "separation_margin_s": 136,
+     "fuel_at_landing_min": 39.9,
+     "extra_fuel_min": 1.5,
+     "hold_min": 0,
+     "turbulence_idx": 0.5,
+     "misconnected_pax": 101,
+     "gate": "A4",
+     "gate_free_from_min": 655,
+     "gate_free_to_min": 968,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -30,
+     "ramp_overtime_min": 10,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 15,
+     "throughput_loss": 0,
+     "cost_J": 219.2
+    }
+   },
+   {
+    "option_id": "opt_4",
+    "eta_shift_min": 10,
+    "gate": "A4",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate A4, speed reduction",
+    "metrics": {
+     "eta_new_min": 889,
+     "runway_slot_min": 890,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 38.4,
+     "extra_fuel_min": 3.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.5,
+     "misconnected_pax": 101,
+     "gate": "A4",
+     "gate_free_from_min": 660,
+     "gate_free_to_min": 968,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -35,
+     "ramp_overtime_min": 15,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 17,
+     "throughput_loss": 0,
+     "cost_J": 222.9
+    }
+   },
+   {
+    "option_id": "opt_5",
+    "eta_shift_min": 10,
+    "gate": "B1",
+    "fp_adjustment": "hold_10",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate B1, hold 10 min",
+    "metrics": {
+     "eta_new_min": 889,
+     "runway_slot_min": 890,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 31.4,
+     "extra_fuel_min": 10.0,
+     "hold_min": 10,
+     "turbulence_idx": 0.48,
+     "misconnected_pax": 101,
+     "gate": "B1",
+     "gate_free_from_min": 660,
+     "gate_free_to_min": 915,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -35,
+     "ramp_overtime_min": 15,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 17,
+     "throughput_loss": 0,
+     "cost_J": 228.1
+    }
+   },
+   {
+    "option_id": "opt_6",
+    "eta_shift_min": 10,
+    "gate": "B3",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate B3, weather reroute",
+    "metrics": {
+     "eta_new_min": 889,
+     "runway_slot_min": 890,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 33.4,
+     "extra_fuel_min": 8.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.19,
+     "misconnected_pax": 101,
+     "gate": "B3",
+     "gate_free_from_min": 660,
+     "gate_free_to_min": 1140,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -35,
+     "ramp_overtime_min": 15,
+     "bank_delay_added_min": 1,
+     "arrivals_this_hour": 17,
+     "throughput_loss": 0,
+     "cost_J": 220.7
+    }
+   },
+   {
+    "option_id": "opt_7",
+    "eta_shift_min": 15,
+    "gate": "A1",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+15 min, gate A1, weather reroute",
+    "metrics": {
+     "eta_new_min": 894,
+     "runway_slot_min": 895,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 28.4,
+     "extra_fuel_min": 13.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.19,
+     "misconnected_pax": 101,
+     "gate": "A1",
+     "gate_free_from_min": 894,
+     "gate_free_to_min": 986,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -40,
+     "ramp_overtime_min": 20,
+     "bank_delay_added_min": 3,
+     "arrivals_this_hour": 19,
+     "throughput_loss": 0,
+     "cost_J": 229.2
+    }
+   }
+  ],
+  "checks": {
+   "opt_1": {
+    "option_id": "opt_1",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 15.0,
+      "threshold": 22.0,
+      "detail": "15 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 41.4,
+      "threshold": 30.0,
+      "detail": "fuel 41.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 81.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 81 min; ramp overtime 5 <= 60"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.54,
+      "threshold": 0.7,
+      "detail": "turbulence 0.54 < 0.7"
+     }
+    ]
+   },
+   "opt_2": {
+    "option_id": "opt_2",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 136.0,
+      "threshold": 0.0,
+      "detail": "margin +136 s over wake minimum"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 15.0,
+      "threshold": 22.0,
+      "detail": "15 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 36.4,
+      "threshold": 30.0,
+      "detail": "fuel 36.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 76.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 76 min; ramp overtime 10 <= 60"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.54,
+      "threshold": 0.7,
+      "detail": "turbulence 0.54 < 0.7"
+     }
+    ]
+   },
+   "opt_3": {
+    "option_id": "opt_3",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 136.0,
+      "threshold": 0.0,
+      "detail": "margin +136 s over wake minimum"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 15.0,
+      "threshold": 22.0,
+      "detail": "15 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 39.9,
+      "threshold": 30.0,
+      "detail": "fuel 39.9 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 76.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 76 min; ramp overtime 10 <= 60"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.5,
+      "threshold": 0.7,
+      "detail": "turbulence 0.50 < 0.7"
+     }
+    ]
+   },
+   "opt_4": {
+    "option_id": "opt_4",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 17.0,
+      "threshold": 22.0,
+      "detail": "17 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 38.4,
+      "threshold": 30.0,
+      "detail": "fuel 38.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 71.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.5,
+      "threshold": 0.7,
+      "detail": "turbulence 0.50 < 0.7"
+     }
+    ]
+   },
+   "opt_5": {
+    "option_id": "opt_5",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 17.0,
+      "threshold": 22.0,
+      "detail": "17 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 31.4,
+      "threshold": 30.0,
+      "detail": "fuel 31.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H4_gate_validity",
+      "passed": false,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B1 busy: free 660-915, needed 900-935"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 71.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.48,
+      "threshold": 0.7,
+      "detail": "turbulence 0.48 < 0.7"
+     }
+    ]
+   },
+   "opt_6": {
+    "option_id": "opt_6",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 17.0,
+      "threshold": 22.0,
+      "detail": "17 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 33.4,
+      "threshold": 30.0,
+      "detail": "fuel 33.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B3 free and size-compatible"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 71.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.19,
+      "threshold": 0.7,
+      "detail": "turbulence 0.19 < 0.7"
+     }
+    ]
+   },
+   "opt_7": {
+    "option_id": "opt_7",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 19.0,
+      "threshold": 22.0,
+      "detail": "19 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": false,
+      "value": 28.4,
+      "threshold": 30.0,
+      "detail": "fuel 28.4 min < 30 min final reserve"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A1 free and size-compatible"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 66.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 66 min; ramp overtime 20 <= 60"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_7",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.19,
+      "threshold": 0.7,
+      "detail": "turbulence 0.19 < 0.7"
+     }
+    ]
+   },
+   "opt_fcfs": {
+    "option_id": "opt_fcfs",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 15.0,
+      "threshold": 22.0,
+      "detail": "15 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 41.4,
+      "threshold": 30.0,
+      "detail": "fuel 41.4 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 81.0,
+      "threshold": 0.0,
+      "detail": "crew duty left 81 min; ramp overtime 5 <= 60"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.54,
+      "threshold": 0.7,
+      "detail": "turbulence 0.54 < 0.7"
+     }
+    ]
+   }
+  },
+  "fallback": {
+   "status": "PLAN",
+   "option_id": "opt_1",
+   "cost_J": 218.3,
+   "ranking": [
+    [
+     "opt_1",
+     218.3
+    ],
+    [
+     "opt_3",
+     219.2
+    ],
+    [
+     "opt_6",
+     220.7
+    ],
+    [
+     "opt_2",
+     222.8
+    ],
+    [
+     "opt_4",
+     222.9
+    ]
+   ],
+   "weights": {
+    "w_d_bank_delay_added": 1.0,
+    "w_f_extra_fuel": 0.8,
+    "w_c_misconnected_pax": 2.0,
+    "w_o_ramp_overtime": 0.5,
+    "w_t_turbulence": 20.0,
+    "w_q_throughput_loss": 5.0
+   },
+   "reason": "min J among 5 feasible options"
+  },
+  "fcfs": {
+   "option_id": "opt_fcfs",
+   "eta_shift_min": 0,
+   "gate": "A4",
+   "fp_adjustment": "as_filed",
+   "source": "fcfs",
+   "proposed_by": null,
+   "parent_option": null,
+   "label": "+0 min, gate A4, as filed",
+   "metrics": {
+    "eta_new_min": 879,
+    "runway_slot_min": 882,
+    "separation_margin_s": 120,
+    "fuel_at_landing_min": 41.4,
+    "extra_fuel_min": 0.0,
+    "hold_min": 0,
+    "turbulence_idx": 0.54,
+    "misconnected_pax": 101,
+    "gate": "A4",
+    "gate_free_from_min": 650,
+    "gate_free_to_min": 968,
+    "taxi_path_ok": true,
+    "turnaround_buffer_min": -25,
+    "ramp_overtime_min": 5,
+    "bank_delay_added_min": 3,
+    "arrivals_this_hour": 15,
+    "throughput_loss": 0,
+    "cost_J": 218.3
+   }
+  }
+ },
+ "map": {
+  "focus_airport": "ORD",
+  "airports": [
+   {
+    "iata": "ALB",
+    "name": "Albany International Airport",
+    "lat": 42.74812,
+    "lon": -73.80298,
+    "role": "other"
+   },
+   {
+    "iata": "ATL",
+    "name": "Hartsfield-Jackson Atlanta International Airport",
+    "lat": 33.64044,
+    "lon": -84.42694,
+    "role": "other"
+   },
+   {
+    "iata": "ATW",
+    "name": "Appleton International Airport",
+    "lat": 44.25741,
+    "lon": -88.51948,
+    "role": "other"
+   },
+   {
+    "iata": "AUS",
+    "name": "Austin-Bergstrom International Airport",
+    "lat": 30.19453,
+    "lon": -97.66987,
+    "role": "other"
+   },
+   {
+    "iata": "BNA",
+    "name": "Nashville International Airport",
+    "lat": 36.12448,
+    "lon": -86.67818,
+    "role": "other"
+   },
+   {
+    "iata": "BOS",
+    "name": "Gen. Edward Lawrence Logan International Airport",
+    "lat": 42.36435,
+    "lon": -71.00518,
+    "role": "other"
+   },
+   {
+    "iata": "CID",
+    "name": "The Eastern Iowa Airport",
+    "lat": 41.88459,
+    "lon": -91.71087,
+    "role": "other"
+   },
+   {
+    "iata": "CLT",
+    "name": "Charlotte Douglas International Airport",
+    "lat": 35.21401,
+    "lon": -80.94313,
+    "role": "other"
+   },
+   {
+    "iata": "CMI",
+    "name": "University of Illinois - Willard Airport",
+    "lat": 40.03925,
+    "lon": -88.27806,
+    "role": "other"
+   },
+   {
+    "iata": "COU",
+    "name": "Columbia Regional Airport",
+    "lat": 38.81809,
+    "lon": -92.21963,
+    "role": "other"
+   },
+   {
+    "iata": "CVG",
+    "name": "Cincinnati/Northern Kentucky International Airport",
+    "lat": 39.04614,
+    "lon": -84.66217,
+    "role": "other"
+   },
+   {
+    "iata": "CWA",
+    "name": "Central Wisconsin Airport",
+    "lat": 44.77762,
+    "lon": -89.66678,
+    "role": "other"
+   },
+   {
+    "iata": "DCA",
+    "name": "Ronald Reagan Washington National Airport",
+    "lat": 38.85208,
+    "lon": -77.03772,
+    "role": "other"
+   },
+   {
+    "iata": "DEN",
+    "name": "Denver International Airport",
+    "lat": 39.85841,
+    "lon": -104.667,
+    "role": "origin"
+   },
+   {
+    "iata": "DLH",
+    "name": "Duluth International Airport",
+    "lat": 46.84209,
+    "lon": -92.19365,
+    "role": "other"
+   },
+   {
+    "iata": "DSM",
+    "name": "Des Moines International Airport",
+    "lat": 41.53493,
+    "lon": -93.66068,
+    "role": "other"
+   },
+   {
+    "iata": "DTW",
+    "name": "Detroit Metropolitan Airport",
+    "lat": 42.21206,
+    "lon": -83.34884,
+    "role": "other"
+   },
+   {
+    "iata": "EWR",
+    "name": "Newark Liberty International Airport",
+    "lat": 40.6925,
+    "lon": -74.16866,
+    "role": "other"
+   },
+   {
+    "iata": "FAR",
+    "name": "Hector International Airport",
+    "lat": 46.91935,
+    "lon": -96.81499,
+    "role": "other"
+   },
+   {
+    "iata": "FLL",
+    "name": "Fort Lauderdale-Hollywood International Airport",
+    "lat": 26.07258,
+    "lon": -80.15275,
+    "role": "other"
+   },
+   {
+    "iata": "FNT",
+    "name": "Bishop International Airport",
+    "lat": 42.9655,
+    "lon": -83.74346,
+    "role": "other"
+   },
+   {
+    "iata": "FSD",
+    "name": "Sioux Falls Regional Airport",
+    "lat": 43.58135,
+    "lon": -96.7417,
+    "role": "other"
+   },
+   {
+    "iata": "GRB",
+    "name": "Green Bay-Austin Straubel International Airport",
+    "lat": 44.48507,
+    "lon": -88.12959,
+    "role": "other"
+   },
+   {
+    "iata": "ICT",
+    "name": "Wichita Dwight D. Eisenhower National Airport (Wichita Mid-Continent Airport)",
+    "lat": 37.64996,
+    "lon": -97.43305,
+    "role": "other"
+   },
+   {
+    "iata": "LAX",
+    "name": "Los Angeles International Airport",
+    "lat": 33.94254,
+    "lon": -118.40807,
+    "role": "other"
+   },
+   {
+    "iata": "LEX",
+    "name": "Blue Grass Airport",
+    "lat": 38.03697,
+    "lon": -84.60539,
+    "role": "other"
+   },
+   {
+    "iata": "LGA",
+    "name": "LaGuardia Airport (Marine Air Terminal)",
+    "lat": 40.77724,
+    "lon": -73.87261,
+    "role": "other"
+   },
+   {
+    "iata": "LIT",
+    "name": "Bill and Hillary Clinton National Airport (Adams Field)",
+    "lat": 34.7294,
+    "lon": -92.22425,
+    "role": "other"
+   },
+   {
+    "iata": "MBS",
+    "name": "MBS International Airport",
+    "lat": 43.53291,
+    "lon": -84.07965,
+    "role": "other"
+   },
+   {
+    "iata": "MCI",
+    "name": "Kansas City International Airport",
+    "lat": 39.29761,
+    "lon": -94.71391,
+    "role": "other"
+   },
+   {
+    "iata": "MCO",
+    "name": "Orlando International Airport",
+    "lat": 28.42889,
+    "lon": -81.31603,
+    "role": "other"
+   },
+   {
+    "iata": "MEM",
+    "name": "Memphis International Airport",
+    "lat": 35.04242,
+    "lon": -89.97667,
+    "role": "other"
+   },
+   {
+    "iata": "MHK",
+    "name": "Manhattan Regional Airport",
+    "lat": 39.14097,
+    "lon": -96.67083,
+    "role": "other"
+   },
+   {
+    "iata": "MIA",
+    "name": "Miami International Airport",
+    "lat": 25.79325,
+    "lon": -80.29056,
+    "role": "other"
+   },
+   {
+    "iata": "MKE",
+    "name": "General Mitchell International Airport",
+    "lat": 42.94722,
+    "lon": -87.89658,
+    "role": "other"
+   },
+   {
+    "iata": "MKG",
+    "name": "Muskegon County Airport",
+    "lat": 43.16949,
+    "lon": -86.23822,
+    "role": "other"
+   },
+   {
+    "iata": "MSN",
+    "name": "Dane County Regional Airport",
+    "lat": 43.13986,
+    "lon": -89.33751,
+    "role": "other"
+   },
+   {
+    "iata": "MSP",
+    "name": "Minneapolis-Saint Paul International Airport",
+    "lat": 44.88055,
+    "lon": -93.21692,
+    "role": "other"
+   },
+   {
+    "iata": "OKC",
+    "name": "Will Rogers World Airport",
+    "lat": 35.39309,
+    "lon": -97.60073,
+    "role": "other"
+   },
+   {
+    "iata": "OMA",
+    "name": "Eppley Airfield",
+    "lat": 41.30252,
+    "lon": -95.89417,
+    "role": "other"
+   },
+   {
+    "iata": "ORD",
+    "name": "Chicago O'Hare International Airport",
+    "lat": 41.9796,
+    "lon": -87.90446,
+    "role": "destination"
+   },
+   {
+    "iata": "PHX",
+    "name": "Phoenix Sky Harbor International Airport",
+    "lat": 33.43417,
+    "lon": -112.00806,
+    "role": "other"
+   },
+   {
+    "iata": "PIT",
+    "name": "Pittsburgh International Airport",
+    "lat": 40.49147,
+    "lon": -80.23287,
+    "role": "other"
+   },
+   {
+    "iata": "PNS",
+    "name": "Pensacola International Airport (Pensacola Gulf Coast Regional Airport)",
+    "lat": 30.47331,
+    "lon": -87.18744,
+    "role": "other"
+   },
+   {
+    "iata": "RDU",
+    "name": "Raleigh-Durham International Airport",
+    "lat": 35.87764,
+    "lon": -78.78747,
+    "role": "other"
+   },
+   {
+    "iata": "RIC",
+    "name": "Richmond International Airport",
+    "lat": 37.50517,
+    "lon": -77.31967,
+    "role": "other"
+   },
+   {
+    "iata": "RST",
+    "name": "Rochester International Airport",
+    "lat": 43.90883,
+    "lon": -92.49799,
+    "role": "other"
+   },
+   {
+    "iata": "SGF",
+    "name": "Springfield-Branson National Airport",
+    "lat": 37.24433,
+    "lon": -93.38686,
+    "role": "other"
+   },
+   {
+    "iata": "SPI",
+    "name": "Abraham Lincoln Capital Airport",
+    "lat": 39.84395,
+    "lon": -89.67762,
+    "role": "other"
+   },
+   {
+    "iata": "SYR",
+    "name": "Syracuse Hancock International Airport",
+    "lat": 43.11119,
+    "lon": -76.10631,
+    "role": "other"
+   },
+   {
+    "iata": "TPA",
+    "name": "Tampa International Airport",
+    "lat": 27.97547,
+    "lon": -82.53325,
+    "role": "other"
+   },
+   {
+    "iata": "TUL",
+    "name": "Tulsa International Airport",
+    "lat": 36.19837,
+    "lon": -95.88824,
+    "role": "other"
+   },
+   {
+    "iata": "TVC",
+    "name": "Cherry Capital Airport",
+    "lat": 44.74144,
+    "lon": -85.58224,
+    "role": "other"
+   },
+   {
+    "iata": "XNA",
+    "name": "Northwest Arkansas Regional Airport",
+    "lat": 36.28187,
+    "lon": -94.30681,
+    "role": "other"
+   }
+  ],
+  "flights": [
+   {
+    "flight_id": "UA1575",
+    "role": "disrupted",
+    "origin": "DEN",
+    "destination": "ORD",
+    "origin_lat": 39.85841,
+    "origin_lon": -104.667,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 600,
+    "sched_arr_min": 811,
+    "est_arr_min": 879,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO4983",
+    "role": "bank",
+    "origin": "DCA",
+    "destination": "ORD",
+    "origin_lat": 38.85208,
+    "origin_lon": -77.03772,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 645,
+    "sched_arr_min": 721,
+    "est_arr_min": 912,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "F91069",
+    "role": "bank",
+    "origin": "ATL",
+    "destination": "ORD",
+    "origin_lat": 33.64044,
+    "origin_lon": -84.42694,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 665,
+    "sched_arr_min": 725,
+    "est_arr_min": 911,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5359",
+    "role": "bank",
+    "origin": "MKG",
+    "destination": "ORD",
+    "origin_lat": 43.16949,
+    "origin_lon": -86.23822,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 737,
+    "sched_arr_min": 737,
+    "est_arr_min": 830,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO4821",
+    "role": "bank",
+    "origin": "CVG",
+    "destination": "ORD",
+    "origin_lat": 39.04614,
+    "origin_lon": -84.66217,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 720,
+    "sched_arr_min": 738,
+    "est_arr_min": 837,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV4716",
+    "role": "bank",
+    "origin": "ATW",
+    "destination": "ORD",
+    "origin_lat": 44.25741,
+    "origin_lon": -88.51948,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 675,
+    "sched_arr_min": 740,
+    "est_arr_min": 825,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV6011",
+    "role": "bank",
+    "origin": "GRB",
+    "destination": "ORD",
+    "origin_lat": 44.48507,
+    "origin_lon": -88.12959,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 677,
+    "sched_arr_min": 740,
+    "est_arr_min": 940,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6334",
+    "role": "bank",
+    "origin": "SGF",
+    "destination": "ORD",
+    "origin_lat": 37.24433,
+    "origin_lon": -93.38686,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 639,
+    "sched_arr_min": 740,
+    "est_arr_min": 925,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ2990",
+    "role": "bank",
+    "origin": "LEX",
+    "destination": "ORD",
+    "origin_lat": 38.03697,
+    "origin_lon": -84.60539,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 711,
+    "sched_arr_min": 745,
+    "est_arr_min": 994,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO4993",
+    "role": "bank",
+    "origin": "FAR",
+    "destination": "ORD",
+    "origin_lat": 46.91935,
+    "origin_lon": -96.81499,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 627,
+    "sched_arr_min": 746,
+    "est_arr_min": 897,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV6064",
+    "role": "bank",
+    "origin": "MSP",
+    "destination": "ORD",
+    "origin_lat": 44.88055,
+    "origin_lon": -93.21692,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 655,
+    "sched_arr_min": 747,
+    "est_arr_min": 899,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV4115",
+    "role": "bank",
+    "origin": "CVG",
+    "destination": "ORD",
+    "origin_lat": 39.04614,
+    "origin_lon": -84.66217,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 731,
+    "sched_arr_min": 749,
+    "est_arr_min": 936,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3269",
+    "role": "bank",
+    "origin": "BNA",
+    "destination": "ORD",
+    "origin_lat": 36.12448,
+    "origin_lon": -86.67818,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 650,
+    "sched_arr_min": 749,
+    "est_arr_min": 927,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV5819",
+    "role": "bank",
+    "origin": "LIT",
+    "destination": "ORD",
+    "origin_lat": 34.7294,
+    "origin_lon": -92.22425,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 636,
+    "sched_arr_min": 750,
+    "est_arr_min": 927,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ2981",
+    "role": "bank",
+    "origin": "RIC",
+    "destination": "ORD",
+    "origin_lat": 37.50517,
+    "origin_lon": -77.31967,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 666,
+    "sched_arr_min": 750,
+    "est_arr_min": 923,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3437",
+    "role": "bank",
+    "origin": "TVC",
+    "destination": "ORD",
+    "origin_lat": 44.74144,
+    "origin_lon": -85.58224,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 728,
+    "sched_arr_min": 750,
+    "est_arr_min": 910,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3501",
+    "role": "bank",
+    "origin": "CWA",
+    "destination": "ORD",
+    "origin_lat": 44.77762,
+    "origin_lon": -89.66678,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 667,
+    "sched_arr_min": 750,
+    "est_arr_min": 782,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5250",
+    "role": "bank",
+    "origin": "XNA",
+    "destination": "ORD",
+    "origin_lat": 36.28187,
+    "origin_lon": -94.30681,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 647,
+    "sched_arr_min": 750,
+    "est_arr_min": 943,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5349",
+    "role": "bank",
+    "origin": "DLH",
+    "destination": "ORD",
+    "origin_lat": 46.84209,
+    "origin_lon": -92.19365,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 653,
+    "sched_arr_min": 750,
+    "est_arr_min": 879,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5447",
+    "role": "bank",
+    "origin": "MKE",
+    "destination": "ORD",
+    "origin_lat": 42.94722,
+    "origin_lon": -87.89658,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 697,
+    "sched_arr_min": 750,
+    "est_arr_min": 798,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3138",
+    "role": "bank",
+    "origin": "LIT",
+    "destination": "ORD",
+    "origin_lat": 34.7294,
+    "origin_lon": -92.22425,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 644,
+    "sched_arr_min": 755,
+    "est_arr_min": 823,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3220",
+    "role": "bank",
+    "origin": "PIT",
+    "destination": "ORD",
+    "origin_lat": 40.49147,
+    "origin_lon": -80.23287,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 729,
+    "sched_arr_min": 769,
+    "est_arr_min": 973,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1238",
+    "role": "bank",
+    "origin": "FLL",
+    "destination": "ORD",
+    "origin_lat": 26.07258,
+    "origin_lon": -80.15275,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 630,
+    "sched_arr_min": 770,
+    "est_arr_min": 812,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3395",
+    "role": "bank",
+    "origin": "MEM",
+    "destination": "ORD",
+    "origin_lat": 35.04242,
+    "origin_lon": -89.97667,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 657,
+    "sched_arr_min": 770,
+    "est_arr_min": 916,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3546",
+    "role": "bank",
+    "origin": "CMI",
+    "destination": "ORD",
+    "origin_lat": 40.03925,
+    "origin_lon": -88.27806,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 714,
+    "sched_arr_min": 775,
+    "est_arr_min": 924,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1075",
+    "role": "bank",
+    "origin": "DCA",
+    "destination": "ORD",
+    "origin_lat": 38.85208,
+    "origin_lon": -77.03772,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 705,
+    "sched_arr_min": 776,
+    "est_arr_min": 998,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV5963",
+    "role": "bank",
+    "origin": "CLT",
+    "destination": "ORD",
+    "origin_lat": 35.21401,
+    "origin_lon": -80.94313,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 708,
+    "sched_arr_min": 781,
+    "est_arr_min": 879,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO2640",
+    "role": "bank",
+    "origin": "ICT",
+    "destination": "ORD",
+    "origin_lat": 37.64996,
+    "origin_lon": -97.43305,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 660,
+    "sched_arr_min": 781,
+    "est_arr_min": 933,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5227",
+    "role": "bank",
+    "origin": "DCA",
+    "destination": "ORD",
+    "origin_lat": 38.85208,
+    "origin_lon": -77.03772,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 705,
+    "sched_arr_min": 781,
+    "est_arr_min": 887,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3158",
+    "role": "bank",
+    "origin": "SGF",
+    "destination": "ORD",
+    "origin_lat": 37.24433,
+    "origin_lon": -93.38686,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 690,
+    "sched_arr_min": 783,
+    "est_arr_min": 982,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5436",
+    "role": "bank",
+    "origin": "MBS",
+    "destination": "ORD",
+    "origin_lat": 43.53291,
+    "origin_lon": -84.07965,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 770,
+    "sched_arr_min": 785,
+    "est_arr_min": 866,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "F91257",
+    "role": "bank",
+    "origin": "MIA",
+    "destination": "ORD",
+    "origin_lat": 25.79325,
+    "origin_lon": -80.29056,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 650,
+    "sched_arr_min": 790,
+    "est_arr_min": 862,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA329",
+    "role": "bank",
+    "origin": "LGA",
+    "destination": "ORD",
+    "origin_lat": 40.77724,
+    "origin_lon": -73.87261,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 693,
+    "sched_arr_min": 795,
+    "est_arr_min": 926,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3489",
+    "role": "bank",
+    "origin": "FSD",
+    "destination": "ORD",
+    "origin_lat": 43.58135,
+    "origin_lon": -96.7417,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 695,
+    "sched_arr_min": 795,
+    "est_arr_min": 1034,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3093",
+    "role": "bank",
+    "origin": "TUL",
+    "destination": "ORD",
+    "origin_lat": 36.19837,
+    "origin_lon": -95.88824,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 686,
+    "sched_arr_min": 800,
+    "est_arr_min": 936,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV3953",
+    "role": "bank",
+    "origin": "SYR",
+    "destination": "ORD",
+    "origin_lat": 43.11119,
+    "origin_lon": -76.10631,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 722,
+    "sched_arr_min": 806,
+    "est_arr_min": 965,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1516",
+    "role": "bank",
+    "origin": "MSP",
+    "destination": "ORD",
+    "origin_lat": 44.88055,
+    "origin_lon": -93.21692,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 721,
+    "sched_arr_min": 810,
+    "est_arr_min": 876,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1537",
+    "role": "bank",
+    "origin": "MCO",
+    "destination": "ORD",
+    "origin_lat": 28.42889,
+    "origin_lon": -81.31603,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 705,
+    "sched_arr_min": 818,
+    "est_arr_min": 853,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3062",
+    "role": "bank",
+    "origin": "OKC",
+    "destination": "ORD",
+    "origin_lat": 35.39309,
+    "origin_lon": -97.60073,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 695,
+    "sched_arr_min": 819,
+    "est_arr_min": 941,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA2279",
+    "role": "bank",
+    "origin": "AUS",
+    "destination": "ORD",
+    "origin_lat": 30.19453,
+    "origin_lon": -97.66987,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 662,
+    "sched_arr_min": 820,
+    "est_arr_min": 933,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5403",
+    "role": "bank",
+    "origin": "SPI",
+    "destination": "ORD",
+    "origin_lat": 39.84395,
+    "origin_lon": -89.67762,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 756,
+    "sched_arr_min": 820,
+    "est_arr_min": 992,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3415",
+    "role": "bank",
+    "origin": "OMA",
+    "destination": "ORD",
+    "origin_lat": 41.30252,
+    "origin_lon": -95.89417,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 725,
+    "sched_arr_min": 824,
+    "est_arr_min": 1006,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA187",
+    "role": "bank",
+    "origin": "BOS",
+    "destination": "ORD",
+    "origin_lat": 42.36435,
+    "origin_lon": -71.00518,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 716,
+    "sched_arr_min": 830,
+    "est_arr_min": 920,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA331",
+    "role": "bank",
+    "origin": "LGA",
+    "destination": "ORD",
+    "origin_lat": 40.77724,
+    "origin_lon": -73.87261,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 735,
+    "sched_arr_min": 837,
+    "est_arr_min": 1041,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV3831",
+    "role": "bank",
+    "origin": "ALB",
+    "destination": "ORD",
+    "origin_lat": 42.74812,
+    "origin_lon": -73.80298,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 747,
+    "sched_arr_min": 837,
+    "est_arr_min": 901,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV6160",
+    "role": "bank",
+    "origin": "PIT",
+    "destination": "ORD",
+    "origin_lat": 40.49147,
+    "origin_lon": -80.23287,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 793,
+    "sched_arr_min": 839,
+    "est_arr_min": 986,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3638",
+    "role": "bank",
+    "origin": "COU",
+    "destination": "ORD",
+    "origin_lat": 38.81809,
+    "origin_lon": -92.21963,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 763,
+    "sched_arr_min": 843,
+    "est_arr_min": 964,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5431",
+    "role": "bank",
+    "origin": "MKE",
+    "destination": "ORD",
+    "origin_lat": 42.94722,
+    "origin_lon": -87.89658,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 794,
+    "sched_arr_min": 847,
+    "est_arr_min": 892,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3043",
+    "role": "bank",
+    "origin": "FNT",
+    "destination": "ORD",
+    "origin_lat": 42.9655,
+    "origin_lon": -83.74346,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 833,
+    "sched_arr_min": 850,
+    "est_arr_min": 1106,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3256",
+    "role": "bank",
+    "origin": "FAR",
+    "destination": "ORD",
+    "origin_lat": 46.91935,
+    "origin_lon": -96.81499,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 736,
+    "sched_arr_min": 850,
+    "est_arr_min": 1003,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV3949",
+    "role": "bank",
+    "origin": "PNS",
+    "destination": "ORD",
+    "origin_lat": 30.47331,
+    "origin_lon": -87.18744,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 702,
+    "sched_arr_min": 853,
+    "est_arr_min": 1042,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6254",
+    "role": "bank",
+    "origin": "MCI",
+    "destination": "ORD",
+    "origin_lat": 39.29761,
+    "origin_lon": -94.71391,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 766,
+    "sched_arr_min": 859,
+    "est_arr_min": 947,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV6045",
+    "role": "bank",
+    "origin": "TUL",
+    "destination": "ORD",
+    "origin_lat": 36.19837,
+    "origin_lon": -95.88824,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 751,
+    "sched_arr_min": 865,
+    "est_arr_min": 1112,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL1562",
+    "role": "bank",
+    "origin": "MSP",
+    "destination": "ORD",
+    "origin_lat": 44.88055,
+    "origin_lon": -93.21692,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 782,
+    "sched_arr_min": 869,
+    "est_arr_min": 997,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO6449",
+    "role": "bank",
+    "origin": "MSN",
+    "destination": "ORD",
+    "origin_lat": 43.13986,
+    "origin_lon": -89.33751,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 815,
+    "sched_arr_min": 870,
+    "est_arr_min": 903,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3613",
+    "role": "bank",
+    "origin": "ATL",
+    "destination": "ORD",
+    "origin_lat": 33.64044,
+    "origin_lon": -84.42694,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 807,
+    "sched_arr_min": 875,
+    "est_arr_min": 1015,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ2950",
+    "role": "bank",
+    "origin": "RST",
+    "destination": "ORD",
+    "origin_lat": 43.90883,
+    "origin_lon": -92.49799,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 805,
+    "sched_arr_min": 881,
+    "est_arr_min": 1051,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA265",
+    "role": "bank",
+    "origin": "MCO",
+    "destination": "ORD",
+    "origin_lat": 28.42889,
+    "origin_lon": -81.31603,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 765,
+    "sched_arr_min": 882,
+    "est_arr_min": 916,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "EV4647",
+    "role": "bank",
+    "origin": "CID",
+    "destination": "ORD",
+    "origin_lat": 41.88459,
+    "origin_lon": -91.71087,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 818,
+    "sched_arr_min": 887,
+    "est_arr_min": 1055,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3298",
+    "role": "bank",
+    "origin": "XNA",
+    "destination": "ORD",
+    "origin_lat": 36.28187,
+    "origin_lon": -94.30681,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 779,
+    "sched_arr_min": 887,
+    "est_arr_min": 1032,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ2925",
+    "role": "bank",
+    "origin": "MHK",
+    "destination": "ORD",
+    "origin_lat": 39.14097,
+    "origin_lon": -96.67083,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 788,
+    "sched_arr_min": 890,
+    "est_arr_min": 1155,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3464",
+    "role": "bank",
+    "origin": "DSM",
+    "destination": "ORD",
+    "origin_lat": 41.53493,
+    "origin_lon": -93.66068,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 810,
+    "sched_arr_min": 894,
+    "est_arr_min": 1161,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1620",
+    "role": "bank",
+    "origin": "RDU",
+    "destination": "ORD",
+    "origin_lat": 35.87764,
+    "origin_lon": -78.78747,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 821,
+    "sched_arr_min": 895,
+    "est_arr_min": 1049,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "F91060",
+    "role": "bank",
+    "origin": "PHX",
+    "destination": "ORD",
+    "origin_lat": 33.43417,
+    "origin_lon": -112.00806,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 635,
+    "sched_arr_min": 895,
+    "est_arr_min": 1021,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "MQ3114",
+    "role": "bank",
+    "origin": "DTW",
+    "destination": "ORD",
+    "origin_lat": 42.21206,
+    "origin_lon": -83.34884,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 870,
+    "sched_arr_min": 895,
+    "est_arr_min": 1001,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "OO5208",
+    "role": "bank",
+    "origin": "DCA",
+    "destination": "ORD",
+    "origin_lat": 38.85208,
+    "origin_lon": -77.03772,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 825,
+    "sched_arr_min": 898,
+    "est_arr_min": 1000,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1452",
+    "role": "bank",
+    "origin": "DCA",
+    "destination": "ORD",
+    "origin_lat": 38.85208,
+    "origin_lon": -77.03772,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 828,
+    "sched_arr_min": 900,
+    "est_arr_min": 1051,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1612",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "ALB",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 42.74812,
+    "dest_lon": -73.80298,
+    "sched_dep_min": 851,
+    "sched_arr_min": 1022,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1658",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "RDU",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 35.87764,
+    "dest_lon": -78.78747,
+    "sched_dep_min": 852,
+    "sched_arr_min": 1027,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1260",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "TPA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 27.97547,
+    "dest_lon": -82.53325,
+    "sched_dep_min": 853,
+    "sched_arr_min": 1077,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA112",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "DEN",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 39.85841,
+    "dest_lon": -104.667,
+    "sched_dep_min": 900,
+    "sched_arr_min": 1002,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1585",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "LGA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 40.77724,
+    "dest_lon": -73.87261,
+    "sched_dep_min": 900,
+    "sched_arr_min": 1088,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1622",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "EWR",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 40.6925,
+    "dest_lon": -74.16866,
+    "sched_dep_min": 902,
+    "sched_arr_min": 1092,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1145",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "LAX",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 33.94254,
+    "dest_lon": -118.40807,
+    "sched_dep_min": 914,
+    "sched_arr_min": 1071,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA688",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "LGA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 40.77724,
+    "dest_lon": -73.87261,
+    "sched_dep_min": 960,
+    "sched_arr_min": 1147,
+    "est_arr_min": null,
+    "position_estimated": true
+   }
+  ],
+  "now_min": 781
+ }
+}
