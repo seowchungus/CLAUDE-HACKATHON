@@ -28,8 +28,12 @@ llm_budget:                  # HARD guard, enforced in agents/client.py before e
   per_key_daily_cap: 480                # dashboard limit 500/day; 20 margin. Calls beyond it are refused (= REJECT -> fallback)
   per_key_rpm_cap: 12                   # dashboard limit 15/min; process-wide limiter waits instead of erroring
   daily_reset_tz: America/Los_Angeles   # free-tier RPD resets at midnight Pacific
-  used_before_ledger:                   # dashboard reading at 12:45 +08, counted against today's cap
-    GEMINI_API_KEY: 211
+  used_before_ledger:                   # dashboard readings (+08), counted against today's cap
+    GEMINI_API_KEY: 211                 # 12:45 reading
+    GEMINI_API_KEY_2: 250               # PLACEHOLDER (conservative) until the human gives the dashboard reading
+    GEMINI_API_KEY_3: 250               # PLACEHOLDER (conservative) until the human gives the dashboard reading
+  # Free-tier limits are per Google Cloud PROJECT, not per key. Keys from the same project share one 500/day.
+  # Each extra key must come from a different teammate's own project, or it adds no capacity.
   allocation:                           # planning only (MANAGER releases each); total 269 of 269 available
     integration_smoke: 20
     hero_recordings: 20

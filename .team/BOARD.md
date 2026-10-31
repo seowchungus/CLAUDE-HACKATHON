@@ -34,7 +34,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W1-06 | W1 | Adopt organisers' workbook limits (replaces W1-05 §2/§3 order) | todo | v1.2 | 40 | 13:40 |
 | W2-04 | W2 | Hard LLM call budget (ledger, RPM, no cascade), Flash-Lite, workbook charters | todo | W2-03 | 35 | 13:45 |
 | W3-04 | W3 | Challenge limits panel + LLM budget meter | todo | W3-03 | 25 | 13:50 |
-| INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | **awaiting approval** | wave 2 | 45 | |
+| INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | approved 12:58 (starts when W1-06 + W2-04 are reviewed) | wave 2 | 45 | |
 
 ### Queued (needs phase approval)
 - W1-06 live eval N=30 + B0/B1 (B2/B3 if quota), sharded across keys
@@ -52,6 +52,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
 ## Decisions & assumptions
+- 12:58 Wave 2 had not started by 12:57 (relay gap). MANAGER now messages sessions directly (human-approved).
 - 12:50 (human) Organisers' workbook `challenge2_operational_constraints.xlsx` adopted as is. No external/full flights file. Deviations listed in `config.yaml: workbook_deviations`, shown in UI + README.
 - 12:50 (human) All agents on Gemini 3.5 Flash Lite; limits must never be exceeded → hard budget guard; no backup-model cascade; narrator = template (0 calls).
 - 12:25 Negotiators switched to `gemini-3.6-flash` (the proposal's named backup): 3.8 Flash timed out/503 on every call (W2-01). Parity kept. Backup = `gemini-flash-lite-latest`. README/pitch must say so.
@@ -68,6 +69,7 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - 12:55 Model ablation B3 skipped (cut #7, quota). B2 single-agent ablation only if a 2nd key appears.
 
 ## Waiting on the human
-- [ ] Approve starting **INT-01 (integration)** at ~13:25 (an hour ahead of plan) once W1-05/W2-03/W3-03 land
+- [x] INT-01 approved 12:58 ("proceed with the next step"); starts when W1-06 + W2-04 pass review
 - [x] Data decided (12:50): provided file + workbook
-- [ ] Extra Gemini keys (`GEMINI_API_KEY_2`, `_3`) from teammates' own accounts (raises eval N to 30). Tell MANAGER each key's current dashboard usage.
+- [x] Keys 2 and 3 in `.env` (12:57)
+- [ ] Dashboard usage for keys 2 and 3, and confirmation they are in **different projects** from key 1 (placeholders of 250 used each until then)
