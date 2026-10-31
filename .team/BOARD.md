@@ -23,8 +23,8 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W1-02 | W1 | Scenario builder, metrics, option generator | review | W1-01 | 40 | 12:35 |
 | W1-03 | W1 | Checker H1–H7, fallback, bundle, CLI milestone | review | W1-02 | 35 | 13:10 |
 | W1-04 | W1 | Chaos, map payload, golden scenarios, eval skeleton | review | W1-03 | 30 | 13:40 |
-| W2-01 | W2 | Schema, merged template A–E, Gemini client, kill switch | review | — | 45 | 12:00 |
-| W2-02 | W2 | Coordinator state machine + log + events | review | W2-01 | 45 | 12:45 |
+| W2-01 | W2 | Schema, merged template A–E, Gemini client, kill switch | changes → W2-04 | — | 45 | 12:00 |
+| W2-02 | W2 | Coordinator state machine + log + events | changes → W2-04 | W2-01 | 45 | 12:45 |
 | W3-01 | W3 | API (mock) + console skeleton + negotiation room | review | — | 45 | 12:00 |
 | W3-02 | W3 | Map, constraint wall, Gantt, log viewer | review | W3-01 | 45 | 12:45 |
 | REVIEWER-01 | REVIEWER | Review wave 1 (W2 → W1 → W3) | doing | wave 1 | 40 | 13:20 |
