@@ -14,3 +14,11 @@ body { background: #020617; color: #e2e8f0; font-family: ui-sans-serif, system-u
   to { background-color: transparent; }
 }
 .flash { animation: flashin 1.6s ease-out; }
+
+.leaflet-container { background: #0b1220; }
+.leaflet-tooltip.map-label { background: transparent; border: 0; box-shadow: none; color: #e2e8f0; font: 600 11px ui-monospace, monospace; padding: 0 2px; }
+.leaflet-tooltip.map-label::before { display: none; }
+.map-eta { white-space: nowrap; font: 700 12px ui-monospace, monospace; color: #fde047; background: rgba(2, 6, 23, 0.85); border: 1px solid #a16207; border-radius: 4px; padding: 1px 5px; }
+.map-eta-new { color: #6ee7b7; border-color: #059669; }
+@keyframes ringpulse { 0%, 100% { stroke-opacity: 1; } 50% { stroke-opacity: 0.3; } }
+.ring-pulse { animation: ringpulse 1.2s ease-in-out infinite; }

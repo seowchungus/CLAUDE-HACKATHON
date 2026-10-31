@@ -2,10 +2,14 @@ import { useEffect, useState } from "react";
 import { api } from "./api";
 import { DecisionPanel } from "./components/DecisionPanel";
 import { NegotiationRoom } from "./components/NegotiationRoom";
+import { ConstraintWall } from "./components/ConstraintWall";
+import { Gantt } from "./components/Gantt";
+import { ChainBadge, LogDrawer, useChain } from "./components/LogDrawer";
 import { RoundTracker } from "./components/RoundTracker";
 import { ScenarioBar } from "./components/ScenarioBar";
+import { TrafficMap } from "./components/TrafficMap";
 import type { ChaosEvent, ChaosKind, ScenarioResponse, ScenarioSummary } from "./types";
-import { useRunStream } from "./useRunStream";
+import { decidedPlan, useRunStream } from "./useRunStream";
 
 const CHAOS: Record<ChaosKind, ChaosEvent> = {
   RUNWAY_CLOSURE: { kind: "RUNWAY_CLOSURE", params: { aar_factor: 0.5 }, note: "one runway closed" },
@@ -28,7 +32,9 @@ export default function App() {
   const [runId, setRunId] = useState<string | null>(null);
   const [llmOn, setLlmOn] = useState(true);
   const [err, setErr] = useState<string | null>(null);
+  const [logOpen, setLogOpen] = useState(() => new URLSearchParams(location.search).has("log"));
   const st = useRunStream(runId);
+  const chain = useChain(runId, `${!!st.ended}-${!!st.approved}-${logOpen}`);
 
   useEffect(() => {
     api.scenarios().then((l) => {
@@ -46,6 +52,9 @@ export default function App() {
     if (new URLSearchParams(location.search).has("autorun") && !runId)
       api.createRun(sid).then((r) => setRunId(r.run_id)).catch((e) => setErr(String(e)));
   }, [sid]);
+
+  const plan = decidedPlan(st);
+  const tentOpt = st.options.find((o) => o.option_id === st.tentative?.option_id) ?? null;
 
   const run = async () => {
     setErr(null);
@@ -105,6 +114,13 @@ export default function App() {
         >
           {llmOn ? "LLM ON · kill" : "LLM KILLED · restore"}
         </button>
+        <button
+          onClick={() => setLogOpen(true)}
+          disabled={!runId}
+          className="flex items-center gap-2 rounded bg-slate-800 px-3 py-1 font-semibold hover:bg-slate-700 disabled:opacity-40"
+        >
+          Log <ChainBadge v={chain.verify} />
+        </button>
         <div className="ml-auto flex items-center gap-3 text-xs text-slate-500">
           {st.started?.parent_run_id && <span className="text-amber-400">re-run of {st.started.parent_run_id}</span>}
           {runId && <span className="font-mono">{runId}</span>}
@@ -127,20 +143,33 @@ export default function App() {
           <NegotiationRoom st={st} />
         </Panel>
         <div className="col-span-4 flex flex-col gap-3">
-          <Panel title="Traffic map" className="min-h-64">
-            <div className="p-4 text-slate-600">map (W3-02)</div>
+          <Panel title="Traffic map">
+            {sc ? (
+              <TrafficMap map={sc.map} etaNew={plan?.metrics.eta_new_min ?? null} chaos={(st.started?.chaos_applied.length ?? 0) > 0} />
+            ) : (
+              <div className="p-4 text-slate-600">loading…</div>
+            )}
+          </Panel>
+          <Panel title="Runway & gates">
+            {sc && <Gantt s={sc.bundle.scenario} opt={plan ?? tentOpt} isPlan={!!plan} />}
           </Panel>
         </div>
-        <Panel title="Decision" className="col-span-12">
+        <Panel title="Decision" className="col-span-5">
           <DecisionPanel st={st} />
         </Panel>
-        <Panel title="Constraint wall" className="col-span-7 min-h-40">
-          <div className="p-4 text-slate-600">constraint wall (W3-02)</div>
-        </Panel>
-        <Panel title="Runway & gates" className="col-span-5 min-h-40">
-          <div className="p-4 text-slate-600">Gantt (W3-02)</div>
+        <Panel title="Constraint wall" className="col-span-7">
+          {sc && (
+            <ConstraintWall
+              st={st}
+              options={st.options.length ? st.options : sc.bundle.options}
+              checks={Object.keys(st.checks).length ? st.checks : sc.bundle.checks}
+              fcfs={st.fcfs ?? sc.bundle.fcfs}
+              fallbackId={(st.fallbackShadow ?? sc.bundle.fallback).option_id}
+            />
+          )}
         </Panel>
       </main>
+      {logOpen && runId && <LogDrawer runId={runId} entries={chain.entries} verify={chain.verify} onClose={() => setLogOpen(false)} />}
     </div>
   );
 }
