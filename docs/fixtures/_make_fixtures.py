@@ -2,7 +2,7 @@
 Run: python3 docs/fixtures/_make_fixtures.py
 These are FIXTURES ("fixture": true), not real DOT rows and not real metric computations.
 """
-import hashlib, json, os
+import copy, hashlib, json, os
 from datetime import datetime, timedelta, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -47,21 +47,21 @@ row = {"year": 2015, "month": 1, "day": 2, "airline": "AA", "flight_number": 123
 bank = [
     fl("UA1501", "LGA", "ORD", 870, 1015, 1032, "bank", "M"),
     fl("AA2210", "LAX", "ORD", 690, 1030, 1041, "bank", "H"),
-    fl("UA0918", "SFO", "ORD", 700, 1035, 1048, "bank", "H"),
+    fl("UA918", "SFO", "ORD", 700, 1035, 1048, "bank", "H"),
     fl("WN3307", "DEN", "ORD", 880, 1040, 1046, "bank", "M"),
     fl("AA1730", "ATL", "ORD", 900, 1045, 1052, "bank", "M"),
     fl("DL2244", "MSP", "ORD", 975, 1050, 1058, "bank", "L"),
-    fl("UA0610", "BOS", "ORD", 905, 1055, 1063, "bank", "M"),
-    fl("AA0388", "PHX", "ORD", 795, 1060, 1066, "bank", "M"),
+    fl("UA610", "BOS", "ORD", 905, 1055, 1063, "bank", "M"),
+    fl("AA388", "PHX", "ORD", 795, 1060, 1066, "bank", "M"),
     fl("UA1144", "SEA", "ORD", 720, 1070, 1074, "bank", "H"),
     fl("AA2671", "MIA", "ORD", 880, 1075, 1080, "bank", "M"),
 ]
 conns = [
-    fl("AA0144", "ORD", "LGA", 1035, 1170, None, "connection", "M", 14),
-    fl("AA0901", "ORD", "BOS", 1060, 1195, None, "connection", "M", 9),
+    fl("AA144", "ORD", "LGA", 1035, 1170, None, "connection", "M", 14),
+    fl("AA901", "ORD", "BOS", 1060, 1195, None, "connection", "M", 9),
     fl("AA2032", "ORD", "MIA", 1085, 1260, None, "connection", "M", 21),
     fl("AA1580", "ORD", "SEA", 1120, 1395, None, "connection", "H", 6),
-    fl("AA0475", "ORD", "DCA", 1140, 1250, None, "connection", "M", 11),
+    fl("AA475", "ORD", "DCA", 1140, 1250, None, "connection", "M", 11),
 ]
 gates = []
 paths = {"A": ["A"], "B": ["A", "B"], "C": ["C", "D"]}
@@ -73,13 +73,14 @@ for c in "ABC":
         gates.append({"gate_id": g, "concourse": c, "size": sizes[c], "taxi_path": paths[c],
                       "occupied": occ.get(g, []), "out_of_service": False})
 
-prov = {k: "real" for k in ["row", "disruption_type", "disruption_min", "origin", "destination",
-                            "bank", "connections", "base_eta_min"]}
+prov = {k: "real" for k in ["row", "disruption_type", "disruption_min", "origin", "destination", "disrupted",
+                            "bank", "connections", "base_eta_min", "blocked_taxiways", "chaos_applied"]}
 prov.update({"aar_nominal": "real_derived", "aar_reduced": "synthetic", "aircraft_size": "synthetic",
              "fuel_at_fix_min": "synthetic", "flight_crew_duty_remaining_min": "synthetic",
              "ramp_shift_end_min": "synthetic", "next_departure_min": "synthetic", "gates": "synthetic",
              "taxiways": "synthetic", "turbulence_by_fp": "synthetic", "bank.wake": "synthetic",
-             "connections.pax_connecting": "synthetic", "disrupted.wake": "synthetic"})
+             "connections.pax_connecting": "synthetic", "disrupted.wake": "synthetic",
+             "connections.wake": "synthetic"})
 
 scenario = {
     "scenario_id": SID, "seed": 1234002, "fixture": True, "row": row,
@@ -127,7 +128,7 @@ opts = [
     opt("opt_6", 0, "B2", "as_filed", metrics(0, "B2", "as_filed", 44.0, 0, 0, 9, 15, 66, 0.45, 1090, 1200)),
 ]
 fcfs = opt("opt_fcfs", 0, "A3", "as_filed", metrics(0, "A3", "as_filed", 44.0, 0, 0, 9, 15, 66, 0.45, 960, 1200), source="fcfs")
-counter = opt("opt_c1", 5, "A3", "speed_reduction", metrics(5, "A3", "speed_reduction", 43.0, 0, 0, 5, 30, 66, 0.4, 960, 1200),
+counter = opt("opt_c1", 5, "A3", "speed_reduction", metrics(5, "A3", "speed_reduction", 43.0, 0, 0, 4, 30, 66, 0.4, 960, 1200),
               source="counter", by="GROUND", parent="opt_4")
 
 def check(o):
@@ -175,7 +176,7 @@ with open(os.path.join(HERE, "scenarios_list.json"), "w") as f:
     json.dump([
         {"scenario_id": SID, "date": "2015-01-02", "flight_id": "AA1234", "origin": "DFW", "destination": "ORD",
          "disruption_type": "WEATHER", "disruption_min": 48},
-        {"scenario_id": "2015-01-02_UA0918_SFO-ORD", "date": "2015-01-02", "flight_id": "UA918", "origin": "SFO",
+        {"scenario_id": "2015-01-02_UA918_SFO-ORD", "date": "2015-01-02", "flight_id": "UA918", "origin": "SFO",
          "destination": "ORD", "disruption_type": "LATE_AIRCRAFT", "disruption_min": 34},
     ], f, indent=1)
 
@@ -191,12 +192,12 @@ def entry(etype, actor, payload, cids=(), synth=()):
          "run_id": RUN, "scenario_id": SID,
          "source_row": {"date": "2015-01-02", "airline": "AA", "flight_number": 1234},
          "event_type": etype, "actor": actor, "constraint_ids": list(cids), "synthetic_fields": list(synth),
-         "payload": payload, "prev_hash": prev}
+         "payload": copy.deepcopy(payload), "prev_hash": prev}
     e["hash"] = hashlib.sha256((prev + canon(e)).encode()).hexdigest()
     prev = e["hash"]; log.append(e); return e
 def emit(etype, actor, data, cids=()):
     e = entry(etype, actor, data, cids)
-    events.append({"type": etype, "run_id": RUN, "seq": len(events), "ts": e["ts"], "log_hash": e["hash"], "data": data})
+    events.append({"type": etype, "run_id": RUN, "seq": len(events), "ts": e["ts"], "log_hash": e["hash"], "data": copy.deepcopy(data)})
 
 entry("scenario_loaded", "SYSTEM", {"scenario": scenario}, synth=[k for k, v in prov.items() if v == "synthetic"])
 MODELS = {"ATC": "gemini-3.8-flash", "PILOT": "gemini-3.8-flash", "GROUND": "gemini-3.8-flash", "NARRATOR": "gemini-flash-lite-latest"}
@@ -227,16 +228,17 @@ emit("agent_position", "GROUND", pos("GROUND", 1, "COUNTER", ["opt_5", "opt_4", 
      red=["H4_gate_validity", "H5_crew_duty"]))
 bad = opt("opt_4", 5, "B2", "speed_reduction", opts[3]["metrics"]); bad_check = check(bad)
 emit("counter_checked", "CHECKER", {"round": 1, "agent": "PILOT", "counter": {"base_option": "opt_4", "param": "gate", "value": "B2"},
-     "accepted": False, "option_id": None, "reason": "H4_gate_validity: gate B2 occupied 17:10-18:10 by another aircraft", "check": bad_check},
+     "accepted": False, "option_id": None, "reason": "H4_gate_validity: gate B2 occupied 17:10-18:10 by another aircraft", "check": bad_check,
+     "failed": ["H4_gate_validity"]},
      ["H4_gate_validity"])
 emit("counter_checked", "CHECKER", {"round": 1, "agent": "GROUND", "counter": {"base_option": "opt_4", "param": "gate", "value": "A3"},
-     "accepted": True, "option_id": "opt_c1", "reason": "all hard constraints pass", "check": None}, CIDS)
-opts2 = opts + [counter]; checks["opt_c1"] = check(counter)
+     "accepted": True, "option_id": "opt_c1", "reason": "all hard constraints pass", "check": check(counter), "failed": []}, CIDS)
+opts2 = opts + [counter]; checks = {**checks, "opt_c1": check(counter)}
 emit("options", "CHECKER", {"options": opts2, "checks": checks, "fallback": fallback, "fcfs": fcfs}, CIDS)
 emit("veto", "CHECKER", {"round": 1, "option_id": "opt_5", "agents": ["GROUND"], "failed": ["H3_fuel_reserve"],
      "reason": "GROUND ranked opt_5 first but fuel 27.5 min < 30 min final reserve; checker overrides"}, ["H3_fuel_reserve"])
 emit("tentative", "COORDINATOR", {"round": 1, "option_id": "opt_c1", "agreement_set": ["opt_1", "opt_4", "opt_c1"],
-     "minmax_rank": {"opt_c1": 2, "opt_4": 2, "opt_1": 4}})
+     "minmax_rank": {"opt_4": 2, "opt_c1": 2, "opt_1": 4}})
 emit("round_ended", "COORDINATOR", {"round": 1, "all_accept": False, "actions": {"ATC": "PROPOSE", "PILOT": "COUNTER", "GROUND": "COUNTER"}})
 # R2
 emit("round_started", "COORDINATOR", {"round": 2, "phase": "RESPOND", "candidates": [o["option_id"] for o in opts2], "tentative": "opt_c1"})

@@ -1,4 +1,4 @@
-# ACCORD Contracts (FROZEN v1.0, 2026-10-31 11:20 +08)
+# ACCORD Contracts (FROZEN v1.1, 2026-10-31 12:35 +08; v1.0 11:20)
 
 Owner: MANAGER. Every worker builds against this file exactly.
 Changes after the freeze go through MANAGER only and are recorded in the "Changelog" at the bottom and in `.team/BOARD.md`.
@@ -23,13 +23,13 @@ The fixtures are hand-made and labelled `"fixture": true`. They are not real DOT
   - `scenario_id = f"{YYYY}-{MM:02}-{DD:02}_{AIRLINE}{FLIGHT_NUMBER}_{ORIGIN}-{DEST}"`, e.g. `2015-01-02_AA1234_DFW-ORD`
   - `option_id`: generated `opt_1..opt_8`; counters `opt_c1, opt_c2…` (in order of acceptance); FCFS baseline `opt_fcfs` (never a negotiation candidate)
   - `run_id`: `run_<YYYYMMDDTHHMMSS>_<6 hex>`
-  - `flight_id = f"{AIRLINE}{FLIGHT_NUMBER}"`
+  - `flight_id = f"{AIRLINE}{FLIGHT_NUMBER}"`, **unpadded** (`UA918`, never `UA0918`); same in `scenario_id`. Parsers may accept padded input. If two rows share a scenario_id, take the first.
 - **Roles:** `AgentRole = Literal["ATC", "PILOT", "GROUND"]`
 - **Constraint IDs** (exact strings):
   `ConstraintId = Literal["H1_wake_separation", "H2_runway_capacity", "H3_fuel_reserve", "H4_gate_validity", "H5_crew_duty", "H6_taxiway_reachability", "H7_severe_turbulence"]`
 - **Flight plan adjustments:** `FPAdj = Literal["as_filed", "speed_reduction", "hold_10", "hold_20", "reroute_weather"]`
 - **Counter grid:** `eta_shift_min ∈ config.options.eta_shifts_min` (0..60 step 5), `gate ∈ scenario gate_ids`, `fp_adjustment ∈ FPAdj`.
-- **Provenance:** `Provenance = Literal["real", "real_derived", "estimated", "synthetic"]`. Every non-real field is listed in `Scenario.provenance` and the UI shows a `SYNTHETIC` tag next to it.
+- **Provenance:** `Provenance = Literal["real", "real_derived", "estimated", "synthetic"]`. Every non-real field is listed in `Scenario.provenance` and the UI shows a `SYNTHETIC` tag next to it. *(v1.1)* Keys are top-level field names, plus dotted `<field>.<subfield>` keys for sub-fields of nested/list items. **Required keys:** `row, disruption_type, disruption_min, origin, destination, disrupted, bank, connections, base_eta_min, aar_nominal, aar_reduced, aircraft_size, fuel_at_fix_min, flight_crew_duty_remaining_min, ramp_shift_end_min, next_departure_min, gates, taxiways, blocked_taxiways, turbulence_by_fp, chaos_applied, disrupted.wake, bank.wake, connections.wake, connections.pax_connecting`. `apply_chaos` sets every field it touches to `synthetic`.
 - Thresholds, weights and model names come from `config.yaml`, loaded with `core.config.load_config() -> dict` (W1 provides it).
 
 ---
@@ -328,7 +328,7 @@ Transport: `text/event-stream`. Each message is `event: <type>` + `data: <envelo
 | `round_started` | `{round, phase: "PROPOSE"\|"RESPOND"\|"BALLOT", candidates: [option_id], tentative: option_id\|null}` |
 | `agent_thinking` | `{round, agent}` (one per agent, just before the call) |
 | `agent_position` | `AgentMessage` (§2) |
-| `counter_checked` | `{round, agent, counter: Counter, accepted: bool, option_id: str\|null, reason: str, check: CheckReport\|null}`. `option_id` is the new `opt_cN` if accepted. Rejected if off-grid, duplicate, or fails a hard constraint (`reason` names the constraint IDs) |
+| `counter_checked` | `{round, agent, counter: Counter, accepted: bool, option_id: str\|null, reason: str, check: CheckReport\|null, failed: [ConstraintId]}`. `option_id` is the new `opt_cN` if accepted. Rejected if off-grid, duplicate, or fails a hard constraint. *(v1.1)* `check` is non-null whenever the counter reached the checker (accepted or not); null only for off-grid/duplicate. `failed` lists failed constraint IDs (`[]` if none or not checked) |
 | `veto` | `{round, option_id, agents: [AgentRole], failed: [ConstraintId], reason}`. One or more agents accepted/ranked-first an option that fails the checker; the checker overrides |
 | `tentative` | `{round, option_id: str\|null, agreement_set: [option_id], minmax_rank: {option_id: int}}`. Agreement set = ∩ acceptable ∩ hard-feasible |
 | `round_ended` | `{round, all_accept: bool, actions: {ATC: action\|null, PILOT: ..., GROUND: ...}}` |
@@ -336,11 +336,17 @@ Transport: `text/event-stream`. Each message is `event: <type>` + `data: <envelo
 | `fallback` | `{reason: "NO_CONSENSUS"\|"LLM_KILLED"\|"LLM_ERROR"\|"NO_FEASIBLE", result: FallbackResult, plan: Option\|null}`. `result.status == "ESCALATE"` means no safe automated plan |
 | `narration` | `{text}` (narrator summary, ≤ 120 words; optional/stretch) |
 | `awaiting_approval` | `{decision_source: "CONSENSUS"\|"FALLBACK"\|"ESCALATE", option_id: str\|null, rounds_used: int}` |
-| `approved` | `{action: "APPROVE"\|"OVERRIDE", option_id, by, note, final_hash}` (human sign-off closes the chain) |
-| `run_ended` | `{final_state: "CONSENSUS"\|"FALLBACK"\|"ESCALATE", rounds_used, latency_ms, chain_ok: bool, n_llm_calls: int}` |
+| `approved` | `{action: "APPROVE"\|"OVERRIDE", option_id, by, note, final_hash}` (human sign-off closes the chain). *(v1.1)* `final_hash` = the log head hash **before** the approval entry (the chain being signed off). The envelope `log_hash` = the approval entry's own hash. |
+| `run_ended` | `{final_state: "CONSENSUS"\|"FALLBACK"\|"ESCALATE"\|"SUPERSEDED", rounds_used, latency_ms, chain_ok: bool, n_llm_calls: int}`. *(v1.1)* `SUPERSEDED` = cancelled because a chaos event started a child run |
 | `error` | `{message, fatal: bool}` |
 
 Order of a normal run: `run_started, options, [round_started, agent_thinking×3, agent_position×3, counter_checked*, options?, veto*, tentative, round_ended]×≤3, consensus|fallback, narration?, awaiting_approval, run_ended`. `approved` arrives later (after `POST /approve`) on the same stream if it is still open; it is always written to the log.
+
+*(v1.1)* **Agreement set and tentative (pinned).** A = ∩ over agents of acceptable ∩ hard-feasible, where an agent's acceptable set is its latest `acceptable` list, plus the tentative if its action is `ACCEPT`. A counter accepted in the current round is provisionally acceptable to its proposer and to every agent whose acceptable set contains its `parent_option`; from the next round on, agents' own lists decide. Rank of an option for an agent = its 1-based position in that agent's `ranking`, else its parent's position (for a counter), else `len(candidates) + 1`. Tentative = argmin over A of max rank across agents; ties by lower `metrics.cost_J`, then `option_id`.
+
+*(v1.1)* **Seq.** Envelope `seq` counts SSE events only (from 0). Log `seq` counts log entries (seq 0 = `scenario_loaded`, which has no SSE event). They differ. Clients match events to log entries by `log_hash`, never by seq.
+
+*(v1.1)* **Unsafe proposals blocked** (eval headline): `Σ len(veto.data.agents) + count(counter_checked where failed != [])`. W1 (eval) and W2 (coordinator) count exactly this.
 
 Invariants the UI may rely on: at most 3 `round_started`; `round == 3` never has `counter_checked`; exactly one of `consensus`/`fallback` per run; every plan in `consensus`/`fallback` has `check.feasible == true` (or `fallback.result.status == "ESCALATE"` and `plan == null`).
 
@@ -355,8 +361,9 @@ Invariants the UI may rely on: at most 3 `round_started`; `round == 3` never has
 | `GET /api/scenarios/{scenario_id}` | | `{bundle: ScenarioBundle, map: MapPayload}` |
 | `POST /api/runs` | `{scenario_id, chaos?: [ChaosEvent], parent_run_id?: str}` | `{run_id}` |
 | `GET /api/runs/{run_id}/stream` | | SSE (§3). Replays from seq 0 if the run already started |
-| `POST /api/runs/{run_id}/chaos` | `ChaosEvent` | `{run_id: <new run>, parent_run_id}`: re-negotiates on the mutated scenario as a NEW run |
-| `POST /api/runs/{run_id}/approve` | `{action: "APPROVE"\|"OVERRIDE", option_id, by: str, note?: str}` | `{ok, final_hash}` |
+| `POST /api/runs/{run_id}/chaos` | `ChaosEvent` | `{run_id: <new run>, parent_run_id}`: re-negotiates on the mutated scenario as a NEW run. *(v1.1)* Child `chaos` = parent's `chaos_applied` + the new event (accumulates). If the parent is still negotiating, it is cancelled and ends with `run_ended.final_state = "SUPERSEDED"` |
+| `GET /api/runs/{run_id}/bundle` | | *(v1.1)* `{bundle: ScenarioBundle, map: MapPayload}` for this run's own (possibly chaos-mutated) scenario. The UI uses this, not `/api/scenarios/{id}`, once a run exists |
+| `POST /api/runs/{run_id}/approve` | `{action: "APPROVE"\|"OVERRIDE", option_id, by: str, note?: str}` | `{ok, final_hash}`. *(v1.1)* `final_hash` = same value as `approved.data.final_hash` (head before the approval entry). `409` before `awaiting_approval`. On ESCALATE only `OVERRIDE` with an explicit `option_id` is allowed. The UI uses this response (the stream may already be closed) |
 | `POST /api/kill` | `{llm_enabled: bool}` | `{llm_enabled}` |
 | `GET /api/runs/{run_id}/log` | | `application/x-ndjson` download of `runs/<run_id>.jsonl` |
 | `GET /api/runs/{run_id}/verify` | | `VerifyResult` (§5) |
@@ -418,6 +425,8 @@ class VerifyResult(BaseModel):
 `canonical_json(x) = json.dumps(x, sort_keys=True, separators=(",", ":"), ensure_ascii=False)`.
 Seq 0 is always `scenario_loaded` with payload `{scenario: Scenario}`. The SSE envelope's `log_hash` equals the `hash` of the entry written for that event.
 
+*(v1.1)* `ConsensusLog.__init__` writes seq 0 itself when the file doesn't exist; if `runs/<run_id>.jsonl` already exists it **resumes** from the existing head (never truncates), so `approve` works after `run_ended` and after a server restart. `append()` serialises the payload at call time (deep copy); mutating the caller's object afterwards must not change the entry. `verify_chain` hashes the raw `json.loads` dicts, never Pydantic re-dumps.
+
 ---
 
 ## 6. Eval output: `eval/results.json` (W1)
@@ -446,3 +455,4 @@ Every number is measured from runs. If a field was not run, it is `null`, never 
 
 ## Changelog
 - v1.0 (11:20): initial freeze.
+- v1.1 (12:35), from REVIEWER-00, all additive: unpadded flight ids; provenance key convention and required keys; `counter_checked.failed` and non-null `check`; `approved.final_hash` = pre-approval head; `SUPERSEDED` final state; agreement-set/rank/tie rules pinned (W2's implementation); seq vs log seq; unsafe-blocked definition; `GET /api/runs/{id}/bundle`; chaos accumulates and supersedes the parent; approve 409/ESCALATE rules; log constructor writes seq 0 and resumes; `append` deep-copies. Fixtures regenerated to match.

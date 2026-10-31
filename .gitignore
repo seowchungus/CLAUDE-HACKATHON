@@ -229,3 +229,5 @@ runs/*
 node_modules/
 web/dist/
 eval/results_partial_*.json
+
+.DS_Store

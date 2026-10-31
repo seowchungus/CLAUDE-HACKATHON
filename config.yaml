@@ -9,12 +9,15 @@ negotiation:
   temperature: 0.2
 
 models:
-  # VERIFY at minute 0 with client.models.list() (task W2-01). Free tier only.
-  ATC: gemini-3.8-flash
-  PILOT: gemini-3.8-flash
-  GROUND: gemini-3.8-flash
+  # Verified listed on the free tier by W2-01 (12:03). gemini-3.8-flash timed out / 503 on every call
+  # at 12:00, so negotiators run on the proposal's named backup 3.6 Flash (12:35, MANAGER).
+  # Model parity kept: all three negotiators on the same model. Swap back with one line if 3.8 recovers.
+  ATC: gemini-3.6-flash
+  PILOT: gemini-3.6-flash
+  GROUND: gemini-3.6-flash
   NARRATOR: gemini-flash-lite-latest
-  backup: gemini-3.6-flash     # used on persistent 429, and for ablation B3
+  backup: gemini-flash-lite-latest   # used on persistent 429/503
+  ablation_B3: gemini-3.8-flash      # model ablation, only if it becomes responsive
 
 rate_limit:
   backoff_initial_s: 2

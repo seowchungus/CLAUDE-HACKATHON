@@ -88,7 +88,7 @@
      "pax_connecting": null
     },
     {
-     "flight_id": "UA0918",
+     "flight_id": "UA918",
      "airline": "UA",
      "flight_number": 918,
      "tail_number": null,
@@ -144,7 +144,7 @@
      "pax_connecting": null
     },
     {
-     "flight_id": "UA0610",
+     "flight_id": "UA610",
      "airline": "UA",
      "flight_number": 610,
      "tail_number": null,
@@ -158,7 +158,7 @@
      "pax_connecting": null
     },
     {
-     "flight_id": "AA0388",
+     "flight_id": "AA388",
      "airline": "AA",
      "flight_number": 388,
      "tail_number": null,
@@ -202,7 +202,7 @@
    ],
    "connections": [
     {
-     "flight_id": "AA0144",
+     "flight_id": "AA144",
      "airline": "AA",
      "flight_number": 144,
      "tail_number": null,
@@ -216,7 +216,7 @@
      "pax_connecting": 14
     },
     {
-     "flight_id": "AA0901",
+     "flight_id": "AA901",
      "airline": "AA",
      "flight_number": 901,
      "tail_number": null,
@@ -258,7 +258,7 @@
      "pax_connecting": 6
     },
     {
-     "flight_id": "AA0475",
+     "flight_id": "AA475",
      "airline": "AA",
      "flight_number": 475,
      "tail_number": null,
@@ -451,9 +451,12 @@
     "disruption_min": "real",
     "origin": "real",
     "destination": "real",
+    "disrupted": "real",
     "bank": "real",
     "connections": "real",
     "base_eta_min": "real",
+    "blocked_taxiways": "real",
+    "chaos_applied": "real",
     "aar_nominal": "real_derived",
     "aar_reduced": "synthetic",
     "aircraft_size": "synthetic",
@@ -466,7 +469,8 @@
     "turbulence_by_fp": "synthetic",
     "bank.wake": "synthetic",
     "connections.pax_connecting": "synthetic",
-    "disrupted.wake": "synthetic"
+    "disrupted.wake": "synthetic",
+    "connections.wake": "synthetic"
    }
   },
   "options": [
@@ -1289,7 +1293,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "UA0918",
+    "flight_id": "UA918",
     "role": "bank",
     "origin": "SFO",
     "destination": "ORD",
@@ -1345,7 +1349,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "UA0610",
+    "flight_id": "UA610",
     "role": "bank",
     "origin": "BOS",
     "destination": "ORD",
@@ -1359,7 +1363,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "AA0388",
+    "flight_id": "AA388",
     "role": "bank",
     "origin": "PHX",
     "destination": "ORD",
@@ -1401,7 +1405,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "AA0144",
+    "flight_id": "AA144",
     "role": "connection",
     "origin": "ORD",
     "destination": "LGA",
@@ -1415,7 +1419,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "AA0901",
+    "flight_id": "AA901",
     "role": "connection",
     "origin": "ORD",
     "destination": "BOS",
@@ -1457,7 +1461,7 @@
     "position_estimated": true
    },
    {
-    "flight_id": "AA0475",
+    "flight_id": "AA475",
     "role": "connection",
     "origin": "ORD",
     "destination": "DCA",
