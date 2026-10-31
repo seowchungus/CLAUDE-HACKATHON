@@ -64,6 +64,13 @@ export function EvalPage() {
   const live = !mock && !none;
   // LLM-dependent tiles: greyed when scripted, "not run" when no agents ran
   const L = <T,>(v: T | null) => (none ? null : v);
+  // LLM_ERROR context (display only): rows that never negotiated are still in every rate below
+  const nErr = Number(s.n_llm_error ?? 0);
+  const nNeg = s.n_negotiated == null ? r.n - nErr : Number(s.n_negotiated);
+  const notes = (r as { notes?: unknown }).notes;
+  const cons = r.per_scenario.filter((p) => p.final_state === "CONSENSUS");
+  const consR2 = cons.filter((p) => p.rounds_used === 2).length;
+  const overAll = nErr > 0 ? `over all ${r.n}, incl. ${nErr} LLM_ERROR` : undefined;
   const agents = mock ? "scripted (mock)" : none ? "not run" : `${model ?? "?"} (${llm ?? "live"})`;
   return (
     <div className="flex flex-col gap-4 p-4">
@@ -80,23 +87,38 @@ export function EvalPage() {
         )}
         <span className="text-slate-400">N={r.n} · agents: {agents} · +{r.n_dev} dev · seed {r.seed} · generated {r.generated_at}</span>
       </div>
+      {(nErr > 0 || !!notes) && (
+        <div className="rounded-lg border border-amber-600 bg-amber-950 px-4 py-3 text-amber-100">
+          {nErr > 0 ? (
+            <>
+              {nNeg} of {r.n} flights negotiated live; {nErr} hit a client bug (LLM_ERROR, fixed in cac78e9) and fell back to the
+              optimiser. On the {nNeg} negotiated: {cons.length}/{nNeg} consensus
+              {cons.length > 0 && (consR2 === cons.length ? ", all in round 2" : `, ${consR2} in round 2`)}. Rates below are over all {r.n}.
+            </>
+          ) : (
+            (Array.isArray(notes) ? notes : [notes]).map((n, i) => <div key={i}>{String(n)}</div>)
+          )}
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
-        <Tile label="Consensus rate" value={L(pct(s.consensus_rate))} scripted={mock} />
+        <Tile label="Consensus rate" value={L(pct(s.consensus_rate))} sub={overAll} scripted={mock} />
         <Tile label="Consensus by R2" value={L(pct(s.consensus_by_r2))} scripted={mock} />
-        <Tile label="Fallback rate" value={L(pct(s.fallback_rate))} scripted={mock} />
+        <Tile label="Fallback rate" value={L(pct(s.fallback_rate))} sub={overAll} scripted={mock} />
         <Tile label="Escalate rate" value={L(pct(s.escalate_rate))} scripted={mock} />
         <Tile label="Unsafe proposals blocked" value={L(num(s.unsafe_proposals_blocked, 0))} tone="good" sub="vetoes + rejected counters" scripted={mock} />
         <Tile label="Unsafe plans executed" value={L(num(s.unsafe_plans_executed, 0))} tone={s.unsafe_plans_executed ? "bad" : "good"} sub="must be 0" scripted={mock} />
         <Tile label="Schema failure rate" value={L(pct(s.schema_failure_rate))} scripted={mock} />
         <Tile label="Retry rate" value={L(pct(s.retry_rate))} scripted={mock} />
-        <Tile label="Latency p50" value={L(s.latency_p50_ms == null ? null : `${(s.latency_p50_ms / 1000).toFixed(1)} s`)} scripted={mock} />
+        <Tile label="Latency p50" value={L(s.latency_p50_ms == null ? null : `${(s.latency_p50_ms / 1000).toFixed(1)} s`)} sub={overAll} scripted={mock} />
         <Tile label="Latency p95" value={L(s.latency_p95_ms == null ? null : `${(s.latency_p95_ms / 1000).toFixed(1)} s`)} scripted={mock} />
         <Tile label="Tokens / resolution" value={L(num(s.tokens_per_resolution, 0))} scripted={mock} />
         <Tile label="Regret vs B1" value={L(num(s.regret_vs_B1_mean, 2))} scripted={mock} />
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <section className="rounded-lg border border-slate-800 p-4">
-          <h2 className="mb-3 font-semibold text-slate-300">Cost J vs baselines</h2>
+          <h2 className="mb-3 font-semibold text-slate-300">
+            Cost J vs baselines{overAll && <span className="ml-2 text-xs font-normal text-slate-500">{overAll}</span>}
+          </h2>
           <JBars j={{ ...s.J_mean, accord: L(s.J_mean.accord) }} accordLabel={live ? "ACCORD" : mock ? "ACCORD (scripted)" : "ACCORD (not run)"} />
         </section>
         <section className="rounded-lg border border-slate-800 p-4">
