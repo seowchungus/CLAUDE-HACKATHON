@@ -87,7 +87,9 @@ class GeminiClient:
         if not keys:
             raise RuntimeError("GEMINI_API_KEY missing in .env")
         self.key_names = [n for n, _ in keys]
+        self._keys = dict(keys)
         self._clients = {n: genai.Client(api_key=k) for n, k in keys}
+        self._loop = None   # genai's aio session is bound to the loop it first ran on
         self.n_calls = 0
         self._no_thinking: set[str] = set()   # models that reject thinking_config
         print(f"LLM_CLIENT keys={self.key_names} calls_this_process={CALLS_TODAY}", file=sys.stderr)
@@ -102,9 +104,19 @@ class GeminiClient:
         i = self.ROLE_KEY_INDEX.get(role, 0) % len(self.key_names)
         return self.key_names[i:] + self.key_names[:i]
 
+    def _bind_loop(self) -> None:
+        """Rebuild the genai clients when called from a new event loop (eval runs asyncio.run per
+        scenario); a session from a closed loop fails with "Event loop is closed" after the budget is spent."""
+        loop = asyncio.get_running_loop()
+        if self._loop is not None and self._loop is not loop:
+            from google import genai
+            self._clients = {n: genai.Client(api_key=k) for n, k in self._keys.items()}
+        self._loop = loop
+
     async def _raw_request(self, key_name: str, model: str, prompt: str, schema: dict | None):
         """Exactly one real API request."""
         from google.genai import types
+        self._bind_loop()
         global CALLS_TODAY
         neg = self.cfg["negotiation"]
         kw = dict(temperature=neg["temperature"])
