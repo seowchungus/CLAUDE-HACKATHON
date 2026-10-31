@@ -4,7 +4,7 @@
 
 Scans a seeded sample of qualifying rows at HUBS (dev rows excluded) and scores each bundle:
   +2 misconnected_pax varies across options    +1 >= 2 infeasible options     +2 fallback != FCFS plan
-  +1 per extra distinct role favourite (ATC bank delay, PILOT misconnects/fuel, GROUND overtime/gate change)
+  +1 per extra distinct role favourite (core.options.ROLE_KEYS), +1 more if PILOT != GROUND
   +1 a tempting option fails H3 or H4          +1 an option fails the gate-change notice   +1 FCFS is unsafe
 Writes eval/hero_candidates.json (top N, with one-line reasons). Heroes are excluded from the eval set
 (eval/run_eval.py reads this file). The top --export are written to tests/golden/ as {bundle, map}.
@@ -20,21 +20,15 @@ from core.bundle import build_bundle
 from core.cli import export
 from core.config import repo_path
 from core.constraints import failed_ids
+from core.options import role_favourites
 from core.scenario import _qualifying, airports, dev_scenario_ids, make_scenario_id
 
 HUBS = ["ORD", "ATL", "DFW", "DEN", "LAX", "SFO"]
 
 
 def favourites(b) -> tuple[str, str, str] | None:
-    feas = [o for o in b.options if b.checks[o.option_id].feasible]
-    if not feas:
-        return None
-    J = lambda o: o.metrics.cost_J  # noqa: E731
-    atc = min(feas, key=lambda o: (o.metrics.bank_delay_added_min, o.metrics.throughput_loss, J(o)))
-    pilot = min(feas, key=lambda o: (o.metrics.misconnected_pax, o.metrics.hold_min, o.metrics.extra_fuel_min, J(o)))
-    ground = min(feas, key=lambda o: (o.metrics.ramp_overtime_min, o.metrics.gate_change,
-                                      -o.metrics.turnaround_buffer_min, J(o)))
-    return atc.option_id, pilot.option_id, ground.option_id
+    fav = role_favourites(b.options, b.checks)
+    return (fav["ATC"], fav["PILOT"], fav["GROUND"]) if fav else None
 
 
 def score(sid: str) -> dict | None:
@@ -54,7 +48,7 @@ def score(sid: str) -> dict | None:
     fcfs_unsafe = not b.checks["opt_fcfs"].feasible
     n_fav = len(set(fav)) if fav else 0
     pts = (2 * (max(mis) > min(mis)) + (n_bad >= 2) + 2 * fb_ne_fcfs + max(0, n_fav - 1) + h3h4 + notice
-           + fcfs_unsafe)
+           + fcfs_unsafe + bool(fav and fav[1] != fav[2]))
     if b.fallback.status != "PLAN":
         pts -= 3  # ESCALATE is a failure case, not a hero
     why = [f"misconnects {min(mis)}-{max(mis)}" if max(mis) > min(mis) else "misconnects flat",

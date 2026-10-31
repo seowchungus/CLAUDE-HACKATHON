@@ -335,8 +335,8 @@ def _gate_template(rng: random.Random, n: int, taxiways: list[str], in_block: in
                    aircraft_size: str) -> tuple[list[Gate], str]:
     """n gates near the flight (3 concourses; A via taxiway A, B via B/C, C via C/D). [WB] exactly n_spare
     gates are free around the ETA; the rest are occupied at in-block, some freeing 5-90 min later (tight).
-    The planned gate (pre-disruption assignment) is busy at in-block in ~65% of rows, forcing a wait or a
-    gate change; otherwise it is a spare gate that is taken again 125-160 min after in-block."""
+    The planned gate (pre-disruption assignment) is busy at in-block in ~65% of rows and frees 5-25 min later,
+    forcing a later slot, a ramp wait or a gate change; otherwise it is a spare gate that is taken again 125-160 min after in-block."""
     concourses = ["A", "B", "C"]
     per = max(1, n // len(concourses))
     sizes = {"A": ["L", "L", "M", "M"], "B": ["L", "M", "M", "S"], "C": ["M", "M", "S", "S"]}
@@ -360,7 +360,7 @@ def _gate_template(rng: random.Random, n: int, taxiways: list[str], in_block: in
     gates: list[Gate] = []
     for gid, c, size, path in specs:
         if gid == planned and planned_busy:
-            occ = [(in_block - rng.randint(30, 90), in_block + rng.randint(5, 30))]
+            occ = [(in_block - rng.randint(30, 90), in_block + rng.randint(5, 25))]  # frees inside the shift grid
         elif gid == planned:
             st = in_block + rng.randint(125, 160)  # free for the whole gate hold, taken again afterwards
             occ = [(st, st + rng.randint(40, 90))]

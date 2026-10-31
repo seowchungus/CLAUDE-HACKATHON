@@ -139,6 +139,8 @@ class Metrics(BaseModel):            # computed by core.metrics, never by an LLM
     gate_change: bool = False                 # gate != scenario.planned_gate
     gate_change_notice_min: int | None = None # eta_new_min - decision_time_min when gate_change, else None (H4 needs >= 20)
     fuel_at_landing_kg: float | None = None   # fuel_at_landing_min x workbook burn rate (display only)
+    # --- v1.2.1 ---
+    gate_wait_min: int = 0                    # ramp wait for the chosen gate to free up (adds to in-block time)
 
 
 class Option(BaseModel):

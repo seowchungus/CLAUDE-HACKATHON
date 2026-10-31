@@ -4,7 +4,7 @@ Thresholds come from config.thresholds; [WB] = from the organisers' workbook (ch
 Rules are simplified illustrations, NOT ICAO / certified values.
 H4 also fails a gate change announced less than gate_change_notice_min before arrival [WB].
 H5 = flight crew duty only [WB 13 h]: duty remaining - effective delay (eta_new - base_eta, which already
-includes any hold) >= 0. Ramp overtime is a cost (cost_J), not a hard constraint.
+includes any hold) - gate_wait_min >= 0. Ramp overtime is a cost (cost_J), not a hard constraint.
 """
 from core.config import load_config
 from core.metrics import SIZE_RANK, gate_need_window
@@ -37,7 +37,7 @@ def check_option(s: Scenario, opt: Option) -> CheckReport:
 
     gates = {g.gate_id: g for g in s.gates}
     g = gates.get(opt.gate)
-    need_from, need_to = gate_need_window(s, m.eta_new_min)
+    need_from, need_to = gate_need_window(s, m.eta_new_min, m.gate_wait_min)
     if g is None:
         ok, why = False, f"gate {opt.gate} does not exist"
     elif g.out_of_service:
@@ -53,10 +53,11 @@ def check_option(s: Scenario, opt: Option) -> CheckReport:
                           f"< {th['gate_change_notice_min']} min (workbook)")
     else:
         ok, why = True, (f"gate {g.gate_id} free and size-compatible"
+                         + (f" after {m.gate_wait_min} min ramp wait" if m.gate_wait_min else "")
                          + (f"; change notice {m.gate_change_notice_min} min" if m.gate_change else ""))
     res.append(_r(opt, "H4_gate_validity", ok, None, None, why))
 
-    duty_left = s.flight_crew_duty_remaining_min - (m.eta_new_min - s.base_eta_min)
+    duty_left = s.flight_crew_duty_remaining_min - (m.eta_new_min - s.base_eta_min) - m.gate_wait_min
     ok = duty_left >= 0
     res.append(_r(opt, "H5_crew_duty", ok, duty_left, 0,
                   f"flight crew duty left {duty_left} min {'>=' if ok else '<'} 0 of 13 h max (workbook)"))

@@ -1,7 +1,7 @@
 """Option generator (proposal §5.1): grid eta_shift x gate x FP -> 6-8 Pareto-pruned candidates.
 
-Selection: one favourite per agent (ATC min bank delay, PILOT min misconnects with no hold, GROUND min
-overtime), the min-J option, then the rest of the Pareto front on (bank_delay, extra_fuel, misconnects,
+Selection: one favourite per agent (ROLE_KEYS: ATC min bank delay, PILOT min misconnects/no hold/fuel,
+GROUND planned gate with no ramp wait, then min overtime), the min-J option, then the rest of the Pareto front on (bank_delay, extra_fuel, misconnects,
 overtime), plus 1-2 infeasible-but-tempting options (single failures, H4 gate validity / gate-change notice
 and H3 fuel first, lowest J) so the checker has something to catch. Topped up to n_min with infeasible options
 when few are feasible. Ids opt_1.. are assigned in (eta_shift, fp, gate) order.
@@ -31,6 +31,25 @@ def counter_allowed_values(s: Scenario) -> dict[str, list]:
             "fp_adjustment": list(opt_cfg["fp_adjustments"])}
 
 
+# Deterministic proxies for each role's charter (proposal §4.1), used to seed the candidate set and to score
+# demo tension. ATC: least knock-on bank delay. PILOT: fewest misconnects, no hold, least extra fuel.
+# GROUND: keep the planned gate with no ramp wait, then least overtime, then most turnaround buffer.
+ROLE_KEYS = {
+    "ATC": lambda o: (o.metrics.bank_delay_added_min, o.metrics.throughput_loss, o.metrics.cost_J),
+    "PILOT": lambda o: (o.metrics.misconnected_pax, o.metrics.hold_min, o.metrics.extra_fuel_min, o.metrics.cost_J),
+    "GROUND": lambda o: (o.metrics.gate_change, o.metrics.gate_wait_min, o.metrics.ramp_overtime_min,
+                         -o.metrics.turnaround_buffer_min, o.metrics.cost_J),
+}
+
+
+def role_favourites(opts: list[Option], checks: dict) -> dict[str, str] | None:
+    """Each role's favourite feasible option_id by ROLE_KEYS (None if nothing is feasible)."""
+    feas = [o for o in opts if checks[o.option_id].feasible]
+    if not feas:
+        return None
+    return {r: min(feas, key=lambda o: (k(o), o.option_id)).option_id for r, k in ROLE_KEYS.items()}
+
+
 def _dominates(a: Option, b: Option) -> bool:
     va = [getattr(a.metrics, k) for k in OBJ]
     vb = [getattr(b.metrics, k) for k in OBJ]
@@ -54,9 +73,9 @@ def generate_options(s: Scenario) -> list[Option]:
             for gate in gates[rot:] + gates[:rot]:
                 o = make_option(s, "tmp", shift, gate, fp)
                 fails = failed_ids(check_option(s, o))
-                if not fails and not got_feasible:
+                if not fails and (not got_feasible or gate == s.planned_gate):
                     feasible.append(o)
-                    got_feasible = True  # one feasible gate per (shift, fp) is enough
+                    got_feasible = True  # one feasible gate per (shift, fp), plus the planned gate
                 elif fails:
                     infeasible.append((o, fails))
 
@@ -65,10 +84,12 @@ def generate_options(s: Scenario) -> list[Option]:
 
     picks: list[Option] = []
 
-    def add(o: Option | None) -> None:
+    def add(o: Option | None, exact: bool = False) -> None:
+        """exact=True only requires a distinct (shift, gate, fp); otherwise also a distinct (shift, fp)."""
         if o is not None and len(picks) < n_max and all(
                 (p.eta_shift_min, p.gate, p.fp_adjustment) != (o.eta_shift_min, o.gate, o.fp_adjustment)
-                and (p.eta_shift_min, p.fp_adjustment) != (o.eta_shift_min, o.fp_adjustment) for p in picks):
+                and (exact or (p.eta_shift_min, p.fp_adjustment) != (o.eta_shift_min, o.fp_adjustment))
+                for p in picks):
             picks.append(o)
 
     n_bad = 2 if feasible else n_min
@@ -76,11 +97,8 @@ def generate_options(s: Scenario) -> list[Option]:
         def best(cands, key):
             cands = list(cands)
             return min(cands, key=key) if cands else None
-        add(best(feasible, lambda o: (o.metrics.bank_delay_added_min, o.metrics.throughput_loss, J(o))))  # ATC
-        add(best((o for o in feasible if o.metrics.hold_min == 0),
-                 lambda o: (o.metrics.misconnected_pax, o.metrics.extra_fuel_min, J(o))))  # PILOT
-        add(best(feasible, lambda o: (o.metrics.ramp_overtime_min, o.metrics.gate_change,
-                                      -o.metrics.turnaround_buffer_min, J(o))))  # GROUND
+        for role in ("ATC", "PILOT", "GROUND"):
+            add(best(feasible, lambda o, k=ROLE_KEYS[role]: (k(o), o.option_id)), exact=(role == "GROUND"))
         add(best(feasible, J))  # fallback's likely choice
         front = [o for o in feasible if not any(_dominates(p, o) for p in feasible)]
         seen_fp = {p.fp_adjustment for p in picks}

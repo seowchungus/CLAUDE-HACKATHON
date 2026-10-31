@@ -13,6 +13,9 @@ Simplified rules, ILLUSTRATIVE, NOT CERTIFIED:
   turbulence; any remaining delay is flown at normal burn (1.0/min).
   fuel_at_landing = fuel_at_fix - PLANNED_BURN_FIX_TO_LAND - extra_fuel.
 - misconnected_pax = sum of pax on connections with sched_dep - (eta_new + taxi_in) < MCT (45 min).
+- Gate wait (synthetic rule): if the chosen gate is busy at in-block but frees within MAX_GATE_WAIT min, the
+  aircraft waits on the ramp; gate_wait_min is added to in-block, so it costs connections, crew duty (H5),
+  turnaround and ramp overtime. A gate busy longer than that fails H4.
 - Gate: needed over [in_block, max(next_departure, in_block + min_turnaround)) capped at +GATE_HOLD_CAP,
   min_turnaround from the destination's workbook row [WB];
   gate_free_from/to is the free gap of that gate around in_block. taxi_path_ok = no blocked taxiway on path.
@@ -30,6 +33,7 @@ MCT_MIN = 45
 RAMP_WORK_AFTER_IN_BLOCK = 30
 GATE_HOLD_CAP = 120
 GATE_HORIZON = 240
+MAX_GATE_WAIT = 30
 DEFAULT_TAXI_IN = 8
 
 SPEED_ABSORB_MAX, SPEED_BURN = 15, 0.3
@@ -74,8 +78,8 @@ def min_turnaround(s: Scenario) -> int:
     return int(s.airport_limits.get("min_turnaround_min") or load_config()["thresholds"].get("min_turnaround_min", 35))
 
 
-def gate_need_window(s: Scenario, eta_new: int) -> tuple[int, int]:
-    start = eta_new + taxi_in(s)
+def gate_need_window(s: Scenario, eta_new: int, wait: int = 0) -> tuple[int, int]:
+    start = eta_new + taxi_in(s) + wait
     nd = s.next_departure_min if s.next_departure_min is not None else start + 60
     end = min(max(nd, start + min_turnaround(s)), start + GATE_HOLD_CAP)
     return start, end
@@ -169,12 +173,15 @@ def compute_metrics(s: Scenario, eta_shift_min: int, gate: str, fp: FPAdj) -> Me
     g = gates[gate]
     eta_new = s.base_eta_min + effective_shift(eta_shift_min, fp)
     ti = taxi_in(s)
-    in_block = eta_new + ti
+    arrive_block = eta_new + ti
+    ff0, _ = gate_free_window(g, arrive_block)
+    wait = ff0 - arrive_block if (not g.out_of_service and 0 < ff0 - arrive_block <= MAX_GATE_WAIT) else 0
+    in_block = arrive_block + wait
     slot, margin, bank_delay = _runway(s, eta_new)
     arrivals = 1 + sum(1 for b in s.bank if b.est_arr_min is not None and slot - 30 <= b.est_arr_min < slot + 30)
     xf = extra_fuel(eta_shift_min, fp)
     misconnected = sum((c.pax_connecting or 0) for c in s.connections if c.sched_dep_min - in_block < MCT_MIN)
-    need_from, _ = gate_need_window(s, eta_new)
+    need_from, _ = gate_need_window(s, eta_new, wait)
     ff, ft = gate_free_window(g, need_from)
     blocked = set(s.blocked_taxiways)
     turn = min_turnaround(s)
@@ -199,6 +206,7 @@ def compute_metrics(s: Scenario, eta_shift_min: int, gate: str, fp: FPAdj) -> Me
         "throughput_loss": max(0, arrivals - s.aar_reduced),
     }
     m["cost_J"] = cost_j(m)
+    m["gate_wait_min"] = int(wait)
     m["gate_change"] = s.planned_gate is not None and gate != s.planned_gate
     m["gate_change_notice_min"] = (eta_new - s.decision_time_min
                                    if m["gate_change"] and s.decision_time_min is not None else None)
