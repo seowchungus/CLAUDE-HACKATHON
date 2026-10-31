@@ -3,17 +3,26 @@ import type { RunState } from "../useRunStream";
 export function RoundTracker({ st }: { st: RunState }) {
   const max = st.started?.max_rounds ?? 3;
   const cur = st.round?.round ?? 0;
-  const final = st.consensus ? "CONSENSUS" : st.fallback ? (st.fallback.result.status === "ESCALATE" ? "ESCALATE" : "FALLBACK") : null;
+  const final =
+    st.ended?.final_state === "SUPERSEDED"
+      ? "SUPERSEDED"
+      : st.consensus
+        ? "CONSENSUS"
+        : st.fallback
+          ? st.fallback.result.status === "ESCALATE"
+            ? "ESCALATE"
+            : "FALLBACK"
+          : null;
   const steps = Array.from({ length: max }, (_, i) => i + 1);
   const headline = final
-    ? `${final}${st.consensus ? ` in R${st.consensus.round}` : ""}`
+    ? `${final}${st.consensus && final === "CONSENSUS" ? ` in R${st.consensus.round}` : ""}`
     : cur
       ? `ROUND ${cur} · ${st.round?.phase}`
       : st.runId
         ? "STARTING…"
         : "READY";
   const headCls =
-    final === "CONSENSUS" ? "text-emerald-400" : final === "FALLBACK" ? "text-amber-400" : final === "ESCALATE" ? "text-red-400" : "text-slate-100";
+    final === "CONSENSUS" ? "text-emerald-400" : final === "FALLBACK" ? "text-amber-400" : final === "ESCALATE" ? "text-red-400" : final === "SUPERSEDED" ? "text-slate-500 line-through" : "text-slate-100";
   return (
     <div className="flex items-center gap-6 px-4 py-3">
       <div className="flex items-center gap-2 font-mono text-lg">

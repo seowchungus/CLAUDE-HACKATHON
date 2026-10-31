@@ -16,14 +16,17 @@ export function ChainBadge({ v }: { v: VerifyResult | null }) {
 export function useChain(runId: string | null, refreshKey: unknown) {
   const [entries, setEntries] = useState<LogEntry[]>([]);
   const [verify, setVerify] = useState<VerifyResult | null>(null);
+  const [tick, setTick] = useState(0);
+  useEffect(() => setVerify(null), [runId]);
   useEffect(() => {
-    setEntries([]);
-    setVerify(null);
-    if (!runId) return;
-    api.log(runId).then(setEntries).catch(() => {});
+    if (!runId) {
+      setEntries([]);
+      return;
+    }
+    api.log(runId).then(setEntries).catch(() => setEntries([]));
     api.verify(runId).then(setVerify).catch(() => {});
-  }, [runId, refreshKey]);
-  return { entries, verify };
+  }, [runId, refreshKey, tick]);
+  return { entries, verify, refresh: () => setTick((t) => t + 1) };
 }
 
 export function LogDrawer({ runId, entries, verify, onClose }: { runId: string; entries: LogEntry[]; verify: VerifyResult | null; onClose: () => void }) {

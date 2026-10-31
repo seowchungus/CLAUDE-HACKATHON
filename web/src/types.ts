@@ -103,6 +103,20 @@ export interface Scenario {
   turbulence_by_fp: Record<string, number>;
   chaos_applied: ChaosEvent[];
   provenance: Record<string, Provenance>;
+  // v1.2 (organisers' workbook)
+  airport_limits?: AirportLimits | Record<string, never>;
+  planned_gate?: string | null;
+  decision_time_min?: number | null;
+}
+
+export interface AirportLimits {
+  size_class?: string;
+  active_runways?: number;
+  gates?: number;
+  max_runway_ops_per_hour?: number;
+  min_turnaround_min?: number;
+  spare_gates_at_any_time?: number;
+  [k: string]: unknown;
 }
 
 export interface Metrics {
@@ -124,6 +138,10 @@ export interface Metrics {
   arrivals_this_hour: number;
   throughput_loss: number;
   cost_J: number;
+  // v1.2
+  gate_change?: boolean;
+  gate_change_notice_min?: number | null;
+  fuel_at_landing_kg?: number | null;
 }
 
 export interface Option {
@@ -214,13 +232,15 @@ export interface RunStartedData {
   models: Record<string, string>;
   parent_run_id: string | null;
   chaos_applied: ChaosEvent[];
+  scripted?: boolean; // additive (W2-03): MockLLMClient scripted failure modes
+  mode?: string;
 }
 export interface OptionsData { options: Option[]; checks: Record<string, CheckReport>; fallback: FallbackResult; fcfs: Option }
 export interface RoundStartedData { round: number; phase: "PROPOSE" | "RESPOND" | "BALLOT"; candidates: string[]; tentative: string | null }
 export interface AgentThinkingData { round: number; agent: AgentRole }
 export interface CounterCheckedData {
   round: number; agent: AgentRole; counter: Counter; accepted: boolean;
-  option_id: string | null; reason: string; check: CheckReport | null;
+  option_id: string | null; reason: string; check: CheckReport | null; failed?: ConstraintId[];
 }
 export interface VetoData { round: number; option_id: string; agents: AgentRole[]; failed: ConstraintId[]; reason: string }
 export interface TentativeData { round: number; option_id: string | null; agreement_set: string[]; minmax_rank: Record<string, number> }
@@ -235,7 +255,7 @@ export interface NarrationData { text: string }
 export interface AwaitingApprovalData { decision_source: "CONSENSUS" | "FALLBACK" | "ESCALATE"; option_id: string | null; rounds_used: number }
 export interface ApprovedData { action: "APPROVE" | "OVERRIDE"; option_id: string; by: string; note: string; final_hash: string }
 export interface RunEndedData {
-  final_state: "CONSENSUS" | "FALLBACK" | "ESCALATE";
+  final_state: "CONSENSUS" | "FALLBACK" | "ESCALATE" | "SUPERSEDED";
   rounds_used: number; latency_ms: number; chain_ok: boolean; n_llm_calls: number;
 }
 export interface ErrorData { message: string; fatal: boolean }
@@ -270,7 +290,44 @@ export type Envelope = {
 }[EventType];
 
 // §4
-export interface Health { ok: boolean; llm_enabled: boolean; models: Record<string, string>; data_loaded: boolean; mock: boolean }
+export interface LLMBudget {
+  keys: Record<string, { used_today: number; cap: number; remaining: number; rpm_cap: number }>;
+  enforce: boolean;
+  resets_at: string;
+}
+export interface Health {
+  ok: boolean; llm_enabled: boolean; models: Record<string, string>; data_loaded: boolean; mock: boolean;
+  llm_budget?: LLMBudget | null;
+}
+export interface Limits {
+  workbook: { wake_separation: Record<string, number>; fuel_and_crew: Record<string, unknown>; rules_of_play: Record<string, unknown> };
+  airport: AirportLimits | null;
+  deviations: string[];
+}
+
+// §6 eval/results.json (null = not run, never 0)
+export interface EvalResults {
+  generated_at: string; n: number; n_dev: number; seed: number;
+  status_quo: { qualifying_flights: number | null; weather_delay_min: number | null; late_aircraft_delay_min: number | null };
+  summary: {
+    consensus_rate: number | null; consensus_by_r2: number | null; consensus_by_r3: number | null;
+    fallback_rate: number | null; escalate_rate: number | null;
+    unsafe_proposals_blocked: number | null; unsafe_plans_executed: number | null;
+    schema_failure_rate: number | null; retry_rate: number | null;
+    latency_p50_ms: number | null; latency_p95_ms: number | null; tokens_per_resolution: number | null;
+    J_mean: { accord: number | null; B0_fcfs: number | null; B1_optimizer: number | null };
+    regret_vs_B1_mean: number | null;
+    vs_B0: { bank_delay_added_min: number | null; misconnected_pax: number | null; ramp_overtime_min: number | null };
+    [k: string]: unknown;
+  };
+  ablations: Record<string, unknown>;
+  per_scenario: {
+    scenario_id: string; final_state: string | null; rounds_used: number | null; option_id: string | null;
+    J: number | null; J_B0: number | null; J_B1: number | null; unsafe_blocked: number | null;
+    latency_ms: number | null; run_id: string | null; [k: string]: unknown;
+  }[];
+  measured: boolean;
+}
 
 export interface MapAirport { iata: string; name: string; lat: number; lon: number; role: "origin" | "destination" | "other" }
 export interface MapFlight {

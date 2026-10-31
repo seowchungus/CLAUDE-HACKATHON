@@ -26,7 +26,9 @@ export type Card =
   | { kind: "counter"; round: number; agent: AgentRole; seq: number; cc: CounterCheckedData };
 
 export interface RunState {
-  runId: string | null;
+  key: string | null; // what we subscribed to: a run_id or "replay:<name>"
+  runId: string | null; // the run_id carried by the events
+  replay: { name: string; recordedAt: string | null } | null;
   lastSeq: number;
   connected: boolean;
   started: RunStartedData | null;
@@ -49,23 +51,31 @@ export interface RunState {
   errors: string[];
 }
 
-const initial = (runId: string | null): RunState => ({
-  runId, lastSeq: -1, connected: false, started: null, options: [], checks: {}, fallbackShadow: null, fcfs: null,
+const initial = (key: string | null): RunState => ({
+  key,
+  runId: key && !key.startsWith("replay:") ? key : null,
+  replay: key?.startsWith("replay:") ? { name: key.slice(7), recordedAt: null } : null,
+  lastSeq: -1, connected: false, started: null, options: [], checks: {}, fallbackShadow: null, fcfs: null,
   newOptionIds: [], round: null, roundsEnded: [], cards: [], vetoes: [], tentative: null, consensus: null,
   fallback: null, narration: null, awaiting: null, approved: null, ended: null, errors: [],
 });
 
-type Act = { t: "reset"; runId: string | null } | { t: "conn"; on: boolean } | { t: "env"; env: Envelope };
+type Act = { t: "reset"; key: string | null } | { t: "conn"; on: boolean } | { t: "env"; env: Envelope };
 
 function reduce(s: RunState, a: Act): RunState {
-  if (a.t === "reset") return initial(a.runId);
+  if (a.t === "reset") return initial(a.key);
   if (a.t === "conn") return { ...s, connected: a.on };
   const e = a.env;
-  if (e.run_id !== s.runId || e.seq <= s.lastSeq) return s;
+  if ((!s.replay && e.run_id !== s.runId) || e.seq <= s.lastSeq) return s;
   const n: RunState = { ...s, lastSeq: e.seq };
   switch (e.type) {
     case "run_started":
-      return { ...n, started: e.data };
+      return {
+        ...n,
+        runId: e.run_id,
+        started: e.data,
+        replay: s.replay ? { ...s.replay, recordedAt: s.replay.recordedAt ?? e.ts } : null,
+      };
     case "options": {
       const prev = new Set(s.options.map((o) => o.option_id));
       const newIds = s.options.length ? e.data.options.map((o) => o.option_id).filter((id) => !prev.has(id)) : [];
@@ -107,14 +117,14 @@ function reduce(s: RunState, a: Act): RunState {
   }
 }
 
-/** Subscribes to /api/runs/{runId}/stream and reduces SSE envelopes (CONTRACTS.md §3) into RunState. */
-export function useRunStream(runId: string | null, url?: string): RunState {
-  const [state, dispatch] = useReducer(reduce, runId, initial);
+/** Subscribes to a run (or a "replay:<name>") stream and reduces SSE envelopes (CONTRACTS.md §3) into RunState. */
+export function useRunStream(key: string | null): RunState {
+  const [state, dispatch] = useReducer(reduce, key, initial);
 
   useEffect(() => {
-    dispatch({ t: "reset", runId });
-    if (!runId) return;
-    const es = new EventSource(url ?? api.streamUrl(runId));
+    dispatch({ t: "reset", key });
+    if (!key) return;
+    const es = new EventSource(api.streamUrl(key));
     const onMsg = (ev: MessageEvent) => {
       try {
         dispatch({ t: "env", env: JSON.parse(ev.data) as Envelope });
@@ -126,7 +136,7 @@ export function useRunStream(runId: string | null, url?: string): RunState {
     es.onopen = () => dispatch({ t: "conn", on: true });
     es.onerror = () => dispatch({ t: "conn", on: false });
     return () => es.close();
-  }, [runId, url]);
+  }, [key]);
 
   return state;
 }
