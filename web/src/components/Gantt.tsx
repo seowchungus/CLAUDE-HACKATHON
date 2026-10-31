@@ -47,7 +47,7 @@ export function Gantt({ s, opt, isPlan }: { s: Scenario; opt: Option | null; isP
       </defs>
       {ticks.map((t) => (
         <g key={t}>
-          <line x1={x(t)} x2={x(t)} y1={0} y2={H} stroke="#1e293b" />
+          <line x1={x(t)} x2={x(t)} y1={0} y2={H} stroke="#111827" />
           <text x={x(t) + 2} y={H - 2} fontSize={9} fill="#64748b">
             {hhmm(t)}
           </text>
@@ -64,8 +64,8 @@ export function Gantt({ s, opt, isPlan }: { s: Scenario; opt: Option | null; isP
           const t = f.est_arr_min ?? f.sched_arr_min;
           return (
             <g key={f.flight_id}>
-              <rect x={x(t) - 1.5} y={8} width={3} height={RUNWAY_H - 16} fill="#38bdf8" opacity={0.8} />
-              <text x={x(t) + 3} y={17 + (i % 3) * 12} fontSize={9} fill="#7dd3fc">
+              <rect x={x(t) - 1.5} y={8} width={3} height={RUNWAY_H - 16} fill="#38bdf8" opacity={0.35} />
+              <text x={x(t) + 3} y={17 + (i % 3) * 12} fontSize={9} fill="#7dd3fc" opacity={0.55}>
                 {f.flight_id}
               </text>
             </g>
@@ -91,7 +91,7 @@ export function Gantt({ s, opt, isPlan }: { s: Scenario; opt: Option | null; isP
             </text>
             <rect x={LABEL_W} y={y} width={W - LABEL_W - 8} height={LANE_H - 3} fill={g.out_of_service ? "#450a0a" : "#0b1220"} />
             {g.occupied.map(([a, b], k) => (
-              <rect key={k} x={x(a)} y={y + 1} width={Math.max(1, x(b) - x(a))} height={LANE_H - 5} fill="#475569" rx={2} />
+              <rect key={k} x={x(a)} y={y + 1} width={Math.max(1, x(b) - x(a))} height={LANE_H - 5} fill="#334155" opacity={0.7} rx={2} />
             ))}
             {mine && (
               <g filter={conflict ? "url(#glow)" : undefined}>

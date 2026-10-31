@@ -368,3 +368,9 @@ export const hhmm = (min: number | null | undefined): string => {
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}${min >= 1440 ? "+1" : ""}`;
 };
 export const shortC = (c: string) => c.split("_")[0];
+
+/** Short plain names for the constraint chips/headers (code stays in the tooltip). */
+export const C_SHORT: Record<string, string> = {
+  H1: "Wake", H2: "Capacity", H3: "Fuel", H4: "Gate", H5: "Crew", H6: "Taxiway", H7: "Turbulence",
+};
+export const cName = (c: string) => `${c.split("_")[0]} ${C_SHORT[c.split("_")[0]] ?? ""}`.trim();

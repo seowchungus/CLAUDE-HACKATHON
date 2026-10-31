@@ -1,5 +1,5 @@
 import type { CheckReport, Option } from "../types";
-import { CONSTRAINTS, shortC } from "../types";
+import { C_SHORT, CONSTRAINTS, shortC } from "../types";
 import { decidedPlan, type RunState } from "../useRunStream";
 import { fuelText, GateChangeBadge } from "./DecisionPanel";
 import { C_SOURCE } from "./Limits";
@@ -20,13 +20,13 @@ export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props)
     <div className="overflow-x-auto p-2">
       <table className="w-full border-separate border-spacing-0.5 text-sm">
         <thead>
-          <tr className="text-xs text-slate-400">
+          <tr className="sticky top-0 z-10 bg-slate-950 text-xs text-slate-400">
             <th className="px-2 text-left">option</th>
             {CONSTRAINTS.map((c) => (
               <th key={c} className="cursor-help px-1" title={`${c}\nsource: ${C_SOURCE[c].src === "workbook" ? "organisers' workbook" : "ours (not in the workbook)"}\n${C_SOURCE[c].note}`}>
                 {shortC(c)}
                 <sup className={`ml-0.5 text-[8px] ${C_SOURCE[c].src === "workbook" ? "text-sky-400" : "text-amber-400"}`}>{C_SOURCE[c].src === "workbook" ? "WB" : "ours"}</sup>
-                <div className="text-[9px] font-normal text-slate-500">{c.split("_").slice(1).join(" ")}</div>
+                <div className="text-[10px] font-semibold text-slate-300">{C_SHORT[shortC(c)]}</div>
               </th>
             ))}
             <th className="px-2 text-right">J</th>
