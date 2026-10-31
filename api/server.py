@@ -1,9 +1,12 @@
-"""ACCORD console API (CONTRACTS.md §4).
+"""ACCORD console API (CONTRACTS.md §4, v1.2).
 
-MOCK=1: serves docs/fixtures/* and replays run_events.jsonl (~600 ms between events).
-Live:   uses core.bundle + agents.coordinator.Coordinator as the event producer.
+MOCK=1 (no data, no key, never calls Gemini):
+  - plain runs replay docs/fixtures/run_events.jsonl (~600 ms between events)
+  - chaos children and scripted `mode` runs drive the real Coordinator with MockLLMClient
+    on the fixture scenario (chaos applied with core.chaos), paced like the replay
+Live: core.bundle + agents.coordinator.Coordinator as the producer.
 
-Both modes go through RunManager, so the UI cannot tell them apart.
+Every mode goes through RunManager, so the UI cannot tell them apart.
 """
 from __future__ import annotations
 
@@ -29,6 +32,8 @@ ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = ROOT / "docs" / "fixtures"
 MOCK = os.environ.get("MOCK", "0") == "1"
 MOCK_GAP_S = float(os.environ.get("MOCK_GAP_S", "0.6"))
+REPLAY_MAX_GAP_S = 1.5
+SCRIPTED_MODES = ("deadlock", "unsafe", "hallucinate")
 
 
 def load_config() -> dict:
@@ -42,9 +47,11 @@ def load_config() -> dict:
 
 
 CONFIG = load_config()
-RUNS_DIR = ROOT / CONFIG.get("paths", {}).get("runs_dir", "runs")
-HERO_DIR = ROOT / CONFIG.get("paths", {}).get("hero_cache_dir", "api/hero_cache")
-EVAL_PATH = ROOT / CONFIG.get("paths", {}).get("eval_results", "eval/results.json")
+PATHS = CONFIG.get("paths", {})
+RUNS_DIR = ROOT / PATHS.get("runs_dir", "runs")
+HERO_DIR = ROOT / PATHS.get("hero_cache_dir", "api/hero_cache")
+EVAL_PATH = ROOT / PATHS.get("eval_results", "eval/results.json")
+LIMITS_PATH = ROOT / CONFIG.get("workbook", {}).get("extracted", "data/airport_limits.json")
 MODELS = {k: CONFIG["models"][k] for k in ("ATC", "PILOT", "GROUND", "NARRATOR")}
 
 
@@ -52,6 +59,10 @@ MODELS = {k: CONFIG["models"][k] for k in ("ATC", "PILOT", "GROUND", "NARRATOR")
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
+
+def parse_iso(ts: str) -> datetime:
+    return datetime.fromisoformat(ts.replace("Z", "+00:00"))
 
 
 def new_run_id() -> str:
@@ -68,7 +79,7 @@ def entry_hash(entry: dict) -> str:
 
 
 def verify_entries(entries: list[dict]) -> dict:
-    """VerifyResult (§5), stdlib only. Swap for core.log.verify_chain at integration."""
+    """VerifyResult (§5), stdlib only (same formula as core.log.verify_chain)."""
     prev = "0" * 64
     for i, e in enumerate(entries):
         if e.get("seq") != i or e.get("prev_hash") != prev or entry_hash(e) != e.get("hash"):
@@ -87,20 +98,41 @@ def read_json(path: Path) -> Any:
         return json.load(f)
 
 
+def envelope(run_id: str, seq: int, type_: str, data: dict, log_hash: str = "") -> dict:
+    return {"type": type_, "run_id": run_id, "seq": seq, "ts": now_iso(), "log_hash": log_hash, "data": data}
+
+
+def mock_scenario_ids() -> set[str]:
+    return {s["scenario_id"] for s in read_json(FIXTURES / "scenarios_list.json")}
+
+
 # ---------------------------------------------------------------- runs
 
 class Run:
-    def __init__(self, run_id: str, scenario_id: str, parent_run_id: str | None, chaos: list[dict]):
+    def __init__(self, run_id: str, scenario_id: str, parent_run_id: str | None, chaos: list[dict],
+                 mode: str | None):
         self.run_id = run_id
         self.scenario_id = scenario_id
         self.parent_run_id = parent_run_id
         self.chaos = chaos
+        self.mode = mode
         self.events: list[dict] = []
         self.subscribers: set[asyncio.Queue] = set()
-        self.log_entries: list[dict] = []   # mock only; live mode reads runs/<run_id>.jsonl
+        self.log_entries: list[dict] = []   # fixture replay only; coordinator runs write runs/<run_id>.jsonl
+        self.bundle_payload: dict | None = None
         self.coordinator: Any = None
         self.task: asyncio.Task | None = None
         self.started = False
+
+    @property
+    def replays_fixture(self) -> bool:
+        return MOCK and not self.chaos and not self.mode
+
+    def has(self, type_: str) -> bool:
+        return any(e["type"] == type_ for e in self.events)
+
+    def last(self, type_: str) -> dict | None:
+        return next((e for e in reversed(self.events) if e["type"] == type_), None)
 
     def publish(self, env: dict) -> None:
         self.events.append(env)
@@ -115,9 +147,14 @@ class RunManager:
         self.runs: dict[str, Run] = {}
         self.llm_enabled = True
 
-    def create(self, scenario_id: str, chaos: list[dict] | None = None, parent_run_id: str | None = None) -> Run:
-        run = Run(new_run_id(), scenario_id, parent_run_id, chaos or [])
-        if MOCK:
+    def create(self, scenario_id: str, chaos: list[dict] | None = None, parent_run_id: str | None = None,
+               mode: str | None = None) -> Run:
+        if MOCK and scenario_id not in mock_scenario_ids():
+            raise HTTPException(404, f"unknown scenario {scenario_id}")
+        if mode is not None and mode not in SCRIPTED_MODES:
+            raise HTTPException(422, f"mode must be one of {SCRIPTED_MODES}")
+        run = Run(new_run_id(), scenario_id, parent_run_id, chaos or [], mode)
+        if run.replays_fixture:
             run.log_entries = read_jsonl(FIXTURES / "run_log.jsonl")
         self.runs[run.run_id] = run
         return run
@@ -131,7 +168,7 @@ class RunManager:
     def ensure_started(self, run: Run) -> None:
         if not run.started:
             run.started = True
-            producer = self._mock_producer if MOCK else self._live_producer
+            producer = self._mock_producer if run.replays_fixture else self._coordinator_producer
             run.task = asyncio.create_task(producer(run))
 
     async def subscribe(self, run: Run) -> AsyncIterator[dict]:
@@ -152,12 +189,69 @@ class RunManager:
         finally:
             run.subscribers.discard(q)
 
-    # ---- mock producer: replays the fixture stream
+    # ---- bundles
+
+    def bundle(self, run: Run) -> dict:
+        """{bundle, map} for this run's own (possibly chaos-mutated) scenario."""
+        if run.bundle_payload is None:
+            if run.replays_fixture:
+                run.bundle_payload = read_json(FIXTURES / "scenario_bundle.json")
+            else:
+                b = self._build_bundle(run)
+                from core.mapdata import map_payload  # type: ignore
+
+                run.bundle_payload = {"bundle": b.model_dump(mode="json"),
+                                      "map": map_payload(b.scenario).model_dump(mode="json")}
+        return run.bundle_payload
+
+    @staticmethod
+    def _build_bundle(run: Run):
+        from core.types import ChaosEvent  # type: ignore
+
+        chaos = [ChaosEvent(**c) for c in run.chaos]
+        if not MOCK:
+            from core.bundle import build_bundle  # type: ignore
+
+            return build_bundle(run.scenario_id, chaos=chaos or None)
+        from core.bundle import build_bundle_from_scenario  # type: ignore
+        from core.chaos import apply_chaos  # type: ignore
+        from core.types import ScenarioBundle  # type: ignore
+
+        b = ScenarioBundle.model_validate(read_json(FIXTURES / "scenario_bundle.json")["bundle"])
+        if not chaos:
+            return b
+        s = b.scenario
+        for ev in chaos:
+            s = apply_chaos(s, ev)
+        return build_bundle_from_scenario(s)
+
+    # ---- in-memory chain for fixture-replay runs
+
+    @staticmethod
+    def _logged_upto(run: Run) -> int:
+        """Number of log entries covering what has been published (seq 0 scenario_loaded + one per event)."""
+        hashes = [e["log_hash"] for e in run.events]
+        idx = {e["hash"]: i for i, e in enumerate(run.log_entries)}
+        return max((idx[h] + 1 for h in hashes if h in idx), default=1)
+
+    @staticmethod
+    def _append_mock_log(run: Run, event_type: str, actor: str, payload: dict, cids: list[str] | None = None) -> dict:
+        prev = run.log_entries[-1]
+        entry = {"seq": len(run.log_entries), "ts": now_iso(), "run_id": prev["run_id"],
+                 "scenario_id": prev["scenario_id"], "source_row": prev["source_row"],
+                 "event_type": event_type, "actor": actor, "constraint_ids": cids or [], "synthetic_fields": [],
+                 "payload": copy.deepcopy(payload), "prev_hash": prev["hash"]}
+        entry["hash"] = entry_hash(entry)
+        run.log_entries.append(entry)
+        return entry
+
+    # ---- producer 1: fixture replay (MOCK, plain runs)
 
     async def _mock_producer(self, run: Run) -> None:
         fixture = read_jsonl(FIXTURES / "run_events.jsonl")
         if not self.llm_enabled:
-            fixture = self._mock_fallback_stream(fixture)
+            await self._mock_fallback(run, fixture)
+            return
         for i, env in enumerate(fixture):
             env = copy.deepcopy(env)
             env["run_id"] = run.run_id
@@ -170,77 +264,110 @@ class RunManager:
             run.publish(env)
             await asyncio.sleep(MOCK_GAP_S)
 
-    @staticmethod
-    def _mock_fallback_stream(fixture: list[dict]) -> list[dict]:
-        """LLM killed in mock mode: run_started, options, fallback, awaiting_approval, run_ended."""
-        by_type: dict[str, dict] = {}
+    async def _mock_fallback(self, run: Run, fixture: list[dict]) -> None:
+        """LLM killed, fixture replay: run_started, options, fallback, awaiting_approval, run_ended,
+        each with its own entry in a fresh in-memory chain (seq 0 = the fixture's scenario_loaded)."""
+        first = {}
         for e in fixture:
-            by_type.setdefault(e["type"], e)
-        opts = by_type["options"]["data"]
+            first.setdefault(e["type"], e)
+        started = {**first["run_started"]["data"], "llm_enabled": False, "parent_run_id": run.parent_run_id,
+                   "chaos_applied": run.chaos}
+        opts = first["options"]["data"]
         result = opts["fallback"]
         plan = next((o for o in opts["options"] if o["option_id"] == result["option_id"]), None)
-        base = {k: by_type["run_started"][k] for k in ("run_id", "log_hash")}
-        mk = lambda t, d: {**base, "type": t, "data": d}  # noqa: E731
-        return [
-            by_type["run_started"],
-            by_type["options"],
-            mk("fallback", {"reason": "LLM_KILLED", "result": result, "plan": plan}),
-            mk("awaiting_approval", {"decision_source": "FALLBACK", "option_id": result["option_id"], "rounds_used": 0}),
-            mk("run_ended", {"final_state": "FALLBACK", "rounds_used": 0, "latency_ms": 12,
-                             "chain_ok": True, "n_llm_calls": 0}),
+        run.log_entries = run.log_entries[:1]
+        steps = [
+            ("run_started", "COORDINATOR", started, []),
+            ("options", "CHECKER", opts, [c for c in ("H1_wake_separation", "H2_runway_capacity", "H3_fuel_reserve",
+                                                      "H4_gate_validity", "H5_crew_duty", "H6_taxiway_reachability",
+                                                      "H7_severe_turbulence")]),
+            ("fallback", "FALLBACK", {"reason": "LLM_KILLED", "result": result, "plan": plan}, []),
+            ("awaiting_approval", "COORDINATOR",
+             {"decision_source": "FALLBACK", "option_id": result["option_id"], "rounds_used": 0}, []),
+            ("run_ended", "COORDINATOR", {"final_state": "FALLBACK", "rounds_used": 0, "latency_ms": 12,
+                                          "chain_ok": True, "n_llm_calls": 0}, []),
         ]
+        for type_, actor, data, cids in steps:
+            entry = self._append_mock_log(run, type_, actor, data, cids)
+            run.publish(envelope(run.run_id, len(run.events), type_, data, log_hash=entry["hash"]))
+            await asyncio.sleep(MOCK_GAP_S)
 
-    # ---- live producer: the coordinator
+    # ---- producer 2: the coordinator (MOCK: MockLLMClient on the fixture scenario; live: default client)
 
-    async def _live_producer(self, run: Run) -> None:
+    async def _coordinator_producer(self, run: Run) -> None:
         try:
             from agents.coordinator import Coordinator  # type: ignore
-            from core.bundle import build_bundle  # type: ignore
-            from core.types import ChaosEvent  # type: ignore
 
-            chaos = [ChaosEvent(**c) for c in run.chaos] or None
-            bundle = build_bundle(run.scenario_id, chaos=chaos)
-            run.coordinator = Coordinator(bundle, run.run_id, config=CONFIG)
-            async for env in run.coordinator.run():
-                if env.get("type") == "run_started":
-                    env["data"]["parent_run_id"] = run.parent_run_id
+            b = self._build_bundle(run)
+            llm = None  # live: the coordinator's default (Gemini behind the budget guard)
+            if MOCK or run.mode:
+                from agents.client import make_llm  # type: ignore
+
+                llm = make_llm(run.mode or "mock", config=CONFIG)  # scripted mock agents, never Gemini
+            run.coordinator = Coordinator(b, run.run_id, config=CONFIG, llm=llm, parent_run_id=run.parent_run_id)
+            async for env in run.coordinator.run():  # published exactly as logged (log_hash must match)
                 run.publish(env)
+                if MOCK:
+                    await asyncio.sleep(MOCK_GAP_S)
+        except asyncio.CancelledError:
+            raise
         except Exception as exc:  # surface to the UI instead of hanging the stream
-            run.publish({"type": "error", "run_id": run.run_id, "seq": len(run.events), "ts": now_iso(),
-                         "log_hash": "", "data": {"message": f"{type(exc).__name__}: {exc}", "fatal": True}})
+            run.publish(envelope(run.run_id, len(run.events), "error",
+                                 {"message": f"{type(exc).__name__}: {exc}", "fatal": True}))
 
-    # ---- approve
+    # ---- chaos: supersede a running parent
+
+    async def supersede(self, run: Run) -> None:
+        if run.has("run_ended"):
+            return
+        c = run.coordinator
+        if c is not None:
+            try:
+                await c.cancel(reason="SUPERSEDED")  # False if it had already finished: it keeps its own ending
+            except Exception:
+                pass
+            if run.task and not run.task.done():  # stop pacing; flush everything the coordinator logged
+                run.task.cancel()
+            for env in c.envelopes[len(run.events):]:
+                run.publish(env)
+        elif run.task and not run.task.done():
+            run.task.cancel()
+        if not run.has("run_ended"):  # fixture replay: no coordinator; logged in the in-memory chain
+            data = {"final_state": "SUPERSEDED", "rounds_used": (run.last("round_started") or {}).get("data", {}).get("round", 0),
+                    "latency_ms": 0, "chain_ok": True, "n_llm_calls": 0}
+            run.log_entries = run.log_entries[:self._logged_upto(run)]
+            entry = self._append_mock_log(run, "run_ended", "COORDINATOR", data)
+            run.publish(envelope(run.run_id, len(run.events), "run_ended", data, log_hash=entry["hash"]))
+
+    # ---- approve (v1.1 rules)
 
     async def approve(self, run: Run, action: str, option_id: str, by: str, note: str) -> dict:
-        if MOCK:
-            prev = run.log_entries[-1] if run.log_entries else None
-            payload = {"action": action, "option_id": option_id, "by": by, "note": note}
-            entry = {
-                "seq": len(run.log_entries),
-                "ts": now_iso(),
-                "run_id": prev["run_id"] if prev else run.run_id,
-                "scenario_id": prev["scenario_id"] if prev else run.scenario_id,
-                "source_row": prev["source_row"] if prev else {},
-                "event_type": "approved",
-                "actor": "HUMAN",
-                "constraint_ids": [],
-                "synthetic_fields": [],
-                "payload": payload,
-                "prev_hash": prev["hash"] if prev else "0" * 64,
-            }
-            entry["hash"] = entry_hash(entry)
-            run.log_entries.append(entry)
-            final_hash = entry["hash"]
-            run.publish({"type": "approved", "run_id": run.run_id, "seq": len(run.events), "ts": entry["ts"],
-                         "log_hash": final_hash, "data": {**payload, "final_hash": final_hash}})
-            return {"ok": True, "final_hash": final_hash}
-        if run.coordinator is None:
-            raise HTTPException(409, "run has not produced a decision yet")
-        res = await run.coordinator.approve(action, option_id, by, note)
-        # the coordinator yields `approved` on its own stream only while run() is iterating; push it if not
-        if not any(e["type"] == "approved" for e in run.events) and isinstance(res, dict) and "event" in res:
-            run.publish(res["event"])
-        return {"ok": bool(res.get("ok", True)), "final_hash": res.get("final_hash", "")}
+        awaiting = run.last("awaiting_approval")
+        if awaiting is None:
+            raise HTTPException(409, "run is not awaiting approval")
+        if run.has("approved"):
+            raise HTTPException(409, "run already signed off")
+        if awaiting["data"]["decision_source"] == "ESCALATE" and action != "OVERRIDE":
+            raise HTTPException(409, "ESCALATE: only OVERRIDE with an explicit option_id is allowed")
+        if action not in ("APPROVE", "OVERRIDE") or not option_id:
+            raise HTTPException(422, "action must be APPROVE|OVERRIDE with an option_id")
+
+        if run.replays_fixture:
+            signed = run.log_entries[-1]["hash"]
+            payload = {"action": action, "option_id": option_id, "by": by, "note": note, "final_hash": signed}
+            entry = self._append_mock_log(run, "approved", "HUMAN", payload)
+            run.publish(envelope(run.run_id, len(run.events), "approved", payload, log_hash=entry["hash"]))
+            return {"ok": True, "final_hash": signed}
+
+        c = run.coordinator
+        if c is None:
+            raise HTTPException(409, "run has no coordinator")
+        res = await c.approve(action, option_id, by, note)
+        if not res.get("ok"):
+            raise HTTPException(int(res.get("code") or 409), res.get("error") or "approval refused")
+        if c.approved and not run.has("approved"):
+            run.publish(c.approved)
+        return {"ok": True, "final_hash": res["final_hash"]}
 
 
 manager = RunManager()
@@ -260,6 +387,7 @@ class RunRequest(BaseModel):
     scenario_id: str
     chaos: list[dict] | None = None
     parent_run_id: str | None = None
+    mode: str | None = None          # additive (W3-03): scripted MockLLMClient modes
 
 
 class ApproveRequest(BaseModel):
@@ -273,21 +401,69 @@ class KillRequest(BaseModel):
     llm_enabled: bool
 
 
-def _llm_enabled() -> bool:
-    if MOCK:
-        return manager.llm_enabled
+def _killswitch():
     try:
-        from agents.killswitch import llm_enabled  # type: ignore
+        from agents import killswitch  # type: ignore
 
-        return llm_enabled()
+        return killswitch
     except Exception:
-        return manager.llm_enabled
+        return None
+
+
+def _llm_enabled() -> bool:
+    ks = _killswitch()
+    return ks.llm_enabled() if ks else manager.llm_enabled
+
+
+MOCK_BUDGET = {
+    "keys": {"GEMINI_API_KEY": {"used_today": 223, "cap": 480, "remaining": 257, "rpm_cap": 12}},
+    "enforce": True,
+    "resets_at": "2026-11-01T07:00:00Z",
+}
+
+
+def _llm_budget() -> dict | None:
+    if MOCK:
+        return MOCK_BUDGET
+    try:
+        from agents.budget import budget_status  # type: ignore
+
+        return budget_status().model_dump(mode="json")
+    except Exception:
+        return None
 
 
 @app.get("/api/health")
 def health() -> dict:
-    data_loaded = MOCK or (ROOT / CONFIG["paths"]["qualifying"]).exists()
-    return {"ok": True, "llm_enabled": _llm_enabled(), "models": MODELS, "data_loaded": data_loaded, "mock": MOCK}
+    data_loaded = MOCK or (ROOT / PATHS["qualifying"]).exists()
+    return {"ok": True, "llm_enabled": _llm_enabled(), "models": MODELS, "data_loaded": data_loaded,
+            "mock": MOCK, "llm_budget": _llm_budget()}
+
+
+@app.get("/api/limits")
+def limits(scenario_id: str | None = None) -> dict:
+    th = CONFIG.get("thresholds", {})
+    neg = CONFIG.get("negotiation", {})
+    workbook = {
+        "wake_separation": th.get("wake_separation_s", {}),
+        "fuel_and_crew": {k: th[k] for k in ("fuel_final_reserve_min", "fuel_spare_on_arrival_min", "fuel_burn_kg_per_h",
+                                             "contingency_fuel_pct", "flight_crew_max_duty_min", "ground_shift_min",
+                                             "ground_overtime_cost_multiplier") if k in th},
+        "rules_of_play": {"max_rounds": neg.get("MAX_ROUNDS"), "gate_change_notice_min": th.get("gate_change_notice_min"),
+                          "arrival_share_of_runway_ops": th.get("arrival_share_of_runway_ops"),
+                          "turbulence_severe": th.get("turbulence_severe")},
+    }
+    airport = None
+    if MOCK:
+        airport = read_json(FIXTURES / "scenario_bundle.json")["bundle"]["scenario"].get("airport_limits") or None
+    dest = scenario_id.rsplit("-", 1)[-1] if scenario_id else None
+    if airport is None and dest and LIMITS_PATH.exists():
+        try:
+            table = read_json(LIMITS_PATH)
+            airport = table.get(dest) or (table.get("airports") or {}).get(dest)
+        except Exception:
+            airport = None
+    return {"workbook": workbook, "airport": airport, "deviations": CONFIG.get("workbook_deviations", [])}
 
 
 @app.get("/api/scenarios")
@@ -307,18 +483,28 @@ def scenarios(limit: int = 50, airport: str | None = None, date: str | None = No
 @app.get("/api/scenarios/{scenario_id}")
 def scenario(scenario_id: str) -> dict:
     if MOCK:
+        if scenario_id not in mock_scenario_ids():
+            raise HTTPException(404, f"unknown scenario {scenario_id}")
         return read_json(FIXTURES / "scenario_bundle.json")
     from core.bundle import build_bundle  # type: ignore
     from core.mapdata import map_payload  # type: ignore
 
-    b = build_bundle(scenario_id)
+    try:
+        b = build_bundle(scenario_id)
+    except (KeyError, ValueError, LookupError) as exc:
+        raise HTTPException(404, f"unknown scenario {scenario_id}: {exc}")
     return {"bundle": b.model_dump(mode="json"), "map": map_payload(b.scenario).model_dump(mode="json")}
 
 
 @app.post("/api/runs")
 def create_run(req: RunRequest) -> dict:
-    run = manager.create(req.scenario_id, req.chaos, req.parent_run_id)
+    run = manager.create(req.scenario_id, req.chaos, req.parent_run_id, req.mode)
     return {"run_id": run.run_id}
+
+
+@app.get("/api/runs/{run_id}/bundle")
+def run_bundle(run_id: str) -> dict:
+    return manager.bundle(manager.get(run_id))
 
 
 @app.get("/api/runs/{run_id}/stream")
@@ -334,10 +520,24 @@ async def stream(run_id: str, request: Request):
     return EventSourceResponse(gen(), ping=15)
 
 
+try:
+    from core.types import ChaosEvent  # type: ignore
+except ImportError:  # core not importable: same shape as CONTRACTS §1
+    from typing import Literal
+
+    class ChaosEvent(BaseModel):  # type: ignore[no-redef]
+        kind: Literal["RUNWAY_CLOSURE", "TAXIWAY_BLOCK", "GATE_FAILURE", "WEATHER_CELL"]
+        params: dict = {}
+        note: str = ""
+
+
 @app.post("/api/runs/{run_id}/chaos")
-def chaos(run_id: str, ev: dict) -> dict:
+async def chaos(run_id: str, ev: ChaosEvent) -> dict:
     parent = manager.get(run_id)
-    child = manager.create(parent.scenario_id, parent.chaos + [ev], parent_run_id=parent.run_id)
+    child = manager.create(parent.scenario_id, parent.chaos + [ev.model_dump(mode="json")],
+                           parent_run_id=parent.run_id, mode=parent.mode)
+    if parent.started:
+        await manager.supersede(parent)
     return {"run_id": child.run_id, "parent_run_id": parent.run_id}
 
 
@@ -349,18 +549,14 @@ async def approve(run_id: str, req: ApproveRequest) -> dict:
 @app.post("/api/kill")
 def kill(req: KillRequest) -> dict:
     manager.llm_enabled = req.llm_enabled
-    if not MOCK:
-        try:
-            from agents.killswitch import set_llm_enabled  # type: ignore
-
-            set_llm_enabled(req.llm_enabled)
-        except Exception:
-            pass
+    ks = _killswitch()
+    if ks:
+        ks.set_llm_enabled(req.llm_enabled)
     return {"llm_enabled": _llm_enabled()}
 
 
 def _log_entries(run: Run) -> list[dict]:
-    if MOCK:
+    if run.replays_fixture:
         return run.log_entries
     path = RUNS_DIR / f"{run.run_id}.jsonl"
     if not path.exists():
@@ -379,11 +575,14 @@ def log(run_id: str) -> Response:
 @app.get("/api/runs/{run_id}/verify")
 def verify(run_id: str) -> dict:
     run = manager.get(run_id)
-    if not MOCK:
+    if not run.replays_fixture:
         try:
             from core.log import verify_chain  # type: ignore
 
-            return verify_chain(str(RUNS_DIR / f"{run_id}.jsonl")).model_dump(mode="json")
+            path = RUNS_DIR / f"{run_id}.jsonl"
+            if not path.exists():
+                raise HTTPException(404, "log not written yet")
+            return verify_chain(str(path)).model_dump(mode="json")
         except ImportError:
             pass
     return verify_entries(_log_entries(run))
@@ -421,6 +620,11 @@ def eval_results() -> JSONResponse:
     return JSONResponse(read_json(EVAL_PATH))
 
 
+@app.get("/api/replay")
+def replay_list() -> list[str]:
+    return sorted(p.stem for p in HERO_DIR.glob("*.jsonl")) if HERO_DIR.exists() else []
+
+
 @app.get("/api/replay/{name}/stream")
 async def replay(name: str, request: Request):
     path = HERO_DIR / f"{Path(name).name}.jsonl"
@@ -429,11 +633,20 @@ async def replay(name: str, request: Request):
     events = read_jsonl(path)
 
     async def gen():
+        prev: datetime | None = None
         for env in events:
             if await request.is_disconnected():
                 break
+            try:
+                t = parse_iso(env["ts"])
+                if prev is not None:  # original timing, capped
+                    await asyncio.sleep(min(REPLAY_MAX_GAP_S, max(0.0, (t - prev).total_seconds())))
+                prev = t
+            except (KeyError, ValueError):
+                await asyncio.sleep(MOCK_GAP_S)
             yield {"event": env["type"], "data": json.dumps(env, ensure_ascii=False)}
-            await asyncio.sleep(MOCK_GAP_S)
+        while not await request.is_disconnected():  # keep open so the client doesn't auto-reconnect and replay again
+            await asyncio.sleep(1)
 
     return EventSourceResponse(gen(), ping=15)
 
@@ -460,4 +673,3 @@ if DIST.exists():
         if path.startswith("api/"):
             raise HTTPException(404, "not found")
         return FileResponse(safe_dist_file(path) or DIST / "index.html")
-
