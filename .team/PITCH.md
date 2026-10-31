@@ -16,7 +16,7 @@ Every number below is measured from the repo (`eval/results.json` 655213e, live)
 
 ## 1:40–2:20 Evidence (frozen held-out set of 30, sha256 4474f237…, committed before any run)
 - "On held-out flights where our three agents negotiated live, **18 out of 18 reached consensus, all by round 2**. **Zero unsafe plans executed.**"
-- Say the failure plainly: "On 12 more flights a client bug killed every agent call. ACCORD fell back to the optimiser automatically and those plans were still legal. That's the fallback doing its job. We've since fixed the bug."
+- Say the failure plainly: "On 12 more flights a client bug killed every agent call. ACCORD fell back to the optimiser automatically and those plans were still legal. That's the fallback doing its job. We've since fixed the bug, and the first 4 we re-ran all reached consensus too." (Those 4 are not in the table; say so if asked.)
 - "Agents never proposed an unsafe option live, so the checker blocked 0. We show it catching one with scripted agents." (Do not claim a live veto.)
 - Honesty point (strong with judges): "**43% of agent messages quoted a number that didn't match the metric they cited.** That's exactly why the LLMs never compute or decide legality in ACCORD: code does."
 - Plan quality: "Mean cost: ACCORD 78.7, optimiser 77.7, so about 1 point of regret per flight. FCFS looks cheapest at 73.4, but it breaks a hard rule on 7 of those 18 flights." "We don't beat a solver at arithmetic. We add negotiated, explained buy-in, with the solver as the safety net."

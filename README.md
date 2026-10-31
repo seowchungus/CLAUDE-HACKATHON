@@ -24,7 +24,7 @@ Held-out set frozen before any run: `eval/eval_set.json` (N=30, 6 hubs, 15 weath
 
 Live run: Gemini 3.5 Flash Lite for all three agents, key 1, 144 calls (`eval/results.json`, commit 655213e).
 
-**What happened:** 12 of the 30 flights never negotiated. A client bug ("Event loop is closed", fixed in cac78e9 during the run) failed every agent call in round 1, and the deterministic fallback produced their plans (still feasible). We did not re-run them (time and quota), so the agent results below cover the **18 flights that actually negotiated**.
+**What happened:** 12 of the 30 flights never negotiated. A client bug ("Event loop is closed", fixed in cac78e9 during the run) failed every agent call in round 1, and the deterministic fallback produced their plans (still feasible). A partial re-run with the fixed client was stopped after 4 of the 12 (all 4 reached consensus in round 2; logs in `runs/`, **not merged**), so the agent results below cover the **18 flights that negotiated in the first pass**.
 
 | On the 18 negotiated flights | ACCORD (live LLM) | B1 optimiser | B0 FCFS |
 |---|---|---|---|
