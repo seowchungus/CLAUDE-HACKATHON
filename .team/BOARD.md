@@ -1,6 +1,6 @@
 # ACCORD BOARD
 
-T0 = 11:09 · Now: 14:13 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
+T0 = 11:09 · Now: 14:32 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
 Rule (12:25, human): major decisions (new workers/roles, starting a major phase) need the human's approval. Tasks within a phase MANAGER delegates directly.
 
 ## Milestones
@@ -63,6 +63,7 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - After the 15:00 reset (one fresh 480 for the project): hero recordings 20, demo + rehearsal 30, optional eval top-up toward N=30 only if done by 15:30.
 
 ## Decisions & assumptions
+- 14:32 (human) W1-08b (655213e): all 12/30 fallbacks were LLM_ERROR ("Event loop is closed"; W2 fixed it in cac78e9 at 14:17, after the eval started). On the 18 rows where the agents actually negotiated, all 18 reached CONSENSUS in R2; unsafe blocked 0, executed 0; ungrounded 0.427. **Do not quote 0.60/0.40.** W1-08c: re-run the 12 rows NOW on today's remaining key-1 budget (~107 calls, stop at 480), note the first-pass bug in results.json, report the n that actually negotiated.
 - 14:12 **INT-01 live smoke PASS** (REVIEWER, `.team/reviews/INT-smoke.md`): 3 live runs (UA1575, DL2463, OO6476), all CONSENSUS R2, feasible, chains verify; 18/20 calls (key 1 at 229/480). → W1-08 Part B (eval) unblocked.
 - 14:05 (human) **Step 5 workaround:** none of the 3 live Flash-Lite runs showed a veto or rejected counter; step 5 accepted as PASS via the scripted golden OO6476 AUS-SFO (H3 + H4 vetoes, SCRIPTED badge). **Pitch wording: vetoes shown with scripted agents and counted in the measured eval; do not claim a live veto was shown.** The eval reports live `unsafe_proposals_blocked` exactly as measured, even if 0.
 - 13:58 Heroes are now **2015-12-30_DL2463_ICT-ATL** (score 10) and **2015-03-02_OO6476_AUS-SFO**. WN2433 SMF-LAX was dropped as a hero (its golden is kept and excluded from eval). The eval set is frozen: `eval/eval_set.json`, sha256 4474f237…, N=30, committed before any eval run.
