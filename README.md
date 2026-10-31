@@ -14,17 +14,24 @@ cp .env.example .env            # add GEMINI_API_KEY (free tier)
 # put flights.csv, airlines.csv, airports.csv (US DOT 2015) and challenge2_operational_constraints.xlsx in data/raw/
 python data/prep.py             # -> data/qualifying.parquet
 python -m core.cli --dev 0      # options + checker grid + fallback, no LLM
-uvicorn api.server:app --port 8000
-cd web && npm install && npm run dev
+cd web && npm install && npm run build && cd ..
+uvicorn api.server:app --host 127.0.0.1 --port 8000   # open http://127.0.0.1:8000
 ```
-Offline demo with no data or key: `MOCK=1 uvicorn api.server:app --port 8000`.
+Offline demo with no data or key: `MOCK=1 uvicorn api.server:app --host 127.0.0.1 --port 8000` (scripted agents, SCRIPTED badge). How to use the console: [docs/CONSOLE_GUIDE.md](docs/CONSOLE_GUIDE.md).
+
+## What it does
+- **Any row of `flights.csv`** is a scenario: pick it by row number (0–358773), scenario id or 🎲 Random row. Two hero flights are pinned for the demo.
+- **One turn = each agent sends one structured message** (JSON schema, validated by code). At most 3 turns; turn 3 is a ballot with no new proposals. No agreement → the deterministic optimiser decides and the log records why.
+- **Hard constraints H1–H7** (wake, runway capacity, fuel reserve, gate, crew duty, taxiway, turbulence) are checked by code on every option and every counter-proposal, and override any agent agreement.
+- **Chaos** (runway closure, taxiway block, gate failure, weather cell) starts a re-negotiation; **Kill the LLM** switches to the fallback with 0 AI calls; the duty manager **approves or overrides**, which closes the **hash-chained log** (viewable, downloadable, verifiable).
+- **Models:** all three agents run on Gemini 3.5 Flash Lite (free tier), the same model for parity so no agent wins by being a stronger model. The proposal named Gemini 3.8 Flash; it timed out and its free quota was too small on the day. The narrator is a deterministic template (0 calls). Numbers and legality are never computed by an LLM.
 
 ## Evaluation (measured; `eval/results.json`)
 Held-out set frozen before any run: `eval/eval_set.json` (N=30, 6 hubs, 15 weather / 15 late-aircraft, seed 42, sha256 `4474f237…`). Dev rows and hero scenarios are excluded.
 
 Live run: Gemini 3.5 Flash Lite for all three agents, key 1, 144 calls (`eval/results.json`, commit 655213e).
 
-**What happened:** 12 of the 30 flights never negotiated. A client bug ("Event loop is closed", fixed in cac78e9 during the run) failed every agent call in round 1, and the deterministic fallback produced their plans (still feasible). A partial re-run with the fixed client was stopped after 4 of the 12 (all 4 reached consensus in round 2; logs in `runs/`, **not merged**), so the agent results below cover the **18 flights that negotiated in the first pass**.
+**What happened:** 12 of the 30 flights never negotiated. A client bug ("Event loop is closed", fixed in cac78e9 during the run) failed every agent call in round 1, and the deterministic fallback produced their plans (still feasible). A partial re-run with the fixed client was stopped after 4 of the 12 (all 4 reached consensus in round 2; run logs kept locally, not in the repo, and **not merged**), so the agent results below cover the **18 flights that negotiated in the first pass**.
 
 | On the 18 negotiated flights | ACCORD (live LLM) | B1 optimiser | B0 FCFS |
 |---|---|---|---|
