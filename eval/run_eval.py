@@ -279,7 +279,18 @@ def assemble(per: list[dict], seed: int, llm_kind: str, shard: str | None = None
         "measured": True,
         "llm": llm_kind,
         "shard": shard,
+        "eval_set_sha256": load_eval_set()["sha256"],
+        "bad_day": _bad_day(),
     }
+
+
+def _bad_day() -> dict | None:
+    """eval/bad_day.json (python -m eval.bad_day): deterministic B0/B1 baselines on the busiest hub-day."""
+    try:
+        with open(repo_path("eval/bad_day.json")) as fh:
+            return json.load(fh)
+    except FileNotFoundError:
+        return None
 
 
 def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
@@ -295,9 +306,7 @@ def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
         if llm is not None and hasattr(llm, "_countered"):  # fresh mock state per scenario
             llm = make_llm(llm_kind, keys)
         per.append(evaluate_row(sid, llm))
-    res = assemble(per, es["seed"], llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
-    res["eval_set_sha256"] = es["sha256"]
-    return res
+    return assemble(per, es["seed"], llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
 
 
 def main() -> None:
