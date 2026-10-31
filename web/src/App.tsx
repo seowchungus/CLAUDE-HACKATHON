@@ -35,6 +35,7 @@ export default function App() {
   const [reqMode, setReqMode] = useState<ScriptedMode | null>(null);
   const [logOpen, setLogOpen] = useState(() => params.has("log"));
   const st = useRunStream(streamKey);
+  const isReplay = !!streamKey?.startsWith("replay:");
   const runId = st.replay ? null : st.runId;
   const chain = useChain(runId, `${!!st.ended}-${!!st.approved}-${logOpen}`);
   const fail = (e: unknown) => setErr(e instanceof Error ? e.message : String(e));
@@ -53,10 +54,11 @@ export default function App() {
 
   // Scenario view: the picked scenario before a run; the run's own (possibly chaos-mutated) bundle once a run exists.
   useEffect(() => {
-    if (!sid || runId) return;
+    // a replay shows the scenario it was recorded on (effect below), never the dropdown's pick
+    if (!sid || runId || isReplay) return;
     setSc(null);
     api.scenario(sid).then(setSc).catch(fail);
-  }, [sid, runId]);
+  }, [sid, runId, isReplay]);
   useEffect(() => {
     if (!runId) return;
     api.runBundle(runId).then(setSc).catch(fail);
