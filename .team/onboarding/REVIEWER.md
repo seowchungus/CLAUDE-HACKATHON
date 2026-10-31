@@ -13,7 +13,7 @@ You are **REVIEWER** on the ACCORD hackathon team (5 chats sharing this repo). Y
 ## How a review works
 The human tells you "review W1-01" (or you see it in BOARD.md as `review`). Then:
 1. Read the task file `.team/tasks/<task>.md` and the worker's DONE line in `.team/status/<ID>.md`.
-2. Look at the commit(s): `git log --oneline --stat | head -40`, `git show <sha> --stat`, then the diff.
+2. Workers do NOT commit; their work is uncommitted in the shared working tree. Look at it with `git status --short <owner paths>` (includes new untracked files) and `git diff -- <owner paths>`; read new files directly. Anything changed outside the owner's paths shows up in a plain `git status --short`.
 3. Run the worker's test command(s) plus `pytest -q` where relevant (use `.venv`). Try one thing they didn't test.
 4. Write `.team/reviews/<task>.md`:
    ```
@@ -24,7 +24,7 @@ The human tells you "review W1-01" (or you see it in BOARD.md as `review`). Then
    2. ...
    Notes (non-blocking): ...
    ```
-5. Tell the human one line: "<task> APPROVED" or "<task> CHANGES (n items)".
+5. Tell the human one line: "<task> APPROVED" or "<task> CHANGES (n items)". If approved, the human confirms the commit with the worker. You never commit.
 
 Keep each review under 10 minutes. Review in the order tasks arrive; non-negotiable items first.
 
@@ -32,7 +32,7 @@ Keep each review under 10 minutes. Review in the order tasks arrive; non-negotia
 - [ ] Acceptance criteria in the task file are met (check each one)
 - [ ] Tests pass (run them; don't trust the status line)
 - [ ] Follows `docs/CONTRACTS.md` exactly: field names, types, event names, endpoint shapes
-- [ ] No edits outside the owner's paths (`git show --stat`)
+- [ ] No edits outside the owner's paths (`git status --short`)
 - [ ] Non-negotiables intact:
   - three separate LLM calls per round (never one call playing several roles)
   - `MAX_ROUNDS = 3` enforced in code; round 3 ballot only (no counters)
@@ -43,7 +43,7 @@ Keep each review under 10 minutes. Review in the order tasks arrive; non-negotia
   - at least one failure case shown; eval numbers measured, not estimated
   - LLMs never compute numbers or check legality
   - free-tier Gemini models; 429 back-off; keys only in `.env`
-- [ ] No secrets committed (`git log -p | grep -iE "AIza|api_key\s*=\s*['\"][A-Za-z0-9]"`), no data/CSV/parquet/runs committed
+- [ ] No secrets committed (`grep -rnE "AIza" --exclude-dir=.venv --exclude-dir=node_modules --exclude=.env .`), and no data/CSV/parquet/runs files would be staged (`git status --short` must not list them; .gitignore should hide them)
 - [ ] Synthetic data labelled (provenance / UI tag / log)
 - [ ] The task stayed within its timebox and scope (flag gold-plating)
 

@@ -22,13 +22,13 @@ Everyone may append to their own `.team/status/<ID>.md`. Nobody edits another pe
 ## Workflow
 1. Read your task file `.team/tasks/<ID>-<nn>.md`.
 2. Build it inside your paths. Respect the timebox; if you hit it, ship what works and list the gaps.
-3. Commit only your paths, one commit per task: `git add <your paths> && git commit -m "[W1-01] summary"`. No force-push, no `git add -A`, no rebases of others' work. Never commit `.env`, data files or `runs/`.
-4. Append to `.team/status/<ID>.md`:
+3. **Do NOT commit.** Leave your work uncommitted in the working tree. The human confirms each commit. Only when the human tells you "commit <task>" do you run `git add <your paths only> && git commit -m "[<task>] summary"`. Never `git add -A`, never push, never force-push, never touch others' files in git. Never stage `.env`, data files or `runs/`.
+4. Then append to `.team/status/<ID>.md`:
    ```
    DONE W1-01 (12:05): <one-line summary>. Test: <exact command(s)>. Gaps: <none | list>.
    ```
    or `BLOCKED W1-01 (12:05): <reason>`.
-5. Tell the human "W1-01 done" (one line). The human relays to MANAGER and REVIEWER.
+5. Tell the human "W1-01 done (uncommitted)" (one line). The human relays to MANAGER and REVIEWER. After REVIEWER approves, the human decides whether to tell you "commit W1-01".
 6. If your next task file already exists, start it immediately. Otherwise pick the next stretch item listed in your task file.
 
 ## Non-negotiables (the release is blocked if any is broken)
