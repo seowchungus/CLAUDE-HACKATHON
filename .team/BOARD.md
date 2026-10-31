@@ -1,6 +1,6 @@
 # ACCORD BOARD
 
-T0 = 11:09 · Now: 14:38 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
+T0 = 11:09 · Now: 15:05 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZEN v1.2 (12:55)**
 Rule (12:25, human): major decisions (new workers/roles, starting a major phase) need the human's approval. Tasks within a phase MANAGER delegates directly.
 
 ## Milestones
@@ -40,8 +40,8 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W3-05 | W3 | Eval page: mock ≠ MEASURED, bad-day card | review | W3-03 | 10 | 13:55 |
 | W2-05 | W2 | INT-01 on-call + grounding check, per-run call count | review | W2-04 | 30 | 14:00 |
 | W1-08 | W1 | A ✅ add3187 results.json = `--llm none`, n=30 · B: live eval N=30 | A review · B waits for EVAL RELEASED | W1-07, INT-01 | 10 + 45 | |
-| W1-09 | W1 | Any flights.csv row → scenario_id (+ every row builds) | todo | brief update | 10 | 15:20 |
-| W3-07 | W3 | Pick ANY row in the console; heroes pinned; ?scenario= | todo | W1-09 | 20 | 15:30 |
+| W1-09 | W1 | Any flights.csv row → scenario_id (+ every row builds) | done (2ae2791; 784 rows, 0 crashes) | brief update | 10 | 15:20 |
+| W3-07 | W3 | Pick ANY row in the console; heroes pinned; ?scenario= | done (c460ff0), live on :8000 | W1-09 | 20 | 15:30 |
 | INT-01 | W3 lead | Live integration + smoke | in progress: live producer on real data with ACCORD_LLM=mock/killed (7dcd565); live Gemini smoke waits for the 20-call release | wave 2 | 45 | |
 
 ### Queued (needs phase approval)
