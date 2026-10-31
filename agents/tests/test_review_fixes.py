@@ -69,3 +69,12 @@ def test_block_d_provenance_from_scenario(cfg):
     assert f"{s.fuel_at_fix_min} min (ESTIMATED)" in pilot
     ground = render_prompt(s, b.options, b.checks, "GROUND", st, cfg)
     assert "Gates (REAL):" in ground
+
+
+def test_min_turnaround_matches_core_without_config_key(cfg):
+    from core.metrics import min_turnaround
+    b = load_bundle()
+    cfg["thresholds"].pop("min_turnaround_min", None)       # prompt must not index this key
+    st = RoundState(round=1, candidates=[o.option_id for o in b.options])
+    ground = render_prompt(b.scenario, b.options, b.checks, "GROUND", st, cfg)
+    assert f"Minimum turnaround: {min_turnaround(b.scenario)} min." in ground

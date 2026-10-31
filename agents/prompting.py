@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 
 from core.config import load_config
+from core.metrics import min_turnaround
 from core.types import CheckReport, Option, Scenario
 from core.options import counter_allowed_values
 from agents.charters import charter_for
@@ -64,7 +65,7 @@ def render_prompt(s: Scenario, options: list[Option], checks: dict[str, CheckRep
         wake_sep=cfg["thresholds"]["wake_separation_s"],
         fuel_reserve=cfg["thresholds"]["fuel_final_reserve_min"],
         turb_severe=cfg["thresholds"]["turbulence_severe"],
-        min_turn=(s.airport_limits or {}).get("min_turnaround_min", cfg["thresholds"]["min_turnaround_min"]),
+        min_turn=min_turnaround(s),   # same value core.metrics uses (workbook per airport, else fallback)
         fuel_spare=cfg["thresholds"].get("fuel_spare_on_arrival_min"),
         crew_max_h=round(cfg["thresholds"].get("flight_crew_max_duty_min", 780) / 60, 1),
         gate_notice=cfg["thresholds"].get("gate_change_notice_min"),
