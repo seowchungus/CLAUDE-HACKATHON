@@ -87,4 +87,5 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - [x] INT-01 approved 12:58 ("proceed with the next step"); starts when W1-06 + W2-04 pass review
 - [x] Data decided (12:50): provided file + workbook
 - [x] Keys 2 and 3 in `.env` (12:57)
-- [ ] Dashboard usage for keys 2 and 3, and confirmation they are in **different projects** from key 1 (placeholders of 250 used each until then)
+- [x] Keys 2 and 3 are in the **same project** as key 1 (human, 14:0x): no extra capacity; pinned at cap in the ledger and config. Eval runs on key 1 only.
+- [ ] Key 1 dashboard reading → `budget_cli --set GEMINI_API_KEY=<n>`

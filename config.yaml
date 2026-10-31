@@ -30,15 +30,15 @@ llm_budget:                  # HARD guard, enforced in agents/client.py before e
   daily_reset_tz: America/Los_Angeles   # free-tier RPD resets at midnight Pacific
   used_before_ledger:                   # dashboard readings (+08), counted against today's cap
     GEMINI_API_KEY: 211                 # 12:45 reading
-    GEMINI_API_KEY_2: 250               # PLACEHOLDER (conservative) until the human gives the dashboard reading
-    GEMINI_API_KEY_3: 250               # PLACEHOLDER (conservative) until the human gives the dashboard reading
+    GEMINI_API_KEY_2: 480               # SAME PROJECT as key 1 (human, 14:0x): no extra capacity -> pinned at cap, never used
+    GEMINI_API_KEY_3: 480               # SAME PROJECT as key 1: pinned at cap, never used
   # Free-tier limits are per Google Cloud PROJECT, not per key. Keys from the same project share one 500/day.
   # Each extra key must come from a different teammate's own project, or it adds no capacity.
   allocation:                           # planning only (MANAGER releases each); total 269 of 269 available
     integration_smoke: 20
     hero_recordings: 20
     demo_and_rehearsal: 30
-    eval: 189                           # ~N=20-25 at 7-9 calls/scenario on one key; more keys -> N=30
+    eval: 189                           # one project only (keys 2/3 share it) -> ~N=20-25 today; N=30 only after the 15:00 reset
     reserve: 10
 
 rate_limit:
