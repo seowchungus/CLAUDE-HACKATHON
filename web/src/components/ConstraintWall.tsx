@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { CheckReport, Option } from "../types";
 import { C_SHORT, CONSTRAINTS, shortC } from "../types";
 import { decidedPlan, type RunState } from "../useRunStream";
@@ -10,6 +11,36 @@ interface Props {
   checks: Record<string, CheckReport>;
   fcfs: Option | null;
   fallbackId: string | null;
+}
+
+const LEGEND: [string, string][] = [
+  ["H1 Wake", "Gap behind the previous arrival"],
+  ["H2 Capacity", "Arrivals this hour within limit"],
+  ["H3 Fuel", "≥ 30 min fuel at landing"],
+  ["H4 Gate", "Free, right size, ≥ 20 min notice"],
+  ["H5 Crew", "Within the 13 h duty limit"],
+  ["H6 Taxiway", "Route to the gate is open"],
+  ["H7 Turbulence", "No severe turbulence"],
+];
+
+function Legend() {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="mt-1 text-xs">
+      <button onClick={() => setOpen(!open)} className="text-sky-400 hover:underline">What are H1–H7? {open ? "▾" : "▸"}</button>
+      {open && (
+        <table className="mt-1 text-slate-300">
+          <thead className="text-left text-[11px] text-slate-500"><tr><th className="pr-6 font-normal">Rule</th><th className="font-normal">Checks</th></tr></thead>
+          <tbody>
+            {LEGEND.map(([r, c]) => (
+              <tr key={r} className="border-t border-slate-900"><td className="pr-6 font-semibold">{r}</td><td>{c}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      <div className="mt-1 text-[11px] text-slate-500">WB = organisers' workbook limit · ours = our rule. Hover any cell for the exact reason.</div>
+    </div>
+  );
 }
 
 export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props) {
@@ -73,9 +104,8 @@ export function ConstraintWall({ st, options, checks, fcfs, fallbackId }: Props)
           })}
         </tbody>
       </table>
-      <div className="mt-1 text-[11px] text-slate-500">
-        Hover a cell for the checker's detail. B0 = first-come-first-served baseline (not a candidate) · B1 = deterministic fallback choice (min J). WB = limit from the organisers' workbook; ours = our rule (see Challenge limits).
-      </div>
+      <div className="mt-1 text-[11px] text-slate-500">B0 = first-come-first-served baseline (not a candidate) · B1 = deterministic fallback choice (min J).</div>
+      <Legend />
     </div>
   );
 }
