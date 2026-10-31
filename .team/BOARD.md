@@ -8,7 +8,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 |---|---|---|
 | 11:39 | Contracts frozen, all workers started | ✅ 11:20 |
 | 12:39 | W1 CLI milestone · W2 negotiation on fixture · W3 UI on mock | ✅ 12:10 (all three, ~30 min early) |
-| 13:39–14:24 | **Integration** (INT-01) | ⏸ awaiting human approval; start when W1-06 + W2-04 land (~13:45) |
+| 13:39–14:24 | **Integration** (INT-01) | approved 12:58; starts when W1-06 + W2-04 pass review (~13:50) |
 | 14:24–15:09 | Eval N=30 in background, chaos/kill/approve, map polish | ⏸ phase start needs approval |
 | 15:09–15:39 | Fixes, README limitations, 2 hero scenarios cached | |
 | 15:39 | **Feature freeze**; slides outline + pitch with real numbers | |
