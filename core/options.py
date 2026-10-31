@@ -68,16 +68,20 @@ def generate_options(s: Scenario) -> list[Option]:
         for fi, fp in enumerate(fps):
             if shift < MIN_SHIFT[fp] or (fp == "speed_reduction" and shift == 0):
                 continue  # same eta/fuel as another grid point; skip the duplicate
-            rot = (shift // 5 + fi) % len(gates)  # rotate gate preference for diversity
-            got_feasible = False
+            rot = (shift // 5 + fi) % len(gates)  # rotate gate preference for diversity (J ties only)
+            ok_here: list[Option] = []
             for gate in gates[rot:] + gates[:rot]:
                 o = make_option(s, "tmp", shift, gate, fp)
                 fails = failed_ids(check_option(s, o))
-                if not fails and (not got_feasible or gate == s.planned_gate):
-                    feasible.append(o)
-                    got_feasible = True  # one feasible gate per (shift, fp), plus the planned gate
-                elif fails:
+                if fails:
                     infeasible.append((o, fails))
+                else:
+                    ok_here.append(o)
+            # per (shift, fp): the cheapest feasible gate (gates differ by ramp wait), plus the planned gate,
+            # so B1 is never beaten by a feasible grid point such as the FCFS plan
+            if ok_here:
+                cheapest = min(ok_here, key=lambda o: o.metrics.cost_J)
+                feasible += [o for o in ok_here if o is cheapest or (o.gate == s.planned_gate)]
 
     def J(o: Option) -> float:
         return o.metrics.cost_J
@@ -99,7 +103,7 @@ def generate_options(s: Scenario) -> list[Option]:
             return min(cands, key=key) if cands else None
         for role in ("ATC", "PILOT", "GROUND"):
             add(best(feasible, lambda o, k=ROLE_KEYS[role]: (k(o), o.option_id)), exact=(role == "GROUND"))
-        add(best(feasible, J))  # fallback's likely choice
+        add(best(feasible, J), exact=True)  # the global min-J option is always offered (B1 picks it)
         front = [o for o in feasible if not any(_dominates(p, o) for p in feasible)]
         seen_fp = {p.fp_adjustment for p in picks}
         for o in sorted(front, key=lambda o: (o.fp_adjustment in seen_fp, J(o))):

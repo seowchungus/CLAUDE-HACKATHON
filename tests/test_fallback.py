@@ -37,3 +37,13 @@ def test_fallback_runs_without_agents():
             f"b = build_bundle({DEV[0]!r}); assert b.fallback.status == 'PLAN'\n"
             "assert not any(m.startswith('agents') for m in sys.modules if sys.modules[m] is not None)")
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+def test_b1_never_worse_than_feasible_fcfs():
+    """FCFS (+0, as filed) is a grid point, so a feasible FCFS can never beat B1. These ATL 2015-12-30 rows did
+    before the generator kept the cheapest gate per (shift, fp) (gates differ by ramp wait)."""
+    for sid in DEV + ["2015-12-30_WN289_MSP-ATL", "2015-12-30_OO4748_FWA-ATL", "2015-12-30_DL1966_DFW-ATL",
+                      "2015-12-30_DL805_PHL-ATL", "2015-12-30_EV5010_ORF-ATL"]:
+        b = build_bundle(sid)
+        if b.checks["opt_fcfs"].feasible:
+            assert b.fallback.status == "PLAN" and b.fallback.cost_J <= b.fcfs.metrics.cost_J, sid

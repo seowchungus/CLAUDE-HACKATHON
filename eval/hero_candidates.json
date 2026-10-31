@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-31T05:39:32Z",
+ "generated_at": "2026-10-31T05:47:29Z",
  "scanned": 300,
  "airports": [
   "ORD",
@@ -103,24 +103,24 @@
    "disruption_type": "LATE_AIRCRAFT",
    "disruption_min": 66,
    "destination": "ATL",
-   "fallback_option": "opt_2",
+   "fallback_option": "opt_3",
    "favourites": {
-    "ATC": "opt_2",
-    "PILOT": "opt_2",
+    "ATC": "opt_3",
+    "PILOT": "opt_3",
     "GROUND": "opt_7"
    }
   },
   {
    "scenario_id": "2015-06-17_AA2464_MCO-DFW",
    "score": 9,
-   "reason": "misconnects 54-97; 2 infeasible; fallback != FCFS; 2 distinct role favourites; FCFS unsafe (H4_gate_validity)",
+   "reason": "misconnects 23-97; 2 infeasible; fallback != FCFS; 2 distinct role favourites; FCFS unsafe (H4_gate_validity)",
    "disruption_type": "WEATHER",
    "disruption_min": 67,
    "destination": "DFW",
-   "fallback_option": "opt_6",
+   "fallback_option": "opt_3",
    "favourites": {
-    "ATC": "opt_6",
-    "PILOT": "opt_1",
+    "ATC": "opt_3",
+    "PILOT": "opt_3",
     "GROUND": "opt_6"
    }
   },
@@ -131,24 +131,24 @@
    "disruption_type": "LATE_AIRCRAFT",
    "disruption_min": 38,
    "destination": "DEN",
-   "fallback_option": "opt_2",
+   "fallback_option": "opt_3",
    "favourites": {
-    "ATC": "opt_2",
-    "PILOT": "opt_2",
+    "ATC": "opt_3",
+    "PILOT": "opt_3",
     "GROUND": "opt_7"
    }
   },
   {
-   "scenario_id": "2015-07-15_OO5532_AUS-LAX",
+   "scenario_id": "2015-07-19_WN2433_SMF-LAX",
    "score": 9,
-   "reason": "misconnects 51-76; 2 infeasible; fallback != FCFS; 3 distinct role favourites",
+   "reason": "misconnects 89-125; 2 infeasible; fallback != FCFS; 2 distinct role favourites; FCFS unsafe (H4_gate_validity)",
    "disruption_type": "LATE_AIRCRAFT",
-   "disruption_min": 94,
+   "disruption_min": 29,
    "destination": "LAX",
    "fallback_option": "opt_3",
    "favourites": {
     "ATC": "opt_3",
-    "PILOT": "opt_1",
+    "PILOT": "opt_3",
     "GROUND": "opt_7"
    }
   }

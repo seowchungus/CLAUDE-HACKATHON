@@ -1377,12 +1377,12 @@
    {
     "option_id": "opt_2",
     "eta_shift_min": 5,
-    "gate": "B3",
+    "gate": "A3",
     "fp_adjustment": "as_filed",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+5 min, gate B3, as filed",
+    "label": "+5 min, gate A3, as filed",
     "metrics": {
      "eta_new_min": 884,
      "runway_slot_min": 885,
@@ -1392,20 +1392,20 @@
      "hold_min": 0,
      "turbulence_idx": 0.54,
      "misconnected_pax": 101,
-     "gate": "B3",
-     "gate_free_from_min": 655,
-     "gate_free_to_min": 1020,
+     "gate": "A3",
+     "gate_free_from_min": 906,
+     "gate_free_to_min": 1146,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -40,
+     "turnaround_buffer_min": -51,
      "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 15,
      "throughput_loss": 0,
      "cost_J": 217.8,
-     "gate_change": false,
-     "gate_change_notice_min": null,
+     "gate_change": true,
+     "gate_change_notice_min": 22,
      "fuel_at_landing_kg": 1600.0,
-     "gate_wait_min": 0
+     "gate_wait_min": 11
     }
    },
    {
@@ -1676,15 +1676,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B3 free and size-compatible"
+      "detail": "gate A3 free and size-compatible after 11 min ramp wait; change notice 22 min"
      },
      {
       "option_id": "opt_2",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 478.0,
+      "value": 467.0,
       "threshold": 0.0,
-      "detail": "flight crew duty left 478 min >= 0 of 13 h max (workbook)"
+      "detail": "flight crew duty left 467 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_2",

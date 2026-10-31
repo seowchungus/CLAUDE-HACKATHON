@@ -1,0 +1,55 @@
+{
+ "label": "deterministic baselines only; the LLM negotiation is evaluated on the N=30 set",
+ "airport": "ATL",
+ "date": "2015-12-30",
+ "n_flights": 438,
+ "choice": "destination and date with the most qualifying arrivals in the provided data",
+ "n_skipped": 5,
+ "skipped": [
+  {
+   "scenario_id": "2015-12-30_DL508_ECP-ATL",
+   "error": "KeyError: 'airport coordinates missing for ECP or ATL'"
+  },
+  {
+   "scenario_id": "2015-12-30_EV4929_ECP-ATL",
+   "error": "KeyError: 'airport coordinates missing for ECP or ATL'"
+  },
+  {
+   "scenario_id": "2015-12-30_DL2556_ECP-ATL",
+   "error": "KeyError: 'airport coordinates missing for ECP or ATL'"
+  },
+  {
+   "scenario_id": "2015-12-30_DL2506_ECP-ATL",
+   "error": "KeyError: 'airport coordinates missing for ECP or ATL'"
+  },
+  {
+   "scenario_id": "2015-12-30_DL2508_ECP-ATL",
+   "error": "KeyError: 'airport coordinates missing for ECP or ATL'"
+  }
+ ],
+ "B0": {
+  "bank_delay_added_min": 6579,
+  "misconnected_pax": 29203,
+  "ramp_overtime_min": 1343,
+  "J": 69462.45,
+  "n_flights": 438
+ },
+ "B1": {
+  "bank_delay_added_min": 2973,
+  "misconnected_pax": 29241,
+  "ramp_overtime_min": 2170,
+  "J": 65714.3,
+  "n_flights": 424
+ },
+ "B0_on_B1_planned": {
+  "bank_delay_added_min": 5443,
+  "misconnected_pax": 28222,
+  "ramp_overtime_min": 1305,
+  "J": 66058.55,
+  "n_flights": 424
+ },
+ "b0_infeasible": 161,
+ "b1_escalate": 14,
+ "notes": "each arrival replayed independently with its own seeded synthetic scenario; B0 totals include FCFS plans that break a hard rule (b0_infeasible); B1 totals cover PLAN rows only, so compare B1 with B0_on_B1_planned",
+ "generated_at": "2026-10-31T05:48:32Z"
+}

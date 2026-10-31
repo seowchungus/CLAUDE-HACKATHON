@@ -742,12 +742,12 @@
    {
     "option_id": "opt_2",
     "eta_shift_min": 5,
-    "gate": "A2",
+    "gate": "B2",
     "fp_adjustment": "as_filed",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+5 min, gate A2, as filed",
+    "label": "+5 min, gate B2, as filed",
     "metrics": {
      "eta_new_min": 914,
      "runway_slot_min": 914,
@@ -757,11 +757,11 @@
      "hold_min": 0,
      "turbulence_idx": 0.31,
      "misconnected_pax": 25,
-     "gate": "A2",
-     "gate_free_from_min": 923,
-     "gate_free_to_min": 1163,
+     "gate": "B2",
+     "gate_free_from_min": 994,
+     "gate_free_to_min": 1234,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -40,
+     "turnaround_buffer_min": -35,
      "ramp_overtime_min": 0,
      "bank_delay_added_min": 0,
      "arrivals_this_hour": 3,
@@ -770,7 +770,7 @@
      "gate_change": true,
      "gate_change_notice_min": 24,
      "fuel_at_landing_kg": 1600.0,
-     "gate_wait_min": 5
+     "gate_wait_min": 0
     }
    },
    {
@@ -810,12 +810,12 @@
    {
     "option_id": "opt_4",
     "eta_shift_min": 10,
-    "gate": "B2",
+    "gate": "B1",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+10 min, gate B2, speed reduction",
+    "label": "+10 min, gate B1, speed reduction",
     "metrics": {
      "eta_new_min": 919,
      "runway_slot_min": 919,
@@ -825,9 +825,9 @@
      "hold_min": 0,
      "turbulence_idx": 0.27,
      "misconnected_pax": 25,
-     "gate": "B2",
-     "gate_free_from_min": 994,
-     "gate_free_to_min": 1234,
+     "gate": "B1",
+     "gate_free_from_min": 683,
+     "gate_free_to_min": 1163,
      "taxi_path_ok": true,
      "turnaround_buffer_min": -40,
      "ramp_overtime_min": 0,
@@ -844,23 +844,23 @@
    {
     "option_id": "opt_5",
     "eta_shift_min": 10,
-    "gate": "B1",
-    "fp_adjustment": "hold_10",
+    "gate": "A2",
+    "fp_adjustment": "reroute_weather",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+10 min, gate B1, hold 10 min",
+    "label": "+10 min, gate A2, weather reroute",
     "metrics": {
      "eta_new_min": 919,
      "runway_slot_min": 919,
      "separation_margin_s": 1740,
-     "fuel_at_landing_min": 35.0,
-     "extra_fuel_min": 10.0,
-     "hold_min": 10,
-     "turbulence_idx": 0.25,
+     "fuel_at_landing_min": 37.0,
+     "extra_fuel_min": 8.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.11,
      "misconnected_pax": 25,
-     "gate": "B1",
-     "gate_free_from_min": 683,
+     "gate": "A2",
+     "gate_free_from_min": 923,
      "gate_free_to_min": 1163,
      "taxi_path_ok": true,
      "turnaround_buffer_min": -40,
@@ -868,10 +868,10 @@
      "bank_delay_added_min": 0,
      "arrivals_this_hour": 4,
      "throughput_loss": 0,
-     "cost_J": 63.0,
+     "cost_J": 58.6,
      "gate_change": true,
      "gate_change_notice_min": 29,
-     "fuel_at_landing_kg": 1400.0,
+     "fuel_at_landing_kg": 1480.0,
      "gate_wait_min": 0
     }
    },
@@ -1009,7 +1009,7 @@
    },
    "opt_2": {
     "option_id": "opt_2",
-    "feasible": true,
+    "feasible": false,
     "results": [
      {
       "option_id": "opt_2",
@@ -1038,18 +1038,18 @@
      {
       "option_id": "opt_2",
       "constraint_id": "H4_gate_validity",
-      "passed": true,
+      "passed": false,
       "value": null,
       "threshold": null,
-      "detail": "gate A2 free and size-compatible after 5 min ramp wait; change notice 24 min"
+      "detail": "gate B2 busy: free 994-1234, needed 918-953"
      },
      {
       "option_id": "opt_2",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 251.0,
+      "value": 256.0,
       "threshold": 0.0,
-      "detail": "flight crew duty left 251 min >= 0 of 13 h max (workbook)"
+      "detail": "flight crew duty left 256 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_2",
@@ -1133,7 +1133,7 @@
    },
    "opt_4": {
     "option_id": "opt_4",
-    "feasible": false,
+    "feasible": true,
     "results": [
      {
       "option_id": "opt_4",
@@ -1162,10 +1162,10 @@
      {
       "option_id": "opt_4",
       "constraint_id": "H4_gate_validity",
-      "passed": false,
+      "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B2 busy: free 994-1234, needed 923-958"
+      "detail": "gate B1 free and size-compatible; change notice 29 min"
      },
      {
       "option_id": "opt_4",
@@ -1217,9 +1217,9 @@
       "option_id": "opt_5",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 35.0,
+      "value": 37.0,
       "threshold": 30.0,
-      "detail": "fuel 35.0 min >= 30 min final reserve (workbook)"
+      "detail": "fuel 37.0 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_5",
@@ -1227,7 +1227,7 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate B1 free and size-compatible; change notice 29 min"
+      "detail": "gate A2 free and size-compatible; change notice 29 min"
      },
      {
       "option_id": "opt_5",
@@ -1249,9 +1249,9 @@
       "option_id": "opt_5",
       "constraint_id": "H7_severe_turbulence",
       "passed": true,
-      "value": 0.25,
+      "value": 0.11,
       "threshold": 0.7,
-      "detail": "turbulence 0.25 < 0.7"
+      "detail": "turbulence 0.11 < 0.7"
      }
     ]
    },
@@ -1452,12 +1452,12 @@
      56.6
     ],
     [
-     "opt_2",
-     60.2
+     "opt_4",
+     57.8
     ],
     [
      "opt_5",
-     63.0
+     58.6
     ],
     [
      "opt_1",
