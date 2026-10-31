@@ -1,9 +1,10 @@
 """Batch evaluation (proposal §8, CONTRACTS.md §6). Skeleton: B0 (FCFS) and B1 (optimiser) only, no LLM.
 
-  python -m eval.run_eval [--n 30] [--seed 42] [--llm none|mock|live] [--shard i/k] [--out PATH]
+  python -m eval.run_eval [--n 30] [--llm none|mock|live] [--shard i/k] [--out PATH]
+  python -m eval.run_eval --freeze [--n 30] [--seed 42]     (once; refuses if eval/eval_set.json exists)
 
-Test set: N qualifying rows, stratified by delay type (WEATHER / LATE_AIRCRAFT, alternating) across the
-top-6 destination airports by qualifying volume, excluding data/dev_rows.json and eval/hero_candidates.json. Deterministic for a seed.
+Test set: read ONLY from the frozen eval/eval_set.json (sha256-checked): N qualifying rows, stratified by delay
+type across the top-6 destination airports, excluding dev rows and every hero candidate ever listed or exported.
 Every number written is measured; fields that were not run are null.
 
   --llm none|mock|live   none = B0/B1 only; mock = agents MockLLMClient (offline); live = Gemini (needs the
@@ -12,7 +13,9 @@ Every number written is measured; fields that were not run are null.
 """
 import argparse
 import asyncio
+import hashlib
 import json
+import os
 import random
 import secrets
 from datetime import datetime, timezone
@@ -35,14 +38,71 @@ def hero_scenario_ids() -> list[str]:
         return []
 
 
-def select_test_set(n: int, seed: int) -> list[str]:
+EVAL_SET = "eval/eval_set.json"
+# Hero candidates of an earlier ranking (6cf34a4) that later dropped out of eval/hero_candidates.json; WN2433 was
+# exported and on the board as a demo hero, so all three stay excluded from the held-out set.
+FORMER_HEROES = ["2015-07-19_WN2433_SMF-LAX", "2015-11-09_OO6301_SNA-SFO", "2015-01-15_OO5242_DSM-DEN"]
+SELECTION_RULE = ("qualifying rows (WEATHER_DELAY > 15 or LATE_AIRCRAFT_DELAY > 20) whose origin and destination "
+                  "have coordinates; top-6 destinations by qualifying volume; per (airport, WEATHER_DELAY > 15 yes/no) "
+                  "pool sorted by (DATE, AIRLINE, FLIGHT_NUMBER) and shuffled with random.Random(seed); round-robin "
+                  "over airports, pick k is weather iff (k + k // 6) is even; excluded ids removed first")
+
+
+def excluded_ids() -> list[str]:
+    """Dev rows + every hero candidate ever listed or exported (current, former, golden files)."""
+    gold = []
+    d = repo_path("tests/golden")
+    if os.path.isdir(d):
+        for f in sorted(os.listdir(d)):
+            if f.endswith(".json"):
+                gold.append(f[:-5])
+    return sorted(set(dev_scenario_ids()) | set(hero_scenario_ids()) | set(FORMER_HEROES) | set(gold))
+
+
+def _ids_sha256(ids: list[str]) -> str:
+    return hashlib.sha256(json.dumps(ids).encode()).hexdigest()
+
+
+def freeze_eval_set(n: int, seed: int) -> dict:
+    """Write eval/eval_set.json once (refuses to overwrite: a frozen set is never re-drawn)."""
+    path = repo_path(EVAL_SET)
+    if os.path.exists(path):
+        raise SystemExit(f"{EVAL_SET} already exists; the eval set is frozen")
+    excl = excluded_ids()
+    ids = select_test_set(n, seed, set(excl))
+    q = _qualifying()
+    s = {make_scenario_id(*r): w for *r, w in q.select(
+        "DATE", "AIRLINE", "FLIGHT_NUMBER", "ORIGIN_AIRPORT", "DESTINATION_AIRPORT",
+        pl.col("WEATHER_DELAY").fill_null(0) > 15).rows()}
+    res = {"frozen_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+           "n": len(ids), "seed": seed, "selection_rule": SELECTION_RULE,
+           "strata": {"weather": sum(bool(s.get(i)) for i in ids), "non_weather": sum(not s.get(i) for i in ids),
+                      "airports": sorted({i.rsplit("-", 1)[1] for i in ids})},
+           "scenario_ids": ids, "sha256": _ids_sha256(ids),
+           "sha256_of": "hashlib.sha256(json.dumps(scenario_ids).encode()).hexdigest()",
+           "excluded_ids": excl}
+    with open(path, "w", encoding="utf-8") as fh:
+        json.dump(res, fh, indent=1)
+    return res
+
+
+def load_eval_set() -> dict:
+    """The frozen held-out set; the hash is checked so a hand-edited list is caught."""
+    with open(repo_path(EVAL_SET)) as fh:
+        es = json.load(fh)
+    if _ids_sha256(es["scenario_ids"]) != es["sha256"]:
+        raise SystemExit(f"{EVAL_SET}: sha256 mismatch, the frozen set was edited")
+    return es
+
+
+def select_test_set(n: int, seed: int, exclude: set[str] | None = None) -> list[str]:
     q = _qualifying()
     known = list(airports())
     q = q.filter(pl.col("ORIGIN_AIRPORT").is_in(known) & pl.col("DESTINATION_AIRPORT").is_in(known))
     top = (q.group_by("DESTINATION_AIRPORT").len().sort(["len", "DESTINATION_AIRPORT"], descending=[True, False])
            .head(N_AIRPORTS)["DESTINATION_AIRPORT"].to_list())
     rng = random.Random(seed)
-    dev = set(dev_scenario_ids()) | set(hero_scenario_ids())
+    dev = exclude if exclude is not None else set(excluded_ids())
     weather = (pl.col("WEATHER_DELAY").fill_null(0) > 15)
     pools: dict[tuple[str, bool], list[str]] = {}
     for ap in top:
@@ -57,7 +117,7 @@ def select_test_set(n: int, seed: int) -> list[str]:
     out: list[str] = []
     k = 0
     while len(out) < n and any(pools.values()):
-        ap, is_w = top[k % len(top)], (k // len(top)) % 2 == 0
+        ap, is_w = top[k % len(top)], (k + k // len(top)) % 2 == 0  # 15/15 at N=30, 5 per airport
         k += 1
         if pools[(ap, is_w)]:
             out.append(pools[(ap, is_w)].pop())
@@ -222,9 +282,10 @@ def assemble(per: list[dict], seed: int, llm_kind: str, shard: str | None = None
     }
 
 
-def run(n: int, seed: int, llm_kind: str = "none", keys: list[int] | None = None,
+def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
         shard: tuple[int, int] | None = None) -> dict:
-    ids = select_test_set(n, seed)
+    es = load_eval_set()
+    ids = es["scenario_ids"][:n]  # only the frozen set (n < 30 = its first n rows, for quick checks)
     if shard:
         i, k = shard
         ids = [sid for j, sid in enumerate(ids) if j % k == i - 1]
@@ -234,26 +295,36 @@ def run(n: int, seed: int, llm_kind: str = "none", keys: list[int] | None = None
         if llm is not None and hasattr(llm, "_countered"):  # fresh mock state per scenario
             llm = make_llm(llm_kind, keys)
         per.append(evaluate_row(sid, llm))
-    return assemble(per, seed, llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
+    res = assemble(per, es["seed"], llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
+    res["eval_set_sha256"] = es["sha256"]
+    return res
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=30)
-    ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--seed", type=int, default=42, help="--freeze only")
+    ap.add_argument("--freeze", action="store_true", help=f"draw and write {EVAL_SET} once, then exit")
     ap.add_argument("--llm", choices=["none", "mock", "live"], default="none")
     ap.add_argument("--keys", default="", help="live only: comma-separated 1-based key indices, e.g. 1,2,3")
     ap.add_argument("--shard", default="", help="i/k: run rows with index %% k == i-1")
     ap.add_argument("--confirm-live", action="store_true", help="required with --llm live (spends quota)")
     ap.add_argument("--out", default="")
     a = ap.parse_args()
+    if a.freeze:
+        es = freeze_eval_set(a.n, a.seed)
+        print(f"wrote {EVAL_SET}: n={es['n']} strata={es['strata']} excluded={len(es['excluded_ids'])} "
+              f"sha256={es['sha256']}")
+        return
     if a.llm == "live" and not a.confirm_live:
         raise SystemExit("--llm live spends Gemini quota; it needs the human's approval and --confirm-live")
     shard = tuple(int(x) for x in a.shard.split("/")) if a.shard else None
     keys = [int(x) for x in a.keys.split(",") if x.strip()] or None
-    out = a.out or (f"eval/results_partial_{shard[0]}of{shard[1]}.json" if shard
+    # a mock run is scripted, never "measured" results: it never goes to eval/results.json
+    out = a.out or ("runs/eval_mock.json" if a.llm == "mock"
+                    else f"eval/results_partial_{shard[0]}of{shard[1]}.json" if shard
                     else load_config()["paths"]["eval_results"])
-    res = run(a.n, a.seed, a.llm, keys, shard)
+    res = run(a.n, a.llm, keys, shard)
     with open(repo_path(out), "w", encoding="utf-8") as fh:
         json.dump(res, fh, indent=1)
     s = res["summary"]

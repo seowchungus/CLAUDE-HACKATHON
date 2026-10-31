@@ -5,7 +5,7 @@ from eval.run_eval import run
 
 def test_eval_mock_end_to_end(monkeypatch):
     monkeypatch.setenv("MOCK", "1")
-    res = run(2, 42, "mock")
+    res = run(2, "mock")
     assert res["measured"] is True and res["n"] == 2
     s = res["summary"]
     assert s["unsafe_plans_executed"] == 0
@@ -16,7 +16,7 @@ def test_eval_mock_end_to_end(monkeypatch):
 
 
 def test_eval_shards_partition():
-    a = run(4, 42, "none", shard=(1, 2))["per_scenario"]
-    b = run(4, 42, "none", shard=(2, 2))["per_scenario"]
+    a = run(4, "none", shard=(1, 2))["per_scenario"]
+    b = run(4, "none", shard=(2, 2))["per_scenario"]
     ids = {p["scenario_id"] for p in a} | {p["scenario_id"] for p in b}
     assert len(ids) == 4 and not ({p["scenario_id"] for p in a} & {p["scenario_id"] for p in b})
