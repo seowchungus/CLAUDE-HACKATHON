@@ -40,6 +40,8 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W3-05 | W3 | Eval page: mock ≠ MEASURED, bad-day card | review | W3-03 | 10 | 13:55 |
 | W2-05 | W2 | INT-01 on-call + grounding check, per-run call count | review | W2-04 | 30 | 14:00 |
 | W1-08 | W1 | A ✅ add3187 results.json = `--llm none`, n=30 · B: live eval N=30 | A review · B waits for EVAL RELEASED | W1-07, INT-01 | 10 + 45 | |
+| W1-09 | W1 | Any flights.csv row → scenario_id (+ every row builds) | todo | brief update | 10 | 15:20 |
+| W3-07 | W3 | Pick ANY row in the console; heroes pinned; ?scenario= | todo | W1-09 | 20 | 15:30 |
 | INT-01 | W3 lead | Live integration + smoke | in progress: live producer on real data with ACCORD_LLM=mock/killed (7dcd565); live Gemini smoke waits for the 20-call release | wave 2 | 45 | |
 
 ### Queued (needs phase approval)
@@ -63,6 +65,7 @@ Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls unti
 - After the 15:00 reset (one fresh 480 for the project): hero recordings 20, demo + rehearsal 30, optional eval top-up toward N=30 only if done by 15:30.
 
 ## Decisions & assumptions
+- 14:5x Updated challenge brief (clarifications): "pick ANY row of flights.csv", one turn = one message per agent, ≤3 turns then fallback with the reason logged; workbook values are synthetic. Only gap: the console offers a fixed list of 50 and the heroes aren't in it → W1-09 + W3-07. README cites the organisers' "synthetic planning limits" wording.
 - 14:38 (human) **Re-run skipped.** W1-08c was blocked by W1's permission check (0 calls). We report the 18 flights that negotiated (18/18 consensus R2, 0 unsafe, 43% ungrounded, regret +1.0 J) and disclose the 12 LLM_ERROR rows (README + pitch). Quota after 15:00: hero recordings 20, rehearsal 30.
 - 14:32 (human) W1-08b (655213e): all 12/30 fallbacks were LLM_ERROR ("Event loop is closed"; W2 fixed it in cac78e9 at 14:17, after the eval started). On the 18 rows where the agents actually negotiated, all 18 reached CONSENSUS in R2; unsafe blocked 0, executed 0; ungrounded 0.427. **Do not quote 0.60/0.40.** W1-08c: re-run the 12 rows NOW on today's remaining key-1 budget (~107 calls, stop at 480), note the first-pass bug in results.json, report the n that actually negotiated.
 - 14:12 **INT-01 live smoke PASS** (REVIEWER, `.team/reviews/INT-smoke.md`): 3 live runs (UA1575, DL2463, OO6476), all CONSENSUS R2, feasible, chains verify; 18/20 calls (key 1 at 229/480). → W1-08 Part B (eval) unblocked.
