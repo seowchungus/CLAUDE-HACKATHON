@@ -188,5 +188,5 @@ def test_approve_closes_chain(cfg):
 
 def test_max_rounds_asserted(cfg):
     cfg["negotiation"]["MAX_ROUNDS"] = 4
-    with pytest.raises(AssertionError):
+    with pytest.raises(ValueError):
         Coordinator(load_bundle(), "run_test_max", config=cfg, llm=MockLLMClient(config=cfg))

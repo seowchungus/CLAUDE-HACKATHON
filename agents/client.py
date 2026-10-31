@@ -14,7 +14,7 @@ from typing import Callable, Protocol
 from dotenv import dotenv_values
 
 from core.config import load_config, repo_path
-from agents import killswitch
+from agents import budget, killswitch
 from agents.prompting import AgentCall
 from agents.schema import AgentMessage, AgentPosition, Counter, validate_position
 
@@ -33,7 +33,7 @@ def _api_keys() -> list[tuple[str, str]]:
     file_vals = dotenv_values(repo_path(".env")) if os.path.exists(repo_path(".env")) else {}
     keys = []
     for name in KEY_NAMES:
-        v = os.environ.get(name) or file_vals.get(name)
+        v = os.environ[name] if name in os.environ else file_vals.get(name)   # env (even empty) wins
         if v and v.strip() and "your" not in v.lower():
             keys.append((name, v.strip()))
     return keys
@@ -125,12 +125,27 @@ class GeminiClient:
                 raise _RetryWithoutThinking() from e
             raise
 
+    async def _budgeted_key(self, role: str, model: str) -> str:
+        """Reserve one request in the shared ledger (waits on the RPM limiter). Role's own key first,
+        then the others. Raises BudgetExhausted when every key is at its daily cap."""
+        for key in self._keys_for(role):
+            ok, used, cap = await budget.acquire(key, self.cfg)
+            if ok:
+                print(f"LLM_CALL key={key} model={model} used={used}/{cap}", file=sys.stderr)
+                return key
+        raise BudgetExhausted("daily LLM budget exhausted")
+
     async def _request(self, role: str, model: str, prompt: str, schema: dict | None):
-        key = self._keys_for(role)[0]
+        key = await self._budgeted_key(role, model)
         try:
             return await self._raw_request(key, model, prompt, schema)
         except _RetryWithoutThinking:
+            key = await self._budgeted_key(role, model)
             return await self._raw_request(key, model, prompt, schema)
+
+    def budget_remaining(self) -> int:
+        """Calls left today across this client's keys (the coordinator refuses to start below one run)."""
+        return budget.remaining(self.key_names, self.cfg)
 
     async def _generate_with_backoff(self, role: str, prompt: str, schema: dict | None):
         """429/503: back off max_429_retries times, then raise (-> rate_limited). Timeouts raise."""
@@ -140,6 +155,8 @@ class GeminiClient:
         for attempt in range(rl["max_429_retries"] + 1):
             try:
                 return await self._request(role, model, prompt, schema)
+            except BudgetExhausted:
+                raise
             except Exception as e:  # noqa: BLE001
                 if not _is_transient(e) or attempt >= rl["max_429_retries"]:
                     raise

@@ -39,7 +39,8 @@ class Coordinator:
                  llm=None, parent_run_id: str | None = None, narrator=None):
         self.cfg = config or load_config()
         self.max_rounds = int(self.cfg["negotiation"]["MAX_ROUNDS"])
-        assert 1 <= self.max_rounds <= MAX_ROUNDS_HARD, "MAX_ROUNDS must be <= 3"
+        if not 1 <= self.max_rounds <= MAX_ROUNDS_HARD:   # explicit raise: `python -O` strips asserts
+            raise ValueError(f"MAX_ROUNDS must be 1..{MAX_ROUNDS_HARD}, got {self.max_rounds}")
         self.bundle = bundle
         self.s = bundle.scenario
         self.run_id = run_id
@@ -128,17 +129,27 @@ class Coordinator:
             self._queue.put_nowait(_DONE)
         return True
 
-    async def approve(self, action: Literal["APPROVE", "OVERRIDE"], option_id: str, by: str,
+    async def approve(self, action: Literal["APPROVE", "OVERRIDE"], option_id: str | None, by: str,
                       note: str = "") -> dict:
-        if not self.finished:
-            return {"ok": False, "final_hash": None, "error": "run has not finished"}
+        """Human sign-off. APPROVE only the decided option; OVERRIDE any feasible option; on ESCALATE
+        only OVERRIDE with an explicit feasible option. One approval per run. Errors carry code 409/400."""
+        def err(code, msg):
+            return {"ok": False, "final_hash": None, "error": msg, "code": code}
+        if not self.finished or self.decision is None:
+            return err(409, "run has not reached awaiting_approval")
+        if self.approved is not None:
+            return err(409, "run already approved")
         if action not in ("APPROVE", "OVERRIDE"):
-            return {"ok": False, "final_hash": None, "error": f"unknown action {action}"}
+            return err(400, f"unknown action {action}")
+        decided = self.decision.get("option_id")
+        if self.decision["source"] == "ESCALATE" and action != "OVERRIDE":
+            return err(400, "ESCALATE: no automated plan; use OVERRIDE with an explicit option_id")
+        if action == "APPROVE" and option_id != decided:
+            return err(400, f"APPROVE is only for the decided option {decided}; use OVERRIDE for {option_id}")
         if self._opt(option_id) is None:
-            return {"ok": False, "final_hash": None, "error": f"unknown option {option_id}"}
+            return err(400, f"unknown option {option_id}")
         if not self._feasible(option_id):
-            return {"ok": False, "final_hash": None,
-                    "error": f"{option_id} fails {', '.join(self._failed(option_id))}; the checker overrides"}
+            return err(400, f"{option_id} fails {', '.join(self._failed(option_id))}; the checker overrides")
         signed = self.log.head_hash()
         env = self._emit("approved", {"action": action, "option_id": option_id, "by": by, "note": note,
                                       "final_hash": signed}, actor="HUMAN")
@@ -170,6 +181,18 @@ class Coordinator:
                                    "scripted": bool(getattr(self.llm, "scripted", False)),
                                    "chaos_applied": [c.model_dump(mode="json") for c in self.s.chaos_applied]})
         self._emit("options", self._options_payload(), actor="CHECKER", constraint_ids=ALL_CONSTRAINTS)
+
+        min_calls = len(ROLES) * self.max_rounds
+        left = self.llm.budget_remaining() if hasattr(self.llm, "budget_remaining") else None
+        if killswitch.llm_enabled() and left is not None and left < min_calls:
+            # don't start a negotiation the free-tier budget can't finish
+            self._emit("error", {"message": f"LLM budget exhausted ({left} calls left today, a run needs "
+                                            f"up to {min_calls}); deterministic fallback", "fatal": False},
+                       actor="SYSTEM")
+            self._fallback("LLM_ERROR", use_bundle=True)
+            await self._narrate()
+            self._finish(t0)
+            return
 
         positions: dict[str, AgentPosition] = {}
         counter_results: list[dict] = []
