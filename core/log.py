@@ -1,7 +1,8 @@
 """Hash-chained, append-only consensus log (CONTRACTS.md §5).
 
 Each line of runs/<run_id>.jsonl is a LogEntry. hash = sha256(prev_hash + canonical_json(entry without "hash")).
-Seq 0 is always "scenario_loaded" with payload {scenario: Scenario}, written by the constructor.
+Seq 0 is always "scenario_loaded" with payload {scenario: Scenario}, written by the constructor for a new file.
+If runs/<run_id>.jsonl already exists the log resumes from its head (never truncates).
 """
 import hashlib
 import json
@@ -44,14 +45,21 @@ class ConsensusLog:
         self._dir = repo_path(runs_dir)
         os.makedirs(self._dir, exist_ok=True)
         self._path = os.path.join(self._dir, f"{run_id}.jsonl")
+        if os.path.exists(self._path) and os.path.getsize(self._path) > 0:
+            with open(self._path, encoding="utf-8") as f:
+                self._entries = [LogEntry.model_validate(json.loads(line)) for line in f if line.strip()]
+            return
         open(self._path, "w", encoding="utf-8").close()
         synthetic = [k for k, v in scenario.provenance.items() if v == "synthetic"]
         self._write("scenario_loaded", "SYSTEM", {"scenario": scenario.model_dump(mode="json")}, [], synthetic)
 
+    def _last_raw_hash(self) -> str:
+        return self._entries[-1].hash if self._entries else GENESIS_HASH
+
     def _write(self, event_type: str, actor: str, payload: dict,
                constraint_ids: list[str], synthetic_fields: list[str]) -> LogEntry:
         with self._lock:
-            prev = self._entries[-1].hash if self._entries else GENESIS_HASH
+            prev = self._last_raw_hash()
             e = {"seq": len(self._entries), "ts": _now_iso(), "run_id": self.run_id,
                  "scenario_id": self.scenario_id, "source_row": self._source_row,
                  "event_type": event_type, "actor": actor, "constraint_ids": list(constraint_ids),

@@ -302,6 +302,7 @@ def build_scenario(scenario_id: str) -> Scenario:
         "blocked_taxiways": "synthetic", "turbulence_by_fp": "synthetic", "chaos_applied": "synthetic",
         "disrupted.wake": "synthetic", "bank.wake": "synthetic", "connections.wake": "synthetic",
         "connections.pax_connecting": "synthetic",
+        "airport_limits": "synthetic", "planned_gate": "synthetic", "decision_time_min": "synthetic",
     }
     return Scenario(
         scenario_id=sid, seed=seed, row=row, disruption_type=dtype, disruption_min=dmin,

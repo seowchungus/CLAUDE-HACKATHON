@@ -34,5 +34,6 @@ def apply_chaos(s: Scenario, ev: ChaosEvent) -> Scenario:
         prov["turbulence_by_fp"] = "synthetic"
         prov["base_eta_min"] = "synthetic"
     s.chaos_applied = s.chaos_applied + [ev]
+    prov["chaos_applied"] = "synthetic"
     s.provenance = prov
     return s

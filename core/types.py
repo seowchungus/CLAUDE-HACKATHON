@@ -1,4 +1,4 @@
-"""Core types. Transcribed from docs/CONTRACTS.md v1.0 (§1, §4.3, §5). Do not rename fields."""
+"""Core types. Transcribed from docs/CONTRACTS.md v1.2 (§1, §4.3, §5). Do not rename fields."""
 from typing import Literal
 
 from pydantic import BaseModel, Field  # noqa: F401  (Field re-exported for contract parity)
@@ -109,6 +109,11 @@ class Scenario(BaseModel):
     turbulence_by_fp: dict[str, float]    # SYNTHETIC: FPAdj -> turbulence_idx in [0,1]
     chaos_applied: list[ChaosEvent] = []
     provenance: dict[str, Provenance]     # field name -> provenance, for EVERY field above except ids
+    # --- v1.2 (organisers' workbook), all with defaults so v1.1 data still parses ---
+    airport_limits: dict = {}        # destination's workbook row: {size_class, active_runways, gates, max_runway_ops_per_hour,
+                                     #   min_turnaround_min, spare_gates_at_any_time}; provenance "synthetic" (organiser-provided)
+    planned_gate: str | None = None  # SYNTHETIC: gate assigned before the disruption; any other gate is a gate change
+    decision_time_min: int | None = None  # SYNTHETIC: when the plan is decided (aircraft at the arrival fix)
 
 
 class Metrics(BaseModel):            # computed by core.metrics, never by an LLM
@@ -130,6 +135,10 @@ class Metrics(BaseModel):            # computed by core.metrics, never by an LLM
     arrivals_this_hour: int
     throughput_loss: int             # max(0, arrivals_this_hour - aar_reduced) or slots lost
     cost_J: float                    # fallback weighted cost (config.fallback_weights)
+    # --- v1.2 ---
+    gate_change: bool = False                 # gate != scenario.planned_gate
+    gate_change_notice_min: int | None = None # eta_new_min - decision_time_min when gate_change, else None (H4 needs >= 20)
+    fuel_at_landing_kg: float | None = None   # fuel_at_landing_min x workbook burn rate (display only)
 
 
 class Option(BaseModel):
