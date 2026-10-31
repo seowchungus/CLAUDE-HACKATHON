@@ -19,10 +19,10 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | MGR-00 | MANAGER | Scaffold, config, CONTRACTS, fixtures, onboarding, tasks | done | — | 30 | 11:39 |
 | MGR-03 | MANAGER | CONTRACTS v1.1 (REVIEWER-00 items 1–8), fixtures regenerated, models → 3.6 Flash | done | REVIEWER-00 | 15 | 12:25 |
 | REVIEWER-00 | REVIEWER | Audit contracts + fixtures | done (CHANGES → v1.1) | MGR-00 | 15 | 11:40 |
-| W1-01 | W1 | Types, config, hash-chained log, data prep | review | — | 35 | 11:55 |
-| W1-02 | W1 | Scenario builder, metrics, option generator | review | W1-01 | 40 | 12:35 |
-| W1-03 | W1 | Checker H1–H7, fallback, bundle, CLI milestone | review | W1-02 | 35 | 13:10 |
-| W1-04 | W1 | Chaos, map payload, golden scenarios, eval skeleton | review | W1-03 | 30 | 13:40 |
+| W1-01 | W1 | Types, config, hash-chained log, data prep | done ✅ (APPROVED 13:05) | — | 35 | 11:55 |
+| W1-02 | W1 | Scenario builder, metrics, option generator | done ✅ (APPROVED 13:05) | W1-01 | 40 | 12:35 |
+| W1-03 | W1 | Checker H1–H7, fallback, bundle, CLI milestone | done ✅ (APPROVED 13:05) | W1-02 | 35 | 13:10 |
+| W1-04 | W1 | Chaos, map payload, golden scenarios, eval skeleton | done ✅ (APPROVED 13:05) | W1-03 | 30 | 13:40 |
 | W2-01 | W2 | Schema, merged template A–E, Gemini client, kill switch | changes → W2-04 | — | 45 | 12:00 |
 | W2-02 | W2 | Coordinator state machine + log + events | changes → W2-04 | W2-01 | 45 | 12:45 |
 | W3-01 | W3 | API (mock) + console skeleton + negotiation room | review | — | 45 | 12:00 |
@@ -52,6 +52,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
 ## Decisions & assumptions
+- 13:05 Pitch/README wording (REVIEWER): status-quo cost is computed over the organisers' delayed-only file, so say "across the N qualifying delayed flights in the provided 2015 DOT data", never "all 2015 flights".
 - 12:58 Wave 2 had not started by 12:57 (relay gap). MANAGER now messages sessions directly (human-approved).
 - 12:50 (human) Organisers' workbook `challenge2_operational_constraints.xlsx` adopted as is. No external/full flights file. Deviations listed in `config.yaml: workbook_deviations`, shown in UI + README.
 - 12:50 (human) All agents on Gemini 3.5 Flash Lite; limits must never be exceeded → hard budget guard; no backup-model cascade; narrator = template (0 calls).
