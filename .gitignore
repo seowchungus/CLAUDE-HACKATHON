@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ACCORD
+data/*.csv
+data/*.parquet
+data/raw/*
+!data/raw/.gitkeep
+runs/*
+!runs/.gitkeep
+node_modules/
+web/dist/
+eval/results_partial_*.json

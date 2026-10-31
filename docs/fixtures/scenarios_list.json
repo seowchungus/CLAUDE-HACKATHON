@@ -1,0 +1,20 @@
+[
+ {
+  "scenario_id": "2015-01-02_AA1234_DFW-ORD",
+  "date": "2015-01-02",
+  "flight_id": "AA1234",
+  "origin": "DFW",
+  "destination": "ORD",
+  "disruption_type": "WEATHER",
+  "disruption_min": 48
+ },
+ {
+  "scenario_id": "2015-01-02_UA0918_SFO-ORD",
+  "date": "2015-01-02",
+  "flight_id": "UA918",
+  "origin": "SFO",
+  "destination": "ORD",
+  "disruption_type": "LATE_AIRCRAFT",
+  "disruption_min": 34
+ }
+]

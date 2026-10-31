@@ -1,0 +1,1476 @@
+{
+ "bundle": {
+  "scenario": {
+   "scenario_id": "2015-01-02_AA1234_DFW-ORD",
+   "seed": 1234002,
+   "fixture": true,
+   "row": {
+    "year": 2015,
+    "month": 1,
+    "day": 2,
+    "airline": "AA",
+    "flight_number": 1234,
+    "tail_number": "N4XAAA",
+    "origin": "DFW",
+    "destination": "ORD",
+    "scheduled_departure": 1400,
+    "departure_delay": 52.0,
+    "scheduled_arrival": 1630,
+    "arrival_delay": 55.0,
+    "distance": 802,
+    "scheduled_time": 150.0,
+    "air_time": 118.0,
+    "taxi_in": 9.0,
+    "taxi_out": 21.0,
+    "weather_delay": 48.0,
+    "late_aircraft_delay": 0.0,
+    "air_system_delay": 7.0
+   },
+   "disruption_type": "WEATHER",
+   "disruption_min": 48,
+   "origin": {
+    "iata": "DFW",
+    "name": "Dallas/Fort Worth International Airport",
+    "city": "Dallas-Fort Worth",
+    "state": "TX",
+    "lat": 32.89595,
+    "lon": -97.0372
+   },
+   "destination": {
+    "iata": "ORD",
+    "name": "Chicago O'Hare International Airport",
+    "city": "Chicago",
+    "state": "IL",
+    "lat": 41.9796,
+    "lon": -87.90446
+   },
+   "disrupted": {
+    "flight_id": "AA1234",
+    "airline": "AA",
+    "flight_number": 1234,
+    "tail_number": "N4XAAA",
+    "origin": "DFW",
+    "destination": "ORD",
+    "sched_dep_min": 840,
+    "sched_arr_min": 990,
+    "est_arr_min": 1045,
+    "role": "disrupted",
+    "wake": "M",
+    "pax_connecting": null
+   },
+   "bank": [
+    {
+     "flight_id": "UA1501",
+     "airline": "UA",
+     "flight_number": 1501,
+     "tail_number": null,
+     "origin": "LGA",
+     "destination": "ORD",
+     "sched_dep_min": 870,
+     "sched_arr_min": 1015,
+     "est_arr_min": 1032,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA2210",
+     "airline": "AA",
+     "flight_number": 2210,
+     "tail_number": null,
+     "origin": "LAX",
+     "destination": "ORD",
+     "sched_dep_min": 690,
+     "sched_arr_min": 1030,
+     "est_arr_min": 1041,
+     "role": "bank",
+     "wake": "H",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "UA0918",
+     "airline": "UA",
+     "flight_number": 918,
+     "tail_number": null,
+     "origin": "SFO",
+     "destination": "ORD",
+     "sched_dep_min": 700,
+     "sched_arr_min": 1035,
+     "est_arr_min": 1048,
+     "role": "bank",
+     "wake": "H",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "WN3307",
+     "airline": "WN",
+     "flight_number": 3307,
+     "tail_number": null,
+     "origin": "DEN",
+     "destination": "ORD",
+     "sched_dep_min": 880,
+     "sched_arr_min": 1040,
+     "est_arr_min": 1046,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA1730",
+     "airline": "AA",
+     "flight_number": 1730,
+     "tail_number": null,
+     "origin": "ATL",
+     "destination": "ORD",
+     "sched_dep_min": 900,
+     "sched_arr_min": 1045,
+     "est_arr_min": 1052,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "DL2244",
+     "airline": "DL",
+     "flight_number": 2244,
+     "tail_number": null,
+     "origin": "MSP",
+     "destination": "ORD",
+     "sched_dep_min": 975,
+     "sched_arr_min": 1050,
+     "est_arr_min": 1058,
+     "role": "bank",
+     "wake": "L",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "UA0610",
+     "airline": "UA",
+     "flight_number": 610,
+     "tail_number": null,
+     "origin": "BOS",
+     "destination": "ORD",
+     "sched_dep_min": 905,
+     "sched_arr_min": 1055,
+     "est_arr_min": 1063,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA0388",
+     "airline": "AA",
+     "flight_number": 388,
+     "tail_number": null,
+     "origin": "PHX",
+     "destination": "ORD",
+     "sched_dep_min": 795,
+     "sched_arr_min": 1060,
+     "est_arr_min": 1066,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "UA1144",
+     "airline": "UA",
+     "flight_number": 1144,
+     "tail_number": null,
+     "origin": "SEA",
+     "destination": "ORD",
+     "sched_dep_min": 720,
+     "sched_arr_min": 1070,
+     "est_arr_min": 1074,
+     "role": "bank",
+     "wake": "H",
+     "pax_connecting": null
+    },
+    {
+     "flight_id": "AA2671",
+     "airline": "AA",
+     "flight_number": 2671,
+     "tail_number": null,
+     "origin": "MIA",
+     "destination": "ORD",
+     "sched_dep_min": 880,
+     "sched_arr_min": 1075,
+     "est_arr_min": 1080,
+     "role": "bank",
+     "wake": "M",
+     "pax_connecting": null
+    }
+   ],
+   "connections": [
+    {
+     "flight_id": "AA0144",
+     "airline": "AA",
+     "flight_number": 144,
+     "tail_number": null,
+     "origin": "ORD",
+     "destination": "LGA",
+     "sched_dep_min": 1035,
+     "sched_arr_min": 1170,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 14
+    },
+    {
+     "flight_id": "AA0901",
+     "airline": "AA",
+     "flight_number": 901,
+     "tail_number": null,
+     "origin": "ORD",
+     "destination": "BOS",
+     "sched_dep_min": 1060,
+     "sched_arr_min": 1195,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 9
+    },
+    {
+     "flight_id": "AA2032",
+     "airline": "AA",
+     "flight_number": 2032,
+     "tail_number": null,
+     "origin": "ORD",
+     "destination": "MIA",
+     "sched_dep_min": 1085,
+     "sched_arr_min": 1260,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 21
+    },
+    {
+     "flight_id": "AA1580",
+     "airline": "AA",
+     "flight_number": 1580,
+     "tail_number": null,
+     "origin": "ORD",
+     "destination": "SEA",
+     "sched_dep_min": 1120,
+     "sched_arr_min": 1395,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "H",
+     "pax_connecting": 6
+    },
+    {
+     "flight_id": "AA0475",
+     "airline": "AA",
+     "flight_number": 475,
+     "tail_number": null,
+     "origin": "ORD",
+     "destination": "DCA",
+     "sched_dep_min": 1140,
+     "sched_arr_min": 1250,
+     "est_arr_min": null,
+     "role": "connection",
+     "wake": "M",
+     "pax_connecting": 11
+    }
+   ],
+   "base_eta_min": 1045,
+   "aar_nominal": 96,
+   "aar_reduced": 67,
+   "aircraft_size": "M",
+   "fuel_at_fix_min": 52.0,
+   "flight_crew_duty_remaining_min": 140,
+   "ramp_shift_end_min": 1080,
+   "next_departure_min": 1130,
+   "gates": [
+    {
+     "gate_id": "A1",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [
+      [
+       1000,
+       1070
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A2",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [
+      [
+       1040,
+       1110
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A3",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "A4",
+     "concourse": "A",
+     "size": "L",
+     "taxi_path": [
+      "A"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B1",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B2",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [
+      [
+       1030,
+       1090
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B3",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "B4",
+     "concourse": "B",
+     "size": "M",
+     "taxi_path": [
+      "A",
+      "B"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C1",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C2",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C3",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [
+      [
+       1060,
+       1140
+      ]
+     ],
+     "out_of_service": false
+    },
+    {
+     "gate_id": "C4",
+     "concourse": "C",
+     "size": "M",
+     "taxi_path": [
+      "C",
+      "D"
+     ],
+     "occupied": [],
+     "out_of_service": false
+    }
+   ],
+   "taxiways": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "blocked_taxiways": [],
+   "turbulence_by_fp": {
+    "as_filed": 0.45,
+    "speed_reduction": 0.4,
+    "hold_10": 0.35,
+    "hold_20": 0.35,
+    "reroute_weather": 0.15
+   },
+   "chaos_applied": [],
+   "provenance": {
+    "row": "real",
+    "disruption_type": "real",
+    "disruption_min": "real",
+    "origin": "real",
+    "destination": "real",
+    "bank": "real",
+    "connections": "real",
+    "base_eta_min": "real",
+    "aar_nominal": "real_derived",
+    "aar_reduced": "synthetic",
+    "aircraft_size": "synthetic",
+    "fuel_at_fix_min": "synthetic",
+    "flight_crew_duty_remaining_min": "synthetic",
+    "ramp_shift_end_min": "synthetic",
+    "next_departure_min": "synthetic",
+    "gates": "synthetic",
+    "taxiways": "synthetic",
+    "turbulence_by_fp": "synthetic",
+    "bank.wake": "synthetic",
+    "connections.pax_connecting": "synthetic",
+    "disrupted.wake": "synthetic"
+   }
+  },
+  "options": [
+   {
+    "option_id": "opt_1",
+    "eta_shift_min": 0,
+    "gate": "A3",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+0 min, gate A3, as filed",
+    "metrics": {
+     "eta_new_min": 1045,
+     "runway_slot_min": 1041,
+     "separation_margin_s": 15,
+     "fuel_at_landing_min": 44.0,
+     "extra_fuel_min": 4.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.45,
+     "misconnected_pax": 0,
+     "gate": "A3",
+     "gate_free_from_min": 960,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 41,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 9,
+     "arrivals_this_hour": 66,
+     "throughput_loss": 0,
+     "cost_J": 21.2
+    }
+   },
+   {
+    "option_id": "opt_2",
+    "eta_shift_min": 10,
+    "gate": "A4",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+10 min, gate A4, speed reduction",
+    "metrics": {
+     "eta_new_min": 1055,
+     "runway_slot_min": 1051,
+     "separation_margin_s": 40,
+     "fuel_at_landing_min": 41.5,
+     "extra_fuel_min": 5.2,
+     "hold_min": 0,
+     "turbulence_idx": 0.4,
+     "misconnected_pax": 14,
+     "gate": "A4",
+     "gate_free_from_min": 960,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 31,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 3,
+     "arrivals_this_hour": 65,
+     "throughput_loss": 0,
+     "cost_J": 43.2
+    }
+   },
+   {
+    "option_id": "opt_3",
+    "eta_shift_min": 15,
+    "gate": "B3",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+15 min, gate B3, weather reroute",
+    "metrics": {
+     "eta_new_min": 1060,
+     "runway_slot_min": 1056,
+     "separation_margin_s": 75,
+     "fuel_at_landing_min": 36.0,
+     "extra_fuel_min": 8.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.15,
+     "misconnected_pax": 14,
+     "gate": "B3",
+     "gate_free_from_min": 960,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 26,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 2,
+     "arrivals_this_hour": 64,
+     "throughput_loss": 0,
+     "cost_J": 39.4
+    }
+   },
+   {
+    "option_id": "opt_4",
+    "eta_shift_min": 5,
+    "gate": "C1",
+    "fp_adjustment": "speed_reduction",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+5 min, gate C1, speed reduction",
+    "metrics": {
+     "eta_new_min": 1050,
+     "runway_slot_min": 1046,
+     "separation_margin_s": 30,
+     "fuel_at_landing_min": 43.0,
+     "extra_fuel_min": 4.5,
+     "hold_min": 0,
+     "turbulence_idx": 0.4,
+     "misconnected_pax": 0,
+     "gate": "C1",
+     "gate_free_from_min": 960,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 36,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 5,
+     "arrivals_this_hour": 66,
+     "throughput_loss": 0,
+     "cost_J": 16.6
+    }
+   },
+   {
+    "option_id": "opt_5",
+    "eta_shift_min": 20,
+    "gate": "B1",
+    "fp_adjustment": "hold_20",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+20 min, gate B1, hold 20 min",
+    "metrics": {
+     "eta_new_min": 1065,
+     "runway_slot_min": 1061,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 27.5,
+     "extra_fuel_min": 2.5,
+     "hold_min": 20,
+     "turbulence_idx": 0.35,
+     "misconnected_pax": 23,
+     "gate": "B1",
+     "gate_free_from_min": 960,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 21,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 0,
+     "arrivals_this_hour": 63,
+     "throughput_loss": 0,
+     "cost_J": 55.0
+    }
+   },
+   {
+    "option_id": "opt_6",
+    "eta_shift_min": 0,
+    "gate": "B2",
+    "fp_adjustment": "as_filed",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+0 min, gate B2, as filed",
+    "metrics": {
+     "eta_new_min": 1045,
+     "runway_slot_min": 1041,
+     "separation_margin_s": 15,
+     "fuel_at_landing_min": 44.0,
+     "extra_fuel_min": 4.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.45,
+     "misconnected_pax": 0,
+     "gate": "B2",
+     "gate_free_from_min": 1090,
+     "gate_free_to_min": 1200,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": 41,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 9,
+     "arrivals_this_hour": 66,
+     "throughput_loss": 0,
+     "cost_J": 21.2
+    }
+   }
+  ],
+  "checks": {
+   "opt_1": {
+    "option_id": "opt_1",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 15,
+      "threshold": 0,
+      "detail": "margin +15 s over wake minimum"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 66,
+      "threshold": 67,
+      "detail": "66 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 44.0,
+      "threshold": 30,
+      "detail": "fuel 44.0 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A3 free and size-compatible"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 140,
+      "threshold": 0,
+      "detail": "crew duty remaining 140 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_1",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.45,
+      "threshold": 0.7,
+      "detail": "turbulence 0.45 < 0.7"
+     }
+    ]
+   },
+   "opt_2": {
+    "option_id": "opt_2",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 40,
+      "threshold": 0,
+      "detail": "margin +40 s over wake minimum"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 65,
+      "threshold": 67,
+      "detail": "65 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 41.5,
+      "threshold": 30,
+      "detail": "fuel 41.5 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A4 free and size-compatible"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 130,
+      "threshold": 0,
+      "detail": "crew duty remaining 130 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_2",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.4,
+      "threshold": 0.7,
+      "detail": "turbulence 0.4 < 0.7"
+     }
+    ]
+   },
+   "opt_3": {
+    "option_id": "opt_3",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 75,
+      "threshold": 0,
+      "detail": "margin +75 s over wake minimum"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 64,
+      "threshold": 67,
+      "detail": "64 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 36.0,
+      "threshold": 30,
+      "detail": "fuel 36.0 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B3 free and size-compatible"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 125,
+      "threshold": 0,
+      "detail": "crew duty remaining 125 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_3",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.15,
+      "threshold": 0.7,
+      "detail": "turbulence 0.15 < 0.7"
+     }
+    ]
+   },
+   "opt_4": {
+    "option_id": "opt_4",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 30,
+      "threshold": 0,
+      "detail": "margin +30 s over wake minimum"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 66,
+      "threshold": 67,
+      "detail": "66 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 43.0,
+      "threshold": 30,
+      "detail": "fuel 43.0 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate C1 free and size-compatible"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 135,
+      "threshold": 0,
+      "detail": "crew duty remaining 135 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_4",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.4,
+      "threshold": 0.7,
+      "detail": "turbulence 0.4 < 0.7"
+     }
+    ]
+   },
+   "opt_5": {
+    "option_id": "opt_5",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120,
+      "threshold": 0,
+      "detail": "margin +120 s over wake minimum"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 63,
+      "threshold": 67,
+      "detail": "63 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": false,
+      "value": 27.5,
+      "threshold": 30,
+      "detail": "fuel 27.5 min < 30 min final reserve"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B1 free and size-compatible"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 120,
+      "threshold": 0,
+      "detail": "crew duty remaining 120 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.35,
+      "threshold": 0.7,
+      "detail": "turbulence 0.35 < 0.7"
+     }
+    ]
+   },
+   "opt_6": {
+    "option_id": "opt_6",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 15,
+      "threshold": 0,
+      "detail": "margin +15 s over wake minimum"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 66,
+      "threshold": 67,
+      "detail": "66 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 44.0,
+      "threshold": 30,
+      "detail": "fuel 44.0 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H4_gate_validity",
+      "passed": false,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B2 occupied 17:10-18:10 by another aircraft"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 140,
+      "threshold": 0,
+      "detail": "crew duty remaining 140 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.45,
+      "threshold": 0.7,
+      "detail": "turbulence 0.45 < 0.7"
+     }
+    ]
+   },
+   "opt_fcfs": {
+    "option_id": "opt_fcfs",
+    "feasible": true,
+    "results": [
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 15,
+      "threshold": 0,
+      "detail": "margin +15 s over wake minimum"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 66,
+      "threshold": 67,
+      "detail": "66 arrivals <= reduced AAR 67"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 44.0,
+      "threshold": 30,
+      "detail": "fuel 44.0 min >= 30 min final reserve"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H4_gate_validity",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "gate A3 free and size-compatible"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 140,
+      "threshold": 0,
+      "detail": "crew duty remaining 140 min; ramp overtime 0 <= 60"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_fcfs",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.45,
+      "threshold": 0.7,
+      "detail": "turbulence 0.45 < 0.7"
+     }
+    ]
+   }
+  },
+  "fallback": {
+   "status": "PLAN",
+   "option_id": "opt_4",
+   "cost_J": 16.6,
+   "ranking": [
+    [
+     "opt_4",
+     16.6
+    ],
+    [
+     "opt_1",
+     21.2
+    ],
+    [
+     "opt_3",
+     39.4
+    ],
+    [
+     "opt_2",
+     43.2
+    ]
+   ],
+   "weights": {
+    "w_d_bank_delay_added": 1.0,
+    "w_f_extra_fuel": 0.8,
+    "w_c_misconnected_pax": 2.0,
+    "w_o_ramp_overtime": 0.5,
+    "w_t_turbulence": 20.0,
+    "w_q_throughput_loss": 5.0
+   },
+   "reason": "min J among 4 feasible options"
+  },
+  "fcfs": {
+   "option_id": "opt_fcfs",
+   "eta_shift_min": 0,
+   "gate": "A3",
+   "fp_adjustment": "as_filed",
+   "source": "fcfs",
+   "proposed_by": null,
+   "parent_option": null,
+   "label": "+0 min, gate A3, as filed",
+   "metrics": {
+    "eta_new_min": 1045,
+    "runway_slot_min": 1041,
+    "separation_margin_s": 15,
+    "fuel_at_landing_min": 44.0,
+    "extra_fuel_min": 4.0,
+    "hold_min": 0,
+    "turbulence_idx": 0.45,
+    "misconnected_pax": 0,
+    "gate": "A3",
+    "gate_free_from_min": 960,
+    "gate_free_to_min": 1200,
+    "taxi_path_ok": true,
+    "turnaround_buffer_min": 41,
+    "ramp_overtime_min": 0,
+    "bank_delay_added_min": 9,
+    "arrivals_this_hour": 66,
+    "throughput_loss": 0,
+    "cost_J": 21.2
+   }
+  }
+ },
+ "map": {
+  "focus_airport": "ORD",
+  "airports": [
+   {
+    "iata": "ATL",
+    "name": "Hartsfield-Jackson Atlanta International Airport",
+    "lat": 33.64044,
+    "lon": -84.42694,
+    "role": "other"
+   },
+   {
+    "iata": "BOS",
+    "name": "Gen. Edward Lawrence Logan International Airport",
+    "lat": 42.36435,
+    "lon": -71.00518,
+    "role": "other"
+   },
+   {
+    "iata": "DCA",
+    "name": "Ronald Reagan Washington National Airport",
+    "lat": 38.85208,
+    "lon": -77.03772,
+    "role": "other"
+   },
+   {
+    "iata": "DEN",
+    "name": "Denver International Airport",
+    "lat": 39.85841,
+    "lon": -104.667,
+    "role": "other"
+   },
+   {
+    "iata": "DFW",
+    "name": "Dallas/Fort Worth International Airport",
+    "lat": 32.89595,
+    "lon": -97.0372,
+    "role": "origin"
+   },
+   {
+    "iata": "LAX",
+    "name": "Los Angeles International Airport",
+    "lat": 33.94254,
+    "lon": -118.40807,
+    "role": "other"
+   },
+   {
+    "iata": "LGA",
+    "name": "LaGuardia Airport",
+    "lat": 40.77724,
+    "lon": -73.87261,
+    "role": "other"
+   },
+   {
+    "iata": "MIA",
+    "name": "Miami International Airport",
+    "lat": 25.79325,
+    "lon": -80.29056,
+    "role": "other"
+   },
+   {
+    "iata": "MSP",
+    "name": "Minneapolis-Saint Paul International Airport",
+    "lat": 44.88055,
+    "lon": -93.21692,
+    "role": "other"
+   },
+   {
+    "iata": "ORD",
+    "name": "Chicago O'Hare International Airport",
+    "lat": 41.9796,
+    "lon": -87.90446,
+    "role": "destination"
+   },
+   {
+    "iata": "PHX",
+    "name": "Phoenix Sky Harbor International Airport",
+    "lat": 33.43417,
+    "lon": -112.00806,
+    "role": "other"
+   },
+   {
+    "iata": "SEA",
+    "name": "Seattle-Tacoma International Airport",
+    "lat": 47.44898,
+    "lon": -122.30931,
+    "role": "other"
+   },
+   {
+    "iata": "SFO",
+    "name": "San Francisco International Airport",
+    "lat": 37.619,
+    "lon": -122.37484,
+    "role": "other"
+   }
+  ],
+  "flights": [
+   {
+    "flight_id": "AA1234",
+    "role": "disrupted",
+    "origin": "DFW",
+    "destination": "ORD",
+    "origin_lat": 32.89595,
+    "origin_lon": -97.0372,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 840,
+    "sched_arr_min": 990,
+    "est_arr_min": 1045,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1501",
+    "role": "bank",
+    "origin": "LGA",
+    "destination": "ORD",
+    "origin_lat": 40.77724,
+    "origin_lon": -73.87261,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 870,
+    "sched_arr_min": 1015,
+    "est_arr_min": 1032,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA2210",
+    "role": "bank",
+    "origin": "LAX",
+    "destination": "ORD",
+    "origin_lat": 33.94254,
+    "origin_lon": -118.40807,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 690,
+    "sched_arr_min": 1030,
+    "est_arr_min": 1041,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA0918",
+    "role": "bank",
+    "origin": "SFO",
+    "destination": "ORD",
+    "origin_lat": 37.619,
+    "origin_lon": -122.37484,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 700,
+    "sched_arr_min": 1035,
+    "est_arr_min": 1048,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "WN3307",
+    "role": "bank",
+    "origin": "DEN",
+    "destination": "ORD",
+    "origin_lat": 39.85841,
+    "origin_lon": -104.667,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 880,
+    "sched_arr_min": 1040,
+    "est_arr_min": 1046,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1730",
+    "role": "bank",
+    "origin": "ATL",
+    "destination": "ORD",
+    "origin_lat": 33.64044,
+    "origin_lon": -84.42694,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 900,
+    "sched_arr_min": 1045,
+    "est_arr_min": 1052,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "DL2244",
+    "role": "bank",
+    "origin": "MSP",
+    "destination": "ORD",
+    "origin_lat": 44.88055,
+    "origin_lon": -93.21692,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 975,
+    "sched_arr_min": 1050,
+    "est_arr_min": 1058,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA0610",
+    "role": "bank",
+    "origin": "BOS",
+    "destination": "ORD",
+    "origin_lat": 42.36435,
+    "origin_lon": -71.00518,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 905,
+    "sched_arr_min": 1055,
+    "est_arr_min": 1063,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA0388",
+    "role": "bank",
+    "origin": "PHX",
+    "destination": "ORD",
+    "origin_lat": 33.43417,
+    "origin_lon": -112.00806,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 795,
+    "sched_arr_min": 1060,
+    "est_arr_min": 1066,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "UA1144",
+    "role": "bank",
+    "origin": "SEA",
+    "destination": "ORD",
+    "origin_lat": 47.44898,
+    "origin_lon": -122.30931,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 720,
+    "sched_arr_min": 1070,
+    "est_arr_min": 1074,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA2671",
+    "role": "bank",
+    "origin": "MIA",
+    "destination": "ORD",
+    "origin_lat": 25.79325,
+    "origin_lon": -80.29056,
+    "dest_lat": 41.9796,
+    "dest_lon": -87.90446,
+    "sched_dep_min": 880,
+    "sched_arr_min": 1075,
+    "est_arr_min": 1080,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA0144",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "LGA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 40.77724,
+    "dest_lon": -73.87261,
+    "sched_dep_min": 1035,
+    "sched_arr_min": 1170,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA0901",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "BOS",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 42.36435,
+    "dest_lon": -71.00518,
+    "sched_dep_min": 1060,
+    "sched_arr_min": 1195,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA2032",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "MIA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 25.79325,
+    "dest_lon": -80.29056,
+    "sched_dep_min": 1085,
+    "sched_arr_min": 1260,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA1580",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "SEA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 47.44898,
+    "dest_lon": -122.30931,
+    "sched_dep_min": 1120,
+    "sched_arr_min": 1395,
+    "est_arr_min": null,
+    "position_estimated": true
+   },
+   {
+    "flight_id": "AA0475",
+    "role": "connection",
+    "origin": "ORD",
+    "destination": "DCA",
+    "origin_lat": 41.9796,
+    "origin_lon": -87.90446,
+    "dest_lat": 38.85208,
+    "dest_lon": -77.03772,
+    "sched_dep_min": 1140,
+    "sched_arr_min": 1250,
+    "est_arr_min": null,
+    "position_estimated": true
+   }
+  ],
+  "now_min": 960
+ }
+}
