@@ -34,6 +34,8 @@ MOCK = os.environ.get("MOCK", "0") == "1"
 MOCK_GAP_S = float(os.environ.get("MOCK_GAP_S", "0.6"))
 REPLAY_MAX_GAP_S = 1.5
 SCRIPTED_MODES = ("deadlock", "unsafe", "hallucinate")
+# INT-01 quota freeze: ACCORD_LLM=mock runs every coordinator run (real data) on scripted MockLLMClient, never Gemini
+FORCE_MOCK_LLM = os.environ.get("ACCORD_LLM", "").lower() == "mock"
 
 
 def load_config() -> dict:
@@ -300,10 +302,11 @@ class RunManager:
 
             b = self._build_bundle(run)
             llm = None  # live: the coordinator's default (Gemini behind the budget guard)
-            if MOCK or run.mode:
+            if MOCK or run.mode or FORCE_MOCK_LLM:
                 from agents.client import make_llm  # type: ignore
 
-                llm = make_llm(run.mode or "mock", config=CONFIG)  # scripted mock agents, never Gemini
+                mode = run.mode if run.mode not in (None, "live") else "mock"
+                llm = make_llm(mode, config=CONFIG)  # scripted mock agents, never Gemini
             run.coordinator = Coordinator(b, run.run_id, config=CONFIG, llm=llm, parent_run_id=run.parent_run_id)
             async for env in run.coordinator.run():  # published exactly as logged (log_hash must match)
                 run.publish(env)
@@ -607,6 +610,14 @@ def verify(run_id: str) -> dict:
 @app.get("/api/runs/{run_id}/record")
 def record(run_id: str) -> PlainTextResponse:
     run = manager.get(run_id)
+    try:
+        from agents.narrator import record_markdown  # type: ignore
+        from core.types import ScenarioBundle  # type: ignore
+
+        b = ScenarioBundle.model_validate(manager.bundle(run)["bundle"])
+        return PlainTextResponse(record_markdown(b, run.events, verify(run_id)["head_hash"]), media_type="text/markdown")
+    except Exception:
+        pass  # template below
     ev = {e["type"]: e["data"] for e in run.events}
     decision = ev.get("consensus") or ev.get("fallback") or {}
     plan = decision.get("plan") or {}
