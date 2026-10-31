@@ -1,0 +1,8 @@
+{
+ "qualifying_flights": 358774,
+ "weather_delay_min": 2895086,
+ "late_aircraft_delay_min": 21558009,
+ "raw_rows": 358774,
+ "dropped_numeric_codes": 0,
+ "source": "data/raw/flights.csv (US DOT 2015), computed by data/prep.py"
+}

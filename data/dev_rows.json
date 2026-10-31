@@ -1,0 +1,10 @@
+{
+ "note": "Hand-picked development scenarios (W1-01). Excluded from eval. Mix of WEATHER / LATE_AIRCRAFT across ORD, ATL, DFW, DEN.",
+ "scenario_ids": [
+  "2015-02-26_UA1575_DEN-ORD",
+  "2015-12-30_DL82_MSY-ATL",
+  "2015-04-13_AA1685_SLC-DFW",
+  "2015-01-04_DL1609_MSP-DEN",
+  "2015-02-26_AA322_DCA-ORD"
+ ]
+}
