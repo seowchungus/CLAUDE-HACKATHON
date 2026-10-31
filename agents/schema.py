@@ -3,6 +3,7 @@
 The LLM only ranks pre-computed options and cites metrics. Everything it returns is validated here
 by code: option ids, metric refs, counter grid, round rules. Any error -> the message counts as REJECT.
 """
+import re
 from dataclasses import dataclass, field
 from typing import Literal, Optional
 
@@ -182,3 +183,45 @@ def validate_position(raw: dict, ctx: ValidationCtx) -> tuple[AgentPosition | No
     if errors:
         return None, list(dict.fromkeys(errors))
     return pos, []
+
+
+# ---- grounding check (proposal §4.2): a flag, never a rejection --------------------------------
+_ROUND_REF = re.compile(r"\bround\s+[1-3]\b", re.IGNORECASE)
+# a number not glued to a preceding identifier (opt_3, opt_c1, H3, R2, gate B2, Z9 are skipped);
+# HH:MM is read as minutes after midnight, like the *_min metrics
+_NUMBER = re.compile(r"(?<![\w.])(?:(\d{1,2}):(\d{2})\b|(\d+(?:,\d{3})*(?:\.\d+)?))")
+
+
+def rationale_numbers(text: str) -> list[tuple[str, float, int]]:
+    """[(token, value, decimals)] for every number in a rationale (sign dropped)."""
+    out = []
+    for m in _NUMBER.finditer(_ROUND_REF.sub(" ", text or "")):
+        if m.group(1) is not None:
+            out.append((m.group(0), int(m.group(1)) * 60 + int(m.group(2)), 0))
+        else:
+            tok = m.group(3)
+            dec = len(tok.split(".", 1)[1]) if "." in tok else 0
+            out.append((tok, float(tok.replace(",", "")), dec))
+    return out
+
+
+def _rounds_to(v: float, x: float, dec: int) -> bool:
+    """v rounded half-up to `dec` decimals equals x."""
+    h = 0.5 * 10 ** -dec
+    return -h - 1e-9 <= v - x < h - 1e-9
+
+
+def ungrounded_numbers(rationale: str, cites: list[str], options: dict) -> list[str]:
+    """Numbers in the rationale that match no CITED metric (equal after rounding to the precision the
+    agent wrote). A cited option's eta_shift_min (its table column) also counts. Uncited metrics don't."""
+    values: list[float] = []
+    for ref in cites:
+        oid, _, name = ref.partition(".")
+        o = options.get(oid)
+        if o is None:
+            continue
+        for v in (getattr(o.metrics, name, None), o.eta_shift_min):
+            if isinstance(v, (int, float)) and not isinstance(v, bool):
+                values.append(abs(float(v)))
+    return [tok for tok, x, dec in rationale_numbers(rationale)
+            if not any(_rounds_to(v, x, dec) for v in values)]

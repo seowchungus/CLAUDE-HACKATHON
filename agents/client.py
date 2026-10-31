@@ -14,7 +14,7 @@ from typing import Callable, Protocol
 from dotenv import dotenv_values
 
 from core.config import load_config, repo_path
-from agents import budget, killswitch
+from agents import budget, callcount, killswitch
 from agents.prompting import AgentCall
 from agents.schema import AgentMessage, AgentPosition, Counter, validate_position
 
@@ -114,6 +114,7 @@ class GeminiClient:
             kw["thinking_config"] = types.ThinkingConfig(thinking_level=self.THINKING_LEVEL)
         self.n_calls += 1
         CALLS_TODAY += 1
+        callcount.bump()
         try:
             return await asyncio.wait_for(
                 self._clients[key_name].aio.models.generate_content(
@@ -263,7 +264,8 @@ class MockLLMClient:
     """Scripted agents (labelled `scripted: true` in run_started). mode:
     "normal" (consensus by R2), "deadlock" (PILOT and GROUND reject everything after R1 -> fallback),
     "unsafe" (all agents push an H3-failing option -> veto -> fallback),
-    "hallucinate" (PILOT cites a non-existent option/gate in R1 -> validation rejects it -> REJECT)."""
+    "hallucinate" (PILOT cites a non-existent option/gate in R1 -> validation rejects it -> REJECT;
+    ATC's R1 rationale states a number its cited metric doesn't have -> ungrounded: true)."""
 
     MODES = ("normal", "deadlock", "unsafe", "hallucinate")
     scripted = True
@@ -287,6 +289,7 @@ class MockLLMClient:
             return AgentMessage(agent=role, round=round, status="killed", position=None, model="mock",
                                 latency_ms=0, errors=["LLM disabled by kill switch"])
         self.n_calls += 1
+        callcount.bump()
         await asyncio.sleep(0)
         v = call.view
         opts = [v["options"][i] for i in v["candidates"]]
@@ -337,6 +340,10 @@ class MockLLMClient:
         if counter:
             rationale = (f"{role} counters {counter.base_option} with gate {counter.value} "
                          f"to protect turnaround (see {cites[0]}).")
+        if self.mode == "hallucinate" and role == "ATC" and round == 1 and top:
+            # scripted failure case: a number the cited metric doesn't support (coordinator flags it)
+            wrong = v["options"][top].metrics.bank_delay_added_min + 7
+            rationale = f"{role} prefers {top}: it adds only {wrong} min of bank delay (see {cites[0]})."
         pos = AgentPosition(agent=role, round=round, action=action, ranking=ranking,
                             acceptable=acceptable, counter=counter, red_lines=red, cites=cites,
                             rationale=rationale[:300])
@@ -349,6 +356,7 @@ class MockLLMClient:
             raw["cites"] = raw["cites"] + ["opt_4.gate_Z9"]
             raw["rationale"] = "PILOT prefers opt_9 at gate Z9 (see opt_4.gate_Z9)."
             self.n_calls += 1
+            callcount.bump()
             retries = 1
         vpos, errors = validate_position(raw, call.ctx)
         if vpos is None:

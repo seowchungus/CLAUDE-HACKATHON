@@ -10,13 +10,13 @@ from typing import AsyncIterator, Literal
 from core.config import load_config
 from core.log import ConsensusLog, verify_chain
 from core.types import CheckReport, FallbackResult, Option, ScenarioBundle
-from agents import killswitch
+from agents import callcount, killswitch
 from core.constraints import check_option
 from core.fallback import solve
 from core.options import counter_allowed_values, make_option
 from agents.narrator import narrate
 from agents.prompting import ROLES, RoundState, build_call, phase_of
-from agents.schema import MAX_ROUNDS_HARD, AgentMessage, AgentPosition, Counter
+from agents.schema import MAX_ROUNDS_HARD, AgentMessage, AgentPosition, Counter, ungrounded_numbers
 
 ALL_CONSTRAINTS = ["H1_wake_separation", "H2_runway_capacity", "H3_fuel_reserve", "H4_gate_validity",
                    "H5_crew_duty", "H6_taxiway_reachability", "H7_severe_turbulence"]
@@ -286,17 +286,20 @@ class Coordinator:
         calls = {r: build_call(self.s, self.options, self.checks, r, st, self.cfg) for r in ROLES}
         for r in ROLES:
             self._emit("agent_thinking", {"round": st.round, "agent": r})
-        before = getattr(self.llm, "n_calls", 0)
-        msgs = await asyncio.gather(*(self.llm.position(r, c.prompt, c.response_model, c.round, call=c)
-                                      for r, c in calls.items()), return_exceptions=True)
+        with callcount.counting() as n:   # per run, not a delta of a client shared with other runs
+            msgs = await asyncio.gather(*(self.llm.position(r, c.prompt, c.response_model, c.round, call=c)
+                                          for r, c in calls.items()), return_exceptions=True)
         out = []
         for r, m in zip(ROLES, msgs):
             if isinstance(m, BaseException):
                 m = AgentMessage(agent=r, round=st.round, status="error", position=None,
                                  model=self.cfg["models"][r], latency_ms=0,
                                  errors=[f"{type(m).__name__}: {m}"[:200]])
+            if m.position is not None:   # grounding: a flag on the logged message, never a rejection
+                m.ungrounded = bool(ungrounded_numbers(m.position.rationale, m.position.cites,
+                                                       {o.option_id: o for o in self.options}))
             out.append(m)
-        self.n_llm_calls += max(0, getattr(self.llm, "n_calls", 0) - before)
+        self.n_llm_calls += n[0]
         for m in out:
             self._emit("agent_position", m.model_dump(mode="json"), actor=m.agent)
         return out
@@ -420,7 +423,11 @@ class Coordinator:
         if self.narrator is None:
             return
         try:
-            text = await self.narrator(self.bundle, list(self.envelopes))
+            with callcount.counting() as n:   # 0 with the template narrator
+                try:
+                    text = await self.narrator(self.bundle, list(self.envelopes))
+                finally:
+                    self.n_llm_calls += n[0]
         except Exception:  # noqa: BLE001 - narration is optional
             return
         if text:
