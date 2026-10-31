@@ -67,8 +67,7 @@ def test_h4(base):
 
 def test_h5(base):
     s, o = base
-    assert _result(s, _with(o, ramp_overtime_min=60), "H5_crew_duty").passed
-    assert not _result(s, _with(o, ramp_overtime_min=61), "H5_crew_duty").passed
+    assert _result(s, _with(o, ramp_overtime_min=500), "H5_crew_duty").passed  # overtime is a cost, not H5
     tired = s.model_copy(update={"flight_crew_duty_remaining_min": 5})
     assert not _result(tired, _with(o, eta_new_min=s.base_eta_min + 10), "H5_crew_duty").passed
 

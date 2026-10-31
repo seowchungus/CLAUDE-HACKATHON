@@ -1102,9 +1102,9 @@
    "aar_nominal": 45,
    "aar_reduced": 22,
    "aircraft_size": "M",
-   "fuel_at_fix_min": 53.4,
-   "flight_crew_duty_remaining_min": 81,
-   "ramp_shift_end_min": 915,
+   "fuel_at_fix_min": 57.0,
+   "flight_crew_duty_remaining_min": 483,
+   "ramp_shift_end_min": 942,
    "next_departure_min": 900,
    "gates": [
     {
@@ -1116,12 +1116,8 @@
      ],
      "occupied": [
       [
-       854,
-       894
-      ],
-      [
-       986,
-       1061
+       836,
+       932
       ]
      ],
      "out_of_service": false
@@ -1135,12 +1131,8 @@
      ],
      "occupied": [
       [
-       852,
-       897
-      ],
-      [
-       875,
-       951
+       824,
+       921
       ]
      ],
      "out_of_service": false
@@ -1155,8 +1147,8 @@
      ],
      "occupied": [
       [
-       827,
-       903
+       800,
+       906
       ]
      ],
      "out_of_service": false
@@ -1171,8 +1163,8 @@
      ],
      "occupied": [
       [
-       968,
-       1013
+       843,
+       908
       ]
      ],
      "out_of_service": false
@@ -1186,8 +1178,8 @@
      ],
      "occupied": [
       [
-       915,
-       983
+       803,
+       967
       ]
      ],
      "out_of_service": false
@@ -1199,7 +1191,12 @@
      "taxi_path": [
       "B"
      ],
-     "occupied": [],
+     "occupied": [
+      [
+       850,
+       979
+      ]
+     ],
      "out_of_service": false
     },
     {
@@ -1210,7 +1207,12 @@
       "B",
       "C"
      ],
-     "occupied": [],
+     "occupied": [
+      [
+       1020,
+       1074
+      ]
+     ],
      "out_of_service": false
     },
     {
@@ -1223,12 +1225,8 @@
      ],
      "occupied": [
       [
-       822,
-       909
-      ],
-      [
-       971,
-       1060
+       832,
+       952
       ]
      ],
      "out_of_service": false
@@ -1240,16 +1238,7 @@
      "taxi_path": [
       "C"
      ],
-     "occupied": [
-      [
-       858,
-       899
-      ],
-      [
-       873,
-       939
-      ]
-     ],
+     "occupied": [],
      "out_of_service": false
     },
     {
@@ -1262,12 +1251,8 @@
      ],
      "occupied": [
       [
-       866,
-       940
-      ],
-      [
-       913,
-       997
+       856,
+       976
       ]
      ],
      "out_of_service": false
@@ -1281,8 +1266,8 @@
      ],
      "occupied": [
       [
-       959,
-       1032
+       860,
+       946
       ]
      ],
      "out_of_service": false
@@ -1294,12 +1279,7 @@
      "taxi_path": [
       "D"
      ],
-     "occupied": [
-      [
-       850,
-       898
-      ]
-     ],
+     "occupied": [],
      "out_of_service": false
     }
    ],
@@ -1328,7 +1308,7 @@
     "bank": "real",
     "connections": "real",
     "base_eta_min": "real",
-    "aar_nominal": "real_derived",
+    "aar_nominal": "synthetic",
     "aar_reduced": "synthetic",
     "aircraft_size": "synthetic",
     "fuel_at_fix_min": "synthetic",
@@ -1343,162 +1323,157 @@
     "disrupted.wake": "synthetic",
     "bank.wake": "synthetic",
     "connections.wake": "synthetic",
-    "connections.pax_connecting": "synthetic"
-   }
+    "connections.pax_connecting": "synthetic",
+    "airport_limits": "synthetic",
+    "planned_gate": "synthetic",
+    "decision_time_min": "synthetic"
+   },
+   "airport_limits": {
+    "size_class": "Large hub",
+    "active_runways": 4,
+    "gates": 150,
+    "max_runway_ops_per_hour": 90,
+    "min_turnaround_min": 45,
+    "spare_gates_at_any_time": 3
+   },
+   "planned_gate": "B3",
+   "decision_time_min": 862
   },
   "options": [
    {
     "option_id": "opt_1",
     "eta_shift_min": 0,
-    "gate": "A4",
+    "gate": "B3",
     "fp_adjustment": "as_filed",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+0 min, gate A4, as filed",
+    "label": "+0 min, gate B3, as filed",
     "metrics": {
      "eta_new_min": 879,
      "runway_slot_min": 882,
      "separation_margin_s": 120,
-     "fuel_at_landing_min": 41.4,
+     "fuel_at_landing_min": 45.0,
      "extra_fuel_min": 0.0,
      "hold_min": 0,
      "turbulence_idx": 0.54,
      "misconnected_pax": 101,
-     "gate": "A4",
+     "gate": "B3",
      "gate_free_from_min": 650,
-     "gate_free_to_min": 968,
+     "gate_free_to_min": 1020,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -25,
-     "ramp_overtime_min": 5,
+     "turnaround_buffer_min": -35,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 3,
      "arrivals_this_hour": 15,
      "throughput_loss": 0,
-     "cost_J": 218.3
+     "cost_J": 215.8,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1800.0
     }
    },
    {
     "option_id": "opt_2",
     "eta_shift_min": 5,
-    "gate": "A4",
+    "gate": "B3",
     "fp_adjustment": "as_filed",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+5 min, gate A4, as filed",
+    "label": "+5 min, gate B3, as filed",
     "metrics": {
      "eta_new_min": 884,
      "runway_slot_min": 885,
      "separation_margin_s": 136,
-     "fuel_at_landing_min": 36.4,
+     "fuel_at_landing_min": 40.0,
      "extra_fuel_min": 5.0,
      "hold_min": 0,
      "turbulence_idx": 0.54,
      "misconnected_pax": 101,
-     "gate": "A4",
+     "gate": "B3",
      "gate_free_from_min": 655,
-     "gate_free_to_min": 968,
+     "gate_free_to_min": 1020,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -30,
-     "ramp_overtime_min": 10,
+     "turnaround_buffer_min": -40,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 15,
      "throughput_loss": 0,
-     "cost_J": 222.8
+     "cost_J": 217.8,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1600.0
     }
    },
    {
     "option_id": "opt_3",
     "eta_shift_min": 5,
-    "gate": "A4",
+    "gate": "B3",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+5 min, gate A4, speed reduction",
+    "label": "+5 min, gate B3, speed reduction",
     "metrics": {
      "eta_new_min": 884,
      "runway_slot_min": 885,
      "separation_margin_s": 136,
-     "fuel_at_landing_min": 39.9,
+     "fuel_at_landing_min": 43.5,
      "extra_fuel_min": 1.5,
      "hold_min": 0,
      "turbulence_idx": 0.5,
      "misconnected_pax": 101,
-     "gate": "A4",
+     "gate": "B3",
      "gate_free_from_min": 655,
-     "gate_free_to_min": 968,
+     "gate_free_to_min": 1020,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -30,
-     "ramp_overtime_min": 10,
+     "turnaround_buffer_min": -40,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 15,
      "throughput_loss": 0,
-     "cost_J": 219.2
+     "cost_J": 214.2,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1740.0
     }
    },
    {
     "option_id": "opt_4",
     "eta_shift_min": 10,
-    "gate": "A4",
+    "gate": "B3",
     "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+10 min, gate A4, speed reduction",
+    "label": "+10 min, gate B3, speed reduction",
     "metrics": {
      "eta_new_min": 889,
      "runway_slot_min": 890,
      "separation_margin_s": 120,
-     "fuel_at_landing_min": 38.4,
+     "fuel_at_landing_min": 42.0,
      "extra_fuel_min": 3.0,
      "hold_min": 0,
      "turbulence_idx": 0.5,
      "misconnected_pax": 101,
-     "gate": "A4",
+     "gate": "B3",
      "gate_free_from_min": 660,
-     "gate_free_to_min": 968,
+     "gate_free_to_min": 1020,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -35,
-     "ramp_overtime_min": 15,
+     "turnaround_buffer_min": -45,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 17,
      "throughput_loss": 0,
-     "cost_J": 222.9
+     "cost_J": 215.4,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1680.0
     }
    },
    {
     "option_id": "opt_5",
-    "eta_shift_min": 10,
-    "gate": "B1",
-    "fp_adjustment": "hold_10",
-    "source": "generated",
-    "proposed_by": null,
-    "parent_option": null,
-    "label": "+10 min, gate B1, hold 10 min",
-    "metrics": {
-     "eta_new_min": 889,
-     "runway_slot_min": 890,
-     "separation_margin_s": 120,
-     "fuel_at_landing_min": 31.4,
-     "extra_fuel_min": 10.0,
-     "hold_min": 10,
-     "turbulence_idx": 0.48,
-     "misconnected_pax": 101,
-     "gate": "B1",
-     "gate_free_from_min": 660,
-     "gate_free_to_min": 915,
-     "taxi_path_ok": true,
-     "turnaround_buffer_min": -35,
-     "ramp_overtime_min": 15,
-     "bank_delay_added_min": 1,
-     "arrivals_this_hour": 17,
-     "throughput_loss": 0,
-     "cost_J": 228.1
-    }
-   },
-   {
-    "option_id": "opt_6",
     "eta_shift_min": 10,
     "gate": "B3",
     "fp_adjustment": "reroute_weather",
@@ -1510,51 +1485,90 @@
      "eta_new_min": 889,
      "runway_slot_min": 890,
      "separation_margin_s": 120,
-     "fuel_at_landing_min": 33.4,
+     "fuel_at_landing_min": 37.0,
      "extra_fuel_min": 8.0,
      "hold_min": 0,
      "turbulence_idx": 0.19,
      "misconnected_pax": 101,
      "gate": "B3",
      "gate_free_from_min": 660,
-     "gate_free_to_min": 1140,
+     "gate_free_to_min": 1020,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -35,
-     "ramp_overtime_min": 15,
+     "turnaround_buffer_min": -45,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 1,
      "arrivals_this_hour": 17,
      "throughput_loss": 0,
-     "cost_J": 220.7
+     "cost_J": 213.2,
+     "gate_change": false,
+     "gate_change_notice_min": null,
+     "fuel_at_landing_kg": 1480.0
     }
    },
    {
-    "option_id": "opt_7",
+    "option_id": "opt_6",
     "eta_shift_min": 15,
-    "gate": "A1",
-    "fp_adjustment": "reroute_weather",
+    "gate": "B1",
+    "fp_adjustment": "speed_reduction",
     "source": "generated",
     "proposed_by": null,
     "parent_option": null,
-    "label": "+15 min, gate A1, weather reroute",
+    "label": "+15 min, gate B1, speed reduction",
     "metrics": {
      "eta_new_min": 894,
      "runway_slot_min": 895,
      "separation_margin_s": 120,
-     "fuel_at_landing_min": 28.4,
-     "extra_fuel_min": 13.0,
+     "fuel_at_landing_min": 40.5,
+     "extra_fuel_min": 4.5,
      "hold_min": 0,
-     "turbulence_idx": 0.19,
+     "turbulence_idx": 0.5,
      "misconnected_pax": 101,
-     "gate": "A1",
-     "gate_free_from_min": 894,
-     "gate_free_to_min": 986,
+     "gate": "B1",
+     "gate_free_from_min": 967,
+     "gate_free_to_min": 1207,
      "taxi_path_ok": true,
-     "turnaround_buffer_min": -40,
-     "ramp_overtime_min": 20,
+     "turnaround_buffer_min": -50,
+     "ramp_overtime_min": 0,
      "bank_delay_added_min": 3,
      "arrivals_this_hour": 19,
      "throughput_loss": 0,
-     "cost_J": 229.2
+     "cost_J": 218.6,
+     "gate_change": true,
+     "gate_change_notice_min": 32,
+     "fuel_at_landing_kg": 1620.0
+    }
+   },
+   {
+    "option_id": "opt_7",
+    "eta_shift_min": 20,
+    "gate": "C1",
+    "fp_adjustment": "reroute_weather",
+    "source": "generated",
+    "proposed_by": null,
+    "parent_option": null,
+    "label": "+20 min, gate C1, weather reroute",
+    "metrics": {
+     "eta_new_min": 899,
+     "runway_slot_min": 900,
+     "separation_margin_s": 120,
+     "fuel_at_landing_min": 27.0,
+     "extra_fuel_min": 18.0,
+     "hold_min": 0,
+     "turbulence_idx": 0.19,
+     "misconnected_pax": 101,
+     "gate": "C1",
+     "gate_free_from_min": 670,
+     "gate_free_to_min": 1150,
+     "taxi_path_ok": true,
+     "turnaround_buffer_min": -55,
+     "ramp_overtime_min": 0,
+     "bank_delay_added_min": 29,
+     "arrivals_this_hour": 22,
+     "throughput_loss": 0,
+     "cost_J": 249.2,
+     "gate_change": true,
+     "gate_change_notice_min": 37,
+     "fuel_at_landing_kg": 1080.0
     }
    }
   ],
@@ -1569,7 +1583,7 @@
       "passed": true,
       "value": 120.0,
       "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
+      "detail": "margin +120 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_1",
@@ -1583,9 +1597,9 @@
       "option_id": "opt_1",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 41.4,
+      "value": 45.0,
       "threshold": 30.0,
-      "detail": "fuel 41.4 min >= 30 min final reserve"
+      "detail": "fuel 45.0 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_1",
@@ -1593,15 +1607,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A4 free and size-compatible"
+      "detail": "gate B3 free and size-compatible"
      },
      {
       "option_id": "opt_1",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 81.0,
+      "value": 483.0,
       "threshold": 0.0,
-      "detail": "crew duty left 81 min; ramp overtime 5 <= 60"
+      "detail": "flight crew duty left 483 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_1",
@@ -1631,7 +1645,7 @@
       "passed": true,
       "value": 136.0,
       "threshold": 0.0,
-      "detail": "margin +136 s over wake minimum"
+      "detail": "margin +136 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_2",
@@ -1645,9 +1659,9 @@
       "option_id": "opt_2",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 36.4,
+      "value": 40.0,
       "threshold": 30.0,
-      "detail": "fuel 36.4 min >= 30 min final reserve"
+      "detail": "fuel 40.0 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_2",
@@ -1655,15 +1669,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A4 free and size-compatible"
+      "detail": "gate B3 free and size-compatible"
      },
      {
       "option_id": "opt_2",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 76.0,
+      "value": 478.0,
       "threshold": 0.0,
-      "detail": "crew duty left 76 min; ramp overtime 10 <= 60"
+      "detail": "flight crew duty left 478 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_2",
@@ -1693,7 +1707,7 @@
       "passed": true,
       "value": 136.0,
       "threshold": 0.0,
-      "detail": "margin +136 s over wake minimum"
+      "detail": "margin +136 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_3",
@@ -1707,9 +1721,9 @@
       "option_id": "opt_3",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 39.9,
+      "value": 43.5,
       "threshold": 30.0,
-      "detail": "fuel 39.9 min >= 30 min final reserve"
+      "detail": "fuel 43.5 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_3",
@@ -1717,15 +1731,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A4 free and size-compatible"
+      "detail": "gate B3 free and size-compatible"
      },
      {
       "option_id": "opt_3",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 76.0,
+      "value": 478.0,
       "threshold": 0.0,
-      "detail": "crew duty left 76 min; ramp overtime 10 <= 60"
+      "detail": "flight crew duty left 478 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_3",
@@ -1755,7 +1769,7 @@
       "passed": true,
       "value": 120.0,
       "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
+      "detail": "margin +120 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_4",
@@ -1769,9 +1783,9 @@
       "option_id": "opt_4",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 38.4,
+      "value": 42.0,
       "threshold": 30.0,
-      "detail": "fuel 38.4 min >= 30 min final reserve"
+      "detail": "fuel 42.0 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_4",
@@ -1779,15 +1793,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A4 free and size-compatible"
+      "detail": "gate B3 free and size-compatible"
      },
      {
       "option_id": "opt_4",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 71.0,
+      "value": 473.0,
       "threshold": 0.0,
-      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
+      "detail": "flight crew duty left 473 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_4",
@@ -1809,80 +1823,18 @@
    },
    "opt_5": {
     "option_id": "opt_5",
-    "feasible": false,
-    "results": [
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H1_wake_separation",
-      "passed": true,
-      "value": 120.0,
-      "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H2_runway_capacity",
-      "passed": true,
-      "value": 17.0,
-      "threshold": 22.0,
-      "detail": "17 arrivals <= reduced AAR 22"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H3_fuel_reserve",
-      "passed": true,
-      "value": 31.4,
-      "threshold": 30.0,
-      "detail": "fuel 31.4 min >= 30 min final reserve"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H4_gate_validity",
-      "passed": false,
-      "value": null,
-      "threshold": null,
-      "detail": "gate B1 busy: free 660-915, needed 900-935"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H5_crew_duty",
-      "passed": true,
-      "value": 71.0,
-      "threshold": 0.0,
-      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H6_taxiway_reachability",
-      "passed": true,
-      "value": null,
-      "threshold": null,
-      "detail": "taxi path clear"
-     },
-     {
-      "option_id": "opt_5",
-      "constraint_id": "H7_severe_turbulence",
-      "passed": true,
-      "value": 0.48,
-      "threshold": 0.7,
-      "detail": "turbulence 0.48 < 0.7"
-     }
-    ]
-   },
-   "opt_6": {
-    "option_id": "opt_6",
     "feasible": true,
     "results": [
      {
-      "option_id": "opt_6",
+      "option_id": "opt_5",
       "constraint_id": "H1_wake_separation",
       "passed": true,
       "value": 120.0,
       "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
+      "detail": "margin +120 s over wake minimum (workbook)"
      },
      {
-      "option_id": "opt_6",
+      "option_id": "opt_5",
       "constraint_id": "H2_runway_capacity",
       "passed": true,
       "value": 17.0,
@@ -1890,15 +1842,15 @@
       "detail": "17 arrivals <= reduced AAR 22"
      },
      {
-      "option_id": "opt_6",
+      "option_id": "opt_5",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 33.4,
+      "value": 37.0,
       "threshold": 30.0,
-      "detail": "fuel 33.4 min >= 30 min final reserve"
+      "detail": "fuel 37.0 min >= 30 min final reserve (workbook)"
      },
      {
-      "option_id": "opt_6",
+      "option_id": "opt_5",
       "constraint_id": "H4_gate_validity",
       "passed": true,
       "value": null,
@@ -1906,12 +1858,74 @@
       "detail": "gate B3 free and size-compatible"
      },
      {
+      "option_id": "opt_5",
+      "constraint_id": "H5_crew_duty",
+      "passed": true,
+      "value": 473.0,
+      "threshold": 0.0,
+      "detail": "flight crew duty left 473 min >= 0 of 13 h max (workbook)"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H6_taxiway_reachability",
+      "passed": true,
+      "value": null,
+      "threshold": null,
+      "detail": "taxi path clear"
+     },
+     {
+      "option_id": "opt_5",
+      "constraint_id": "H7_severe_turbulence",
+      "passed": true,
+      "value": 0.19,
+      "threshold": 0.7,
+      "detail": "turbulence 0.19 < 0.7"
+     }
+    ]
+   },
+   "opt_6": {
+    "option_id": "opt_6",
+    "feasible": false,
+    "results": [
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H1_wake_separation",
+      "passed": true,
+      "value": 120.0,
+      "threshold": 0.0,
+      "detail": "margin +120 s over wake minimum (workbook)"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H2_runway_capacity",
+      "passed": true,
+      "value": 19.0,
+      "threshold": 22.0,
+      "detail": "19 arrivals <= reduced AAR 22"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H3_fuel_reserve",
+      "passed": true,
+      "value": 40.5,
+      "threshold": 30.0,
+      "detail": "fuel 40.5 min >= 30 min final reserve (workbook)"
+     },
+     {
+      "option_id": "opt_6",
+      "constraint_id": "H4_gate_validity",
+      "passed": false,
+      "value": null,
+      "threshold": null,
+      "detail": "gate B1 busy: free 967-1207, needed 905-950"
+     },
+     {
       "option_id": "opt_6",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 71.0,
+      "value": 468.0,
       "threshold": 0.0,
-      "detail": "crew duty left 71 min; ramp overtime 15 <= 60"
+      "detail": "flight crew duty left 468 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_6",
@@ -1925,9 +1939,9 @@
       "option_id": "opt_6",
       "constraint_id": "H7_severe_turbulence",
       "passed": true,
-      "value": 0.19,
+      "value": 0.5,
       "threshold": 0.7,
-      "detail": "turbulence 0.19 < 0.7"
+      "detail": "turbulence 0.50 < 0.7"
      }
     ]
    },
@@ -1941,23 +1955,23 @@
       "passed": true,
       "value": 120.0,
       "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
+      "detail": "margin +120 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_7",
       "constraint_id": "H2_runway_capacity",
       "passed": true,
-      "value": 19.0,
+      "value": 22.0,
       "threshold": 22.0,
-      "detail": "19 arrivals <= reduced AAR 22"
+      "detail": "22 arrivals <= reduced AAR 22"
      },
      {
       "option_id": "opt_7",
       "constraint_id": "H3_fuel_reserve",
       "passed": false,
-      "value": 28.4,
+      "value": 27.0,
       "threshold": 30.0,
-      "detail": "fuel 28.4 min < 30 min final reserve"
+      "detail": "fuel 27.0 min < 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_7",
@@ -1965,15 +1979,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A1 free and size-compatible"
+      "detail": "gate C1 free and size-compatible; change notice 37 min"
      },
      {
       "option_id": "opt_7",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 66.0,
+      "value": 463.0,
       "threshold": 0.0,
-      "detail": "crew duty left 66 min; ramp overtime 20 <= 60"
+      "detail": "flight crew duty left 463 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_7",
@@ -2003,7 +2017,7 @@
       "passed": true,
       "value": 120.0,
       "threshold": 0.0,
-      "detail": "margin +120 s over wake minimum"
+      "detail": "margin +120 s over wake minimum (workbook)"
      },
      {
       "option_id": "opt_fcfs",
@@ -2017,9 +2031,9 @@
       "option_id": "opt_fcfs",
       "constraint_id": "H3_fuel_reserve",
       "passed": true,
-      "value": 41.4,
+      "value": 45.0,
       "threshold": 30.0,
-      "detail": "fuel 41.4 min >= 30 min final reserve"
+      "detail": "fuel 45.0 min >= 30 min final reserve (workbook)"
      },
      {
       "option_id": "opt_fcfs",
@@ -2027,15 +2041,15 @@
       "passed": true,
       "value": null,
       "threshold": null,
-      "detail": "gate A4 free and size-compatible"
+      "detail": "gate B3 free and size-compatible"
      },
      {
       "option_id": "opt_fcfs",
       "constraint_id": "H5_crew_duty",
       "passed": true,
-      "value": 81.0,
+      "value": 483.0,
       "threshold": 0.0,
-      "detail": "crew duty left 81 min; ramp overtime 5 <= 60"
+      "detail": "flight crew duty left 483 min >= 0 of 13 h max (workbook)"
      },
      {
       "option_id": "opt_fcfs",
@@ -2058,28 +2072,28 @@
   },
   "fallback": {
    "status": "PLAN",
-   "option_id": "opt_1",
-   "cost_J": 218.3,
+   "option_id": "opt_5",
+   "cost_J": 213.2,
    "ranking": [
     [
-     "opt_1",
-     218.3
+     "opt_5",
+     213.2
     ],
     [
      "opt_3",
-     219.2
-    ],
-    [
-     "opt_6",
-     220.7
-    ],
-    [
-     "opt_2",
-     222.8
+     214.2
     ],
     [
      "opt_4",
-     222.9
+     215.4
+    ],
+    [
+     "opt_1",
+     215.8
+    ],
+    [
+     "opt_2",
+     217.8
     ]
    ],
    "weights": {
@@ -2095,31 +2109,34 @@
   "fcfs": {
    "option_id": "opt_fcfs",
    "eta_shift_min": 0,
-   "gate": "A4",
+   "gate": "B3",
    "fp_adjustment": "as_filed",
    "source": "fcfs",
    "proposed_by": null,
    "parent_option": null,
-   "label": "+0 min, gate A4, as filed",
+   "label": "+0 min, gate B3, as filed",
    "metrics": {
     "eta_new_min": 879,
     "runway_slot_min": 882,
     "separation_margin_s": 120,
-    "fuel_at_landing_min": 41.4,
+    "fuel_at_landing_min": 45.0,
     "extra_fuel_min": 0.0,
     "hold_min": 0,
     "turbulence_idx": 0.54,
     "misconnected_pax": 101,
-    "gate": "A4",
+    "gate": "B3",
     "gate_free_from_min": 650,
-    "gate_free_to_min": 968,
+    "gate_free_to_min": 1020,
     "taxi_path_ok": true,
-    "turnaround_buffer_min": -25,
-    "ramp_overtime_min": 5,
+    "turnaround_buffer_min": -35,
+    "ramp_overtime_min": 0,
     "bank_delay_added_min": 3,
     "arrivals_this_hour": 15,
     "throughput_loss": 0,
-    "cost_J": 218.3
+    "cost_J": 215.8,
+    "gate_change": false,
+    "gate_change_notice_min": null,
+    "fuel_at_landing_kg": 1800.0
    }
   }
  },

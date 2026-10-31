@@ -1,6 +1,7 @@
 """Deterministic fallback (proposal §5.3) and FCFS baseline (§8.2). No LLM, no import from agents/.
 
-B0 fcfs: eta_shift 0 (runway slot snapped by metrics), first free compatible reachable gate, as filed.
+B0 fcfs: eta_shift 0 (runway slot snapped by metrics), the planned gate if free, else the first free compatible
+reachable gate (naive: ignores the gate-change notice rule), as filed.
 B1 solve: filter hard-feasible -> min cost_J -> tie-break lowest eta_shift then option_id.
 No feasible option -> ESCALATE (no safe automated plan; diversion candidate).
 """
@@ -13,8 +14,8 @@ from core.types import CheckReport, FallbackResult, Option, Scenario
 def fcfs(s: Scenario) -> Option:
     blocked = set(s.blocked_taxiways)
     eta = s.base_eta_min
-    gate = next((g.gate_id for g in s.gates if gate_ok(s, g, eta) and not (set(g.taxi_path) & blocked)),
-                s.gates[0].gate_id)
+    usable = [g.gate_id for g in s.gates if gate_ok(s, g, eta) and not (set(g.taxi_path) & blocked)]
+    gate = s.planned_gate if s.planned_gate in usable else (usable[0] if usable else s.planned_gate or s.gates[0].gate_id)
     return make_option(s, "opt_fcfs", 0, gate, "as_filed", source="fcfs")
 
 

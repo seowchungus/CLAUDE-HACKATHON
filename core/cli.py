@@ -26,6 +26,7 @@ def tag(s, field: str) -> str:
 def render(b: ScenarioBundle) -> str:
     s = b.scenario
     r = s.row
+    L = s.airport_limits or {}
     out = [f"=== {s.scenario_id}  ({s.disrupted.flight_id} {r.origin}->{r.destination}, "
            f"{s.disruption_type} {s.disruption_min} min)  seed={s.seed}",
            f"REAL   sched arr {hhmm(s.disrupted.sched_arr_min)}  base ETA {hhmm(s.base_eta_min)}  "
@@ -36,15 +37,21 @@ def render(b: ScenarioBundle) -> str:
            f"fuel@fix {s.fuel_at_fix_min}{tag(s, 'fuel_at_fix_min')}  crew duty {s.flight_crew_duty_remaining_min}"
            f"{tag(s, 'flight_crew_duty_remaining_min')}  ramp shift end {hhmm(s.ramp_shift_end_min)}"
            f"{tag(s, 'ramp_shift_end_min')}  next dep {hhmm(s.next_departure_min)}{tag(s, 'next_departure_min')}",
+           f"WORKBOOK {s.destination.iata}: {L.get('size_class')}, {L.get('active_runways')} rwy, "
+           f"{L.get('max_runway_ops_per_hour')} ops/h, {L.get('gates')} gates, "
+           f"{L.get('spare_gates_at_any_time')} spare, turnaround {L.get('min_turnaround_min')} min [SYNTHETIC by organisers]",
+           f"planned gate {s.planned_gate}{tag(s, 'planned_gate')}  decision time {hhmm(s.decision_time_min)}"
+           f"{tag(s, 'decision_time_min')}  free gates at ETA "
+           f"{[g.gate_id for g in s.gates if not g.out_of_service and not any(a <= s.base_eta_min + 8 < b for a, b in g.occupied)]}",
            f"blocked taxiways {s.blocked_taxiways}  chaos {[c.kind for c in s.chaos_applied]}", ""]
     out.append(f"{'option':9} {'label':38} {'ETA':>7} {'slot':>7} {'sep_s':>5} {'fuel':>5} {'mis':>4} "
-               f"{'ot':>3} {'bank':>4} {'arr':>3} {'turb':>4} {'J':>7}  " + " ".join(f"H{i + 1}" for i in range(7)))
+               f"{'ot':>3} {'chg':>4} {'bank':>4} {'arr':>3} {'turb':>4} {'J':>7}  " + " ".join(f"H{i + 1}" for i in range(7)))
     for o in b.options + [b.fcfs]:
         m = o.metrics
         grid = " ".join(" ✓" if res.passed else " ✗" for res in b.checks[o.option_id].results)
         out.append(f"{o.option_id:9} {o.label:38} {hhmm(m.eta_new_min):>7} {hhmm(m.runway_slot_min):>7} "
                    f"{m.separation_margin_s:>5} {m.fuel_at_landing_min:>5.1f} {m.misconnected_pax:>4} "
-                   f"{m.ramp_overtime_min:>3} {m.bank_delay_added_min:>4} {m.arrivals_this_hour:>3} "
+                   f"{m.ramp_overtime_min:>3} {('n/a' if not m.gate_change else m.gate_change_notice_min):>4} {m.bank_delay_added_min:>4} {m.arrivals_this_hour:>3} "
                    f"{m.turbulence_idx:>4.2f} {m.cost_J:>7.1f}  {grid}")
     out.append("")
     for o in b.options + [b.fcfs]:

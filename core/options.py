@@ -2,8 +2,9 @@
 
 Selection: one favourite per agent (ATC min bank delay, PILOT min misconnects with no hold, GROUND min
 overtime), the min-J option, then the rest of the Pareto front on (bank_delay, extra_fuel, misconnects,
-overtime), plus 1-2 infeasible-but-tempting options (lowest J among those failing exactly one constraint)
-so the checker has something to catch. Ids opt_1.. are assigned in (eta_shift, fp, gate) order.
+overtime), plus 1-2 infeasible-but-tempting options (single failures, H4 gate validity / gate-change notice
+and H3 fuel first, lowest J) so the checker has something to catch. Topped up to n_min with infeasible options
+when few are feasible. Ids opt_1.. are assigned in (eta_shift, fp, gate) order.
 """
 from core.config import load_config
 from core.constraints import check_option, failed_ids
@@ -78,7 +79,8 @@ def generate_options(s: Scenario) -> list[Option]:
         add(best(feasible, lambda o: (o.metrics.bank_delay_added_min, o.metrics.throughput_loss, J(o))))  # ATC
         add(best((o for o in feasible if o.metrics.hold_min == 0),
                  lambda o: (o.metrics.misconnected_pax, o.metrics.extra_fuel_min, J(o))))  # PILOT
-        add(best(feasible, lambda o: (o.metrics.ramp_overtime_min, -o.metrics.turnaround_buffer_min, J(o))))  # GROUND
+        add(best(feasible, lambda o: (o.metrics.ramp_overtime_min, o.metrics.gate_change,
+                                      -o.metrics.turnaround_buffer_min, J(o))))  # GROUND
         add(best(feasible, J))  # fallback's likely choice
         front = [o for o in feasible if not any(_dominates(p, o) for p in feasible)]
         seen_fp = {p.fp_adjustment for p in picks}
@@ -92,20 +94,25 @@ def generate_options(s: Scenario) -> list[Option]:
                 break
             add(o)
 
-    # infeasible-but-tempting: lowest J among single-failure options, distinct failed constraints
+    # infeasible-but-tempting: prefer a gate-validity (H4) and a fuel (H3) single failure, then any other,
+    # lowest J first; if the feasible set is thin, top up with infeasible options until n_min
+    prio = {"H4_gate_validity": 0, "H3_fuel_reserve": 1}
+    singles = sorted((x for x in infeasible if len(x[1]) == 1), key=lambda x: (prio.get(x[1][0], 2), J(x[0])))
     used: set[str] = set()
-    for o, fails in sorted(infeasible, key=lambda x: (len(x[1]) > 1, J(x[0]))):
-        if len(picks) >= n_max or (feasible and n_bad == 0):
+    for o, fails in singles:
+        if n_bad <= 0 or len(picks) >= n_max:
             break
-        if feasible and (fails[0] in used or len(fails) > 1):
+        if fails[0] in used:
             continue
         before = len(picks)
         add(o)
         if len(picks) > before:
             used.add(fails[0])
             n_bad -= 1
-        if not feasible and len(picks) >= n_min + 1:
+    for o, _ in sorted(infeasible, key=lambda x: (len(x[1]), J(x[0]))):
+        if len(picks) >= n_min:
             break
+        add(o)
 
     picks.sort(key=lambda o: (o.eta_shift_min, fps.index(o.fp_adjustment), o.gate))
     return [o.model_copy(update={"option_id": f"opt_{i + 1}"}) for i, o in enumerate(picks)]

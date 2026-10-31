@@ -13,11 +13,14 @@ Simplified rules, ILLUSTRATIVE, NOT CERTIFIED:
   turbulence; any remaining delay is flown at normal burn (1.0/min).
   fuel_at_landing = fuel_at_fix - PLANNED_BURN_FIX_TO_LAND - extra_fuel.
 - misconnected_pax = sum of pax on connections with sched_dep - (eta_new + taxi_in) < MCT (45 min).
-- Gate: needed over [in_block, max(next_departure, in_block + min_turnaround)) capped at +GATE_HOLD_CAP;
+- Gate: needed over [in_block, max(next_departure, in_block + min_turnaround)) capped at +GATE_HOLD_CAP,
+  min_turnaround from the destination's workbook row [WB];
   gate_free_from/to is the free gap of that gate around in_block. taxi_path_ok = no blocked taxiway on path.
 - turnaround_buffer = next_departure - (eta_new + taxi_in + min_turnaround).
-- ramp_overtime = max(0, eta_new + taxi_in + 30 - ramp_shift_end).
-- cost_J = proposal §5.3 with config.fallback_weights.
+- ramp_overtime = max(0, eta_new + taxi_in + 30 - ramp_shift_end) (cost only; [WB] 8 h shift).
+- gate_change = gate != planned_gate; gate_change_notice_min = eta_new - decision_time (H4 needs >= 20 [WB]).
+- fuel_at_landing_kg = fuel_at_landing_min x holding burn [WB] (widebody if wake H, else narrowbody).
+- cost_J = proposal §5.3 with config.fallback_weights; ramp overtime x ground_overtime_cost_multiplier [WB].
 """
 from core.config import load_config
 from core.types import FPAdj, Gate, Metrics, Scenario
@@ -66,11 +69,15 @@ def extra_fuel(eta_shift_min: int, fp: str) -> float:
     return round(fuel, 1)
 
 
+def min_turnaround(s: Scenario) -> int:
+    """[WB] per-airport minimum turnaround; legacy config default only for pre-v1.2 scenarios."""
+    return int(s.airport_limits.get("min_turnaround_min") or load_config()["thresholds"].get("min_turnaround_min", 35))
+
+
 def gate_need_window(s: Scenario, eta_new: int) -> tuple[int, int]:
-    th = load_config()["thresholds"]
     start = eta_new + taxi_in(s)
     nd = s.next_departure_min if s.next_departure_min is not None else start + 60
-    end = min(max(nd, start + th["min_turnaround_min"]), start + GATE_HOLD_CAP)
+    end = min(max(nd, start + min_turnaround(s)), start + GATE_HOLD_CAP)
     return start, end
 
 
@@ -143,11 +150,13 @@ def _runway(s: Scenario, eta_new: int) -> tuple[int, int, int]:
 
 
 def cost_j(m: dict, weights: dict | None = None) -> float:
-    w = weights or load_config()["fallback_weights"]
+    cfg = load_config()
+    w = weights or cfg["fallback_weights"]
+    ot_mult = float(cfg["thresholds"].get("ground_overtime_cost_multiplier", 1.0))
     return round(w["w_d_bank_delay_added"] * m["bank_delay_added_min"]
                  + w["w_f_extra_fuel"] * m["extra_fuel_min"]
                  + w["w_c_misconnected_pax"] * m["misconnected_pax"]
-                 + w["w_o_ramp_overtime"] * m["ramp_overtime_min"]
+                 + w["w_o_ramp_overtime"] * ot_mult * m["ramp_overtime_min"]
                  + w["w_t_turbulence"] * m["turbulence_idx"]
                  + w["w_q_throughput_loss"] * m["throughput_loss"], 2)
 
@@ -168,7 +177,8 @@ def compute_metrics(s: Scenario, eta_shift_min: int, gate: str, fp: FPAdj) -> Me
     need_from, _ = gate_need_window(s, eta_new)
     ff, ft = gate_free_window(g, need_from)
     blocked = set(s.blocked_taxiways)
-    nd = s.next_departure_min if s.next_departure_min is not None else in_block + 60 + th["min_turnaround_min"]
+    turn = min_turnaround(s)
+    nd = s.next_departure_min if s.next_departure_min is not None else in_block + 60 + turn
     m = {
         "eta_new_min": eta_new,
         "runway_slot_min": slot,
@@ -182,11 +192,16 @@ def compute_metrics(s: Scenario, eta_shift_min: int, gate: str, fp: FPAdj) -> Me
         "gate_free_from_min": int(ff),
         "gate_free_to_min": int(ft),
         "taxi_path_ok": not any(t in blocked for t in g.taxi_path),
-        "turnaround_buffer_min": int(nd - (in_block + th["min_turnaround_min"])),
+        "turnaround_buffer_min": int(nd - (in_block + turn)),
         "ramp_overtime_min": int(max(0, in_block + RAMP_WORK_AFTER_IN_BLOCK - s.ramp_shift_end_min)),
         "bank_delay_added_min": bank_delay,
         "arrivals_this_hour": arrivals,
         "throughput_loss": max(0, arrivals - s.aar_reduced),
     }
     m["cost_J"] = cost_j(m)
+    m["gate_change"] = s.planned_gate is not None and gate != s.planned_gate
+    m["gate_change_notice_min"] = (eta_new - s.decision_time_min
+                                   if m["gate_change"] and s.decision_time_min is not None else None)
+    burn = th["fuel_burn_kg_per_h"]["widebody" if s.disrupted.wake == "H" else "narrowbody"]
+    m["fuel_at_landing_kg"] = round(m["fuel_at_landing_min"] * burn / 60.0, 0)
     return Metrics(**m)
