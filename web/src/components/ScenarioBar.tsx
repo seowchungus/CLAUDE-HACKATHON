@@ -20,7 +20,7 @@ export const provTag = (s: Scenario, field: string) => {
   return null;
 };
 
-export function ScenarioBar({ s }: { s: Scenario }) {
+export function ScenarioBar({ s, csvRow }: { s: Scenario; csvRow?: number | null }) {
   const d = s.disrupted;
   const synth: [string, string][] = [
     ["aar_reduced", `AAR ${s.aar_reduced}/h (nominal ${s.aar_nominal})`],
@@ -43,7 +43,15 @@ export function ScenarioBar({ s }: { s: Scenario }) {
         <Tag kind="REAL" />
         {s.fixture && <Tag kind="FIXTURE" />}
       </div>
-      <div className="text-slate-300">{date}</div>
+      <div className="text-slate-300">
+        {date}
+        {csvRow != null && (
+          <span className="ml-2 font-mono text-xs text-slate-400" title="0-based data row of data/raw/flights.csv">
+            flights.csv row {csvRow.toLocaleString()}
+            <Tag kind="REAL" />
+          </span>
+        )}
+      </div>
       <div className="text-lg">
         <span className="font-mono font-semibold text-amber-300">
           {s.disruption_type === "WEATHER" ? "WEATHER_DELAY" : "LATE_AIRCRAFT_DELAY"} {s.disruption_min} min

@@ -34,6 +34,8 @@ export const api = {
   health: () => j<Health>("/api/health"),
   limits: (scenarioId?: string) => j<Limits>(`/api/limits${scenarioId ? `?scenario_id=${encodeURIComponent(scenarioId)}` : ""}`),
   scenarios: () => j<ScenarioSummary[]>("/api/scenarios"),
+  byRow: (row: number) => j<ScenarioSummary>(`/api/scenarios/by_row/${row}`),
+  csvRow: (id: string) => j<{ row: number }>(`/api/scenarios/${encodeURIComponent(id)}/csv_row`),
   scenario: (id: string) => j<ScenarioResponse>(`/api/scenarios/${encodeURIComponent(id)}`),
   runBundle: (runId: string) => j<ScenarioResponse>(`/api/runs/${runId}/bundle`),
   createRun: (scenario_id: string, mode?: ScriptedMode) =>

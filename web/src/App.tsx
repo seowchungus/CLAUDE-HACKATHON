@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { api, type ScriptedMode } from "./api";
+import { api, ApiError, type ScriptedMode } from "./api";
 import { ConstraintWall } from "./components/ConstraintWall";
 import { ChaosMenu, DemoMenu } from "./components/Controls";
 import { DecisionPanel } from "./components/DecisionPanel";
@@ -12,6 +12,8 @@ import { RoundTracker } from "./components/RoundTracker";
 import { ScenarioBar } from "./components/ScenarioBar";
 import { TrafficMap } from "./components/TrafficMap";
 import type { ChaosEvent, Health, ScenarioResponse, ScenarioSummary } from "./types";
+
+const N_ROWS = 358774; // data rows in data/raw/flights.csv
 import { decidedPlan, useRunStream } from "./useRunStream";
 
 export const Panel = ({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) => (
@@ -27,6 +29,8 @@ export default function App() {
   const [view, setView] = useState<"console" | "eval">(params.has("eval") ? "eval" : "console");
   const [list, setList] = useState<ScenarioSummary[]>([]);
   const [sid, setSid] = useState<string>("");
+  const [pick, setPick] = useState("");
+  const [rowOf, setRowOf] = useState<Record<string, number>>({});
   const [sc, setSc] = useState<ScenarioResponse | null>(null);
   const [streamKey, setStreamKey] = useState<string | null>(params.get("replay") ? `replay:${params.get("replay")}` : null);
   const [health, setHealth] = useState<Health | null>(null);
@@ -40,11 +44,65 @@ export default function App() {
   const chain = useChain(runId, `${!!st.ended}-${!!st.approved}-${logOpen}`);
   const fail = (e: unknown) => setErr(e instanceof Error ? e.message : String(e));
 
+  // put a scenario in the dropdown (after the pinned heroes) and select it
+  const adopt = (s: ScenarioSummary) => {
+    if (s.row != null) setRowOf((m) => ({ ...m, [s.scenario_id]: s.row! }));
+    setList((l) => {
+      if (l.some((x) => x.scenario_id === s.scenario_id)) return l;
+      const k = l.filter((x) => x.hero).length;
+      return [...l.slice(0, k), s, ...l.slice(k)];
+    });
+    setStreamKey(null);
+    setSid(s.scenario_id);
+  };
+  const addById = async (id: string) => {
+    const r = await api.scenario(id); // validates; 404 if the id isn't a qualifying row
+    const sc = r.bundle.scenario;
+    adopt({ scenario_id: sc.scenario_id, date: id.split("_")[0], flight_id: `${sc.disrupted.airline}${sc.disrupted.flight_number}`,
+      origin: sc.origin.iata, destination: sc.destination.iata, disruption_type: sc.disruption_type, disruption_min: sc.disruption_min });
+  };
+  const loadPick = async () => {
+    const v = pick.trim();
+    if (!v) return;
+    setErr(null);
+    try {
+      if (/^\d+$/.test(v)) {
+        const n = Number(v);
+        if (n >= N_ROWS) throw new Error(`row must be 0–${N_ROWS - 1}`);
+        adopt(await api.byRow(n));
+      } else {
+        await addById(v);
+      }
+      setPick("");
+    } catch (e) {
+      fail(e);
+    }
+  };
+  const randomRow = async () => {
+    setErr(null);
+    for (let i = 0; i < 12; i++) { // some rows aren't qualifying disruptions (422): draw again
+      try {
+        adopt(await api.byRow(Math.floor(Math.random() * N_ROWS)));
+        return;
+      } catch (e) {
+        if (!(e instanceof ApiError) || ![404, 422].includes(e.status)) return fail(e);
+      }
+    }
+    fail(new Error("no qualifying row found in 12 draws"));
+  };
+
   const refreshHealth = useCallback(() => api.health().then(setHealth).catch(() => setHealth(null)), []);
   useEffect(() => {
     api.scenarios().then((l) => {
       setList(l);
-      if (l.length) setSid(l[0].scenario_id);
+      const want = params.get("scenario"); // ?scenario=<id> preselects (rehearsal links)
+      if (!want) {
+        if (l.length) setSid(l[0].scenario_id);
+      } else if (l.some((s) => s.scenario_id === want)) {
+        setSid(want);
+      } else {
+        addById(want).catch((e) => { fail(e); if (l.length) setSid(l[0].scenario_id); });
+      }
     }).catch(fail);
     api.replays().then(setReplays).catch(() => {});
     refreshHealth();
@@ -67,6 +125,15 @@ export default function App() {
     // replay: show the scenario the recording was made on
     if (st.replay && st.started?.scenario_id) api.scenario(st.started.scenario_id).then(setSc).catch(() => {});
   }, [st.replay, st.started?.scenario_id]);
+
+  const [csvRow, setCsvRow] = useState<number | null>(null);
+  const scId = sc?.bundle.scenario.scenario_id;
+  useEffect(() => {
+    setCsvRow(null);
+    if (!scId) return;
+    if (rowOf[scId] != null) return setCsvRow(rowOf[scId]);
+    api.csvRow(scId).then((r) => setCsvRow(r.row)).catch(() => {});
+  }, [scId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const start = async (mode?: ScriptedMode) => {
     setErr(null);
@@ -122,10 +189,15 @@ export default function App() {
               className="rounded border border-slate-700 bg-slate-900 px-2 py-1">
               {list.map((s) => (
                 <option key={s.scenario_id} value={s.scenario_id}>
-                  {s.flight_id} {s.origin}→{s.destination} {s.date} {s.disruption_type} {s.disruption_min}m
+                  {s.hero ? "★ hero · " : ""}{s.flight_id} {s.origin}→{s.destination} {s.date} {s.disruption_type} {s.disruption_min}m
                 </option>
               ))}
             </select>
+            <input value={pick} onChange={(e) => setPick(e.target.value)} onKeyDown={(e) => e.key === "Enter" && loadPick()}
+              placeholder="Row # or scenario id" title={`flights.csv row 0–${N_ROWS - 1}, or paste a scenario_id`}
+              className="w-36 rounded border border-slate-700 bg-slate-900 px-2 py-1 text-sm" />
+            <button onClick={loadPick} disabled={!pick.trim()} className="rounded bg-slate-800 px-2 py-1 text-sm font-semibold hover:bg-slate-700 disabled:opacity-40">Load</button>
+            <button onClick={randomRow} title="a random qualifying row of flights.csv" className="rounded bg-slate-800 px-2 py-1 text-sm font-semibold hover:bg-slate-700">🎲 Random row</button>
             <button onClick={() => start()} disabled={!sid} className="rounded bg-sky-600 px-4 py-1 font-bold hover:bg-sky-500 disabled:opacity-40">
               {budgetOut && llmOn ? "▶ Run (fallback only: LLM budget exhausted)" : "▶ Run"}
             </button>
@@ -165,7 +237,7 @@ export default function App() {
               )}
             </div>
           )}
-          {sc && <ScenarioBar s={sc.bundle.scenario} />}
+          {sc && <ScenarioBar s={sc.bundle.scenario} csvRow={csvRow} />}
           {chaosOn && (
             <div className="border-b border-amber-700 bg-amber-950 px-4 py-1 text-amber-200">
               ⚡ chaos applied: {st.started!.chaos_applied.map((c) => `${c.kind}${c.note ? ` (${c.note})` : ""}`).join(" · ")}

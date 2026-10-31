@@ -184,6 +184,8 @@ export interface ScenarioSummary {
   destination: string;
   disruption_type: "WEATHER" | "LATE_AIRCRAFT";
   disruption_min: number;
+  hero?: boolean;   // W3-07: pinned pitch scenario
+  row?: number;     // W3-07: 0-based flights.csv row (set by /by_row)
 }
 
 export interface ScenarioBundle {

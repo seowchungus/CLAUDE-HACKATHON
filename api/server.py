@@ -12,7 +12,10 @@ from __future__ import annotations
 
 import asyncio
 import copy
+import csv
+import functools
 import hashlib
+import itertools
 import json
 import os
 import secrets
@@ -35,6 +38,8 @@ MOCK_GAP_S = float(os.environ.get("MOCK_GAP_S", "0.6"))
 REPLAY_MAX_GAP_S = 1.5
 SCRIPTED_MODES = ("deadlock", "unsafe", "hallucinate")
 # INT-01 quota freeze: ACCORD_LLM=mock runs every coordinator run (real data) on scripted MockLLMClient, never Gemini
+# pitch heroes, pinned at the top of the default scenario list (W3-07); both are in tests/golden and the hero cache
+HERO_IDS = ("2015-12-30_DL2463_ICT-ATL", "2015-03-02_OO6476_AUS-SFO")
 FORCE_MOCK_LLM = os.environ.get("ACCORD_LLM", "").lower() == "mock"
 
 
@@ -485,6 +490,19 @@ def limits(scenario_id: str | None = None) -> dict:
     return {"workbook": workbook, "airport": airport, "deviations": CONFIG.get("workbook_deviations", [])}
 
 
+@functools.lru_cache(maxsize=1)
+def _hero_summaries() -> tuple[dict, ...]:
+    from core.scenario import _find_row, _summary  # type: ignore
+
+    out = []
+    for sid in HERO_IDS:
+        try:
+            out.append({**_summary(_find_row(sid)).model_dump(mode="json"), "hero": True})
+        except Exception:
+            pass  # a hero missing from this data set is simply not pinned
+    return tuple(out)
+
+
 @app.get("/api/scenarios")
 def scenarios(limit: int = 50, airport: str | None = None, date: str | None = None) -> list:
     if MOCK:
@@ -496,7 +514,96 @@ def scenarios(limit: int = 50, airport: str | None = None, date: str | None = No
         return items[:limit]
     from core.scenario import list_scenarios  # type: ignore
 
-    return [s.model_dump(mode="json") for s in list_scenarios(limit=limit, airport=airport, date=date)]
+    items = [s.model_dump(mode="json") for s in list_scenarios(limit=limit, airport=airport, date=date)]
+    if not airport and not date:  # heroes pinned first (W3-07)
+        heroes = list(_hero_summaries())
+        items = heroes + [s for s in items if s["scenario_id"] not in {h["scenario_id"] for h in heroes}]
+    return items[: limit + len(HERO_IDS)]
+
+
+# ---- "pick any row of flights.csv" (W3-07)
+
+FLIGHTS_CSV = ROOT / PATHS.get("raw_dir", "data/raw") / "flights.csv"
+
+
+def _csv_to_row(rec: dict) -> dict:
+    def n(x: str) -> int:
+        try:
+            return int(float(x)) if x not in ("", None) else 0
+        except ValueError:
+            return 0
+
+    return {"DATE": f"{int(rec['YEAR']):04d}-{int(rec['MONTH']):02d}-{int(rec['DAY']):02d}", "AIRLINE": rec["AIRLINE"],
+            "FLIGHT_NUMBER": int(rec["FLIGHT_NUMBER"]), "ORIGIN_AIRPORT": rec["ORIGIN_AIRPORT"],
+            "DESTINATION_AIRPORT": rec["DESTINATION_AIRPORT"], "WEATHER_DELAY": n(rec["WEATHER_DELAY"]),
+            "LATE_AIRCRAFT_DELAY": n(rec["LATE_AIRCRAFT_DELAY"])}
+
+
+def _read_csv_row(row: int) -> dict | None:
+    with open(FLIGHTS_CSV, newline="") as f:
+        rec = next(itertools.islice(csv.DictReader(f), row, row + 1), None)
+    return _csv_to_row(rec) if rec else None
+
+
+@app.get("/api/scenarios/by_row/{row}")
+def scenario_by_row(row: int) -> dict:
+    """ScenarioSummary (+ `row`) for the 0-based data row `row` of data/raw/flights.csv. 404 out of range;
+    422 if the row is not a qualifying disruption (WEATHER_DELAY > 15 or LATE_AIRCRAFT_DELAY > 20)."""
+    if MOCK:
+        raise HTTPException(404, "by_row needs the real data set (not available in MOCK)")
+    if row < 0:
+        raise HTTPException(404, f"row {row} out of range")
+    from core.scenario import _find_row, _summary  # type: ignore
+
+    sm = None
+    try:
+        from core.scenario import scenario_id_for_row  # type: ignore  # W1-09
+
+        got = scenario_id_for_row(row)
+        sid = got if isinstance(got, str) else got.scenario_id
+        sm = _summary(_find_row(sid))
+    except ImportError:
+        pass  # W1-09 not landed: stub on the raw CSV below
+    except (IndexError, KeyError, ValueError, LookupError) as exc:
+        raise HTTPException(404, f"row {row}: {exc}")
+    if sm is None:
+        r = _read_csv_row(row)
+        if r is None:
+            raise HTTPException(404, f"row {row} out of range")
+        if not (r["WEATHER_DELAY"] > 15 or r["LATE_AIRCRAFT_DELAY"] > 20):
+            raise HTTPException(422, f"row {row} ({r['AIRLINE']}{r['FLIGHT_NUMBER']} {r['DATE']}) is not a qualifying "
+                                     "disruption (needs WEATHER_DELAY > 15 or LATE_AIRCRAFT_DELAY > 20)")
+        sm = _summary(r)
+    return {**sm.model_dump(mode="json"), "row": row}
+
+
+@functools.lru_cache(maxsize=256)
+def _csv_row_of(sid: str) -> int | None:
+    from core.scenario import parse_scenario_id  # type: ignore
+
+    date, airline, fn, origin, dest = parse_scenario_id(sid)
+    y, m, d = (int(x) for x in date.split("-"))
+    with open(FLIGHTS_CSV, newline="") as f:
+        for i, rec in enumerate(csv.DictReader(f)):
+            if (rec["FLIGHT_NUMBER"] == str(fn) and rec["AIRLINE"] == airline and rec["ORIGIN_AIRPORT"] == origin
+                    and rec["DESTINATION_AIRPORT"] == dest and int(rec["DAY"]) == d and int(rec["MONTH"]) == m
+                    and int(rec["YEAR"]) == y):
+                return i
+    return None
+
+
+@app.get("/api/scenarios/{scenario_id}/csv_row")
+def scenario_csv_row(scenario_id: str) -> dict:
+    """0-based flights.csv row of a scenario (first match), for the 'flights.csv row N' label."""
+    if MOCK:
+        raise HTTPException(404, "no flights.csv in MOCK")
+    try:
+        row = _csv_row_of(scenario_id)
+    except Exception:
+        row = None
+    if row is None:
+        raise HTTPException(404, f"{scenario_id} not found in flights.csv")
+    return {"scenario_id": scenario_id, "row": row}
 
 
 @app.get("/api/scenarios/{scenario_id}")
