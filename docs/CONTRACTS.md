@@ -476,5 +476,6 @@ Every number is measured from runs. If a field was not run, it is `null`, never 
 
 ## Changelog
 - v1.0 (11:20): initial freeze.
+- v1.2.1 (13:15), additive: optional `Metrics.gate_wait_min: int = 0` (W1-07, only if used); `eval/results.json` gains `bad_day: {airport, date, n_flights, B0, B1, b0_infeasible, b1_escalate} | null` (deterministic baselines only); `eval/eval_set.json` is the frozen held-out set.
 - v1.2 (12:55): organisers' workbook adopted (human decision). Additive fields `Scenario.airport_limits/planned_gate/decision_time_min`, `Metrics.gate_change/gate_change_notice_min/fuel_at_landing_kg`; H4 includes the 20-min gate-change notice; H5 = flight crew 13 h duty only (ramp overtime is a cost); `GET /api/limits`; `/health.llm_budget`; §4.4 LLM budget guard.
 - v1.1 (12:25), from REVIEWER-00, all additive: unpadded flight ids; provenance key convention and required keys; `counter_checked.failed` and non-null `check`; `approved.final_hash` = pre-approval head; `SUPERSEDED` final state; agreement-set/rank/tie rules pinned (W2's implementation); seq vs log seq; unsafe-blocked definition; `GET /api/runs/{id}/bundle`; chaos accumulates and supersedes the parent; approve 409/ESCALATE rules; log constructor writes seq 0 and resumes; `append` deep-copies. Fixtures regenerated to match.
