@@ -22,13 +22,18 @@ Everyone may append to their own `.team/status/<ID>.md`. Nobody edits another pe
 ## Workflow
 1. Read your task file `.team/tasks/<ID>-<nn>.md`.
 2. Build it inside your paths. Respect the timebox; if you hit it, ship what works and list the gaps.
-3. **Do NOT commit.** Leave your work uncommitted in the working tree. The human confirms each commit. Only when the human tells you "commit <task>" do you run `git add <your paths only> && git commit -m "[<task>] summary"`. Never `git add -A`, never push, never force-push, never touch others' files in git. Never stage `.env`, data files or `runs/`.
+3. **Commit your work when the task is done**, one commit per task, **path-limited** so you never pick up another worker's staged files:
+   ```
+   git add <your paths> && git commit -m "[W1-01] summary" -- <your paths>
+   ```
+   (W1: `core/ data/ eval/ tests/` · W2: `agents/` · W3: `api/ web/`.) If you hit `.git/index.lock`, wait a few seconds and retry.
+   **Never** run `git add -A`, `git commit -a`, `git stash`, `git checkout .`, `git reset --hard`, `git clean`, rebase, push or force-push: the working tree is shared and these destroy other workers' changes. Never stage `.env`, data files or `runs/`. Fixes after review go in a new commit `[W1-01-fix] ...`.
 4. Then append to `.team/status/<ID>.md`:
    ```
    DONE W1-01 (12:05): <one-line summary>. Test: <exact command(s)>. Gaps: <none | list>.
    ```
    or `BLOCKED W1-01 (12:05): <reason>`.
-5. Tell the human "W1-01 done (uncommitted)" (one line). The human relays to MANAGER and REVIEWER. After REVIEWER approves, the human decides whether to tell you "commit W1-01".
+5. Tell the human "W1-01 done" (one line). The human relays to MANAGER and REVIEWER.
 6. If your next task file already exists, start it immediately. Otherwise pick the next stretch item listed in your task file.
 
 ## Non-negotiables (the release is blocked if any is broken)

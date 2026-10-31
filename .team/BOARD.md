@@ -40,7 +40,7 @@ T0 = 11:09 · Now: 11:18 · Freeze 15:39 · Deadline 16:09 · Contracts: **FROZE
 - 11:17 Chaos creates a NEW run on the mutated scenario (`parent_run_id` links them), rather than mutating a run in flight.
 - 11:17 Model strings in config.yaml (`gemini-3.8-flash`, `gemini-flash-lite-latest`, `gemini-3.6-flash`) are unverified; W2-01 checks them.
 - 11:17 Shared fixtures in `docs/fixtures/` (MANAGER) are hand-made, `fixture: true`, not real rows.
-- 11:25 Workers do NOT commit. Work stays uncommitted until REVIEWER approves and the human tells the worker "commit <task>". Status `review` = uncommitted, `done` = approved and committed.
+- 11:30 Workers commit their own paths at the end of each task (path-limited `git commit -- <paths>`), then REVIEWER reviews the commit. Destructive git commands are banned (shared working tree). Reverses the 11:25 no-commit rule.
 - 11:17 `requirements.txt`, `.gitignore`, `.env.example` owned by MANAGER.
 
 ## Cuts applied
