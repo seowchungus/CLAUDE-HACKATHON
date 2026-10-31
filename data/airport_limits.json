@@ -1,0 +1,2750 @@
+{
+ "source": "data/raw/challenge2_operational_constraints.xlsx",
+ "note": "SYNTHETIC planning limits for the challenge, scaled from each airport's traffic in flights.csv. Not real airport data. Teams may replace with sourced figures if they cite them.",
+ "airports": {
+  "ORD": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "ATL": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "DFW": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "DEN": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "LAX": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "SFO": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "LAS": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "LGA": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "IAH": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "MCO": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "PHX": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "EWR": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "BOS": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "BWI": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "MDW": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "JFK": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "DTW": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "MSP": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "MIA": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "SAN": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "DAL": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "TPA": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "CLT": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "DCA": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "SEA": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "FLL": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "HOU": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "PHL": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "SLC": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "STL": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BNA": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OAK": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AUS": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SJC": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SMF": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MSY": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MCI": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RDU": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PDX": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "IAD": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SNA": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MKE": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RSW": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SAT": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PBI": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CLE": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SJU": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CMH": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "IND": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ABQ": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ONT": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BUR": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CVG": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OKC": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PIT": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HNL": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JAX": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OMA": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TUL": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BDL": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RNO": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BUF": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MEM": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OGG": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ELP": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TUS": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "XNA": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BHM": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LIT": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RIC": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BOI": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DSM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GRR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CHS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SDF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MAF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ICT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CID": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PVD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ANC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MSN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LGB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HPN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ORF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DAY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PSP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SGF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GEG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PNS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BTR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ASE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JAN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CRP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SAV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GSO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "KOA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SHV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SBA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TYS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FSD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LIH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ROC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FAR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FAT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GSP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LFT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MYR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MOB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LEX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FWA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "VPS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ALB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GRB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "STT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SYR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "COS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AMA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GRK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LBB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CAE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MLI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PIA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CHA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PWM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MHT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CAK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ISP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EVV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JNU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MGM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SBN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AEX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ECP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SBP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HSV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MRY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SRQ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ACY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MLU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FNT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EUG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ITO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BIS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JAC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MFE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CRW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GNV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TTN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GPT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TLH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RAP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TYR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HRL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "KTN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BTV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ATW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BZN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CHO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AVL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ROA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MFR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MDT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MBS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BFL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BMI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BQN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FSM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ACT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ACV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TVC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LNK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RST": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DRO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AGS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CMI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GJT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ABI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ISN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BRO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CLL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SJT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ABE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DLH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FAY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SPI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BIL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PSC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LBE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LRD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MOT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TRI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EGE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LAN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EYW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LAW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AZO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RDM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ELM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PHF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "COU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MHK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FAI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FLG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SAF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LCH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LSE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BPT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SPS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MEI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OAJ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MTJ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ILM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DHN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CPR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "FCA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MSO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "IDA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CWA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "YUM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HDN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MLB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CSG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SGU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SIT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MKG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PSG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ROW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BRW": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AVP": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DBQ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RHI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ABY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "WRG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "STX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BET": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TXK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SCC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EAU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OME": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DAB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RDD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PSE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GTF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GGG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OTZ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SCE": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PLN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SUN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "VLD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GTR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HIB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "OTH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JLN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GFK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TOL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "APN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GUC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "YAK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BQK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "COD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SMX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CIU": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CDV": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GCC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CMX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SUX": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PAH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ACK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CLD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EWN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HYS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "JMS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DIK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ALO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ERI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ABR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GCK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "SWF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ORH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CDC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "IMT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "RKS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "INL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PBG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PIB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LAR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GRI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "TWF": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "IAG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ESC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BJI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PUB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DVL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MMH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MVY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HOB": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BTM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BRD": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "UST": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HLN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PIH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "EKO": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CEC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ILG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ADQ": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "STC": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GST": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BGM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "LWS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BLI": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "HYA": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "MQT": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "BGR": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "WYS": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "PPG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "CNY": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ADK": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "ITH": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "AKN": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "VEL": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "DLG": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "GUM": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  }
+ },
+ "defaults_by_size_class": {
+  "Large hub": {
+   "size_class": "Large hub",
+   "active_runways": 4,
+   "gates": 150,
+   "max_runway_ops_per_hour": 90,
+   "min_turnaround_min": 45,
+   "spare_gates_at_any_time": 3
+  },
+  "Medium hub": {
+   "size_class": "Medium hub",
+   "active_runways": 3,
+   "gates": 70,
+   "max_runway_ops_per_hour": 60,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 3
+  },
+  "Small hub": {
+   "size_class": "Small hub",
+   "active_runways": 2,
+   "gates": 30,
+   "max_runway_ops_per_hour": 36,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  },
+  "Non-hub": {
+   "size_class": "Non-hub",
+   "active_runways": 1,
+   "gates": 8,
+   "max_runway_ops_per_hour": 20,
+   "min_turnaround_min": 35,
+   "spare_gates_at_any_time": 2
+  }
+ },
+ "sheets": {
+  "wake_separation": [
+   [
+    "Simplified from FAA JO 7110.65 wake rules. Use these numbers for the ATC agent."
+   ],
+   [
+    "leader",
+    "follower",
+    "min_separation_nm",
+    "min_time_s (same runway departures)"
+   ],
+   [
+    "Super (A380)",
+    "Heavy",
+    "6",
+    "180"
+   ],
+   [
+    "Super (A380)",
+    "Large",
+    "7",
+    "180"
+   ],
+   [
+    "Super (A380)",
+    "Small",
+    "8",
+    "180"
+   ],
+   [
+    "Heavy",
+    "Heavy",
+    "4",
+    "120"
+   ],
+   [
+    "Heavy",
+    "Large",
+    "5",
+    "120"
+   ],
+   [
+    "Heavy",
+    "Small",
+    "6",
+    "120"
+   ],
+   [
+    "Large",
+    "Small",
+    "4",
+    "60"
+   ],
+   [
+    "Any other pair",
+    "",
+    "3",
+    "60"
+   ]
+  ],
+  "fuel_and_crew": [
+   [
+    "rule",
+    "value",
+    "applies_to"
+   ],
+   [
+    "Final fuel reserve",
+    "30 minutes of holding fuel",
+    "Pilot agent: never plan below this"
+   ],
+   [
+    "Contingency fuel",
+    "5% of trip fuel",
+    "Pilot agent"
+   ],
+   [
+    "Holding fuel burn (narrowbody)",
+    "2,400 kg per hour",
+    "Pilot agent, A320/737 class"
+   ],
+   [
+    "Holding fuel burn (widebody)",
+    "6,500 kg per hour",
+    "Pilot agent, A330/777 class"
+   ],
+   [
+    "Assumed spare fuel on arrival",
+    "45 minutes of holding (unless the team states otherwise)",
+    "Pilot agent"
+   ],
+   [
+    "Flight crew max duty",
+    "13 hours from report time",
+    "Pilot agent (simplified FAA Part 117)"
+   ],
+   [
+    "Ground crew shift",
+    "8 hours; overtime costs 1.5x after that",
+    "Ground agent"
+   ],
+   [
+    "Gate change notice",
+    "At least 20 minutes before arrival",
+    "Ground agent"
+   ]
+  ],
+  "rules_of_play": [
+   [
+    "topic",
+    "detail"
+   ],
+   [
+    "Input",
+    "Pick one row of flights.csv (WEATHER_DELAY > 15 or LATE_AIRCRAFT_DELAY > 20). That row is the disruption."
+   ],
+   [
+    "Turn",
+    "One turn = each of the three agents sends one structured message. Consensus must be reached within 3 turns."
+   ],
+   [
+    "No consensus",
+    "After 3 turns without agreement, the deterministic non-AI fallback decides. Log why."
+   ],
+   [
+    "Constraints",
+    "Use the limits in this workbook. Any limit you change must be stated in your demo."
+   ],
+   [
+    "Output",
+    "A revised arrival time, gate, or flight plan, with a consensus log showing each turn."
+   ]
+  ]
+ }
+}
