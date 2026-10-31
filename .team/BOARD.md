@@ -25,16 +25,17 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 | W1-04 | W1 | Chaos, map payload, golden scenarios, eval skeleton | done ✅ (APPROVED 13:05) | W1-03 | 30 | 13:40 |
 | W2-01 | W2 | Schema, merged template A–E, Gemini client, kill switch | changes → W2-04 | — | 45 | 12:00 |
 | W2-02 | W2 | Coordinator state machine + log + events | changes → W2-04 | W2-01 | 45 | 12:45 |
-| W3-01 | W3 | API (mock) + console skeleton + negotiation room | review | — | 45 | 12:00 |
-| W3-02 | W3 | Map, constraint wall, Gantt, log viewer | review | W3-01 | 45 | 12:45 |
-| REVIEWER-01 | REVIEWER | Review wave 1 (W2 → W1 → W3) | doing | wave 1 | 40 | 13:20 |
+| W3-01 | W3 | API (mock) + console skeleton + negotiation room | changes → W3-01-fix | — | 45 | 12:00 |
+| W3-02 | W3 | Map, constraint wall, Gantt, log viewer | changes → W3-01-fix | W3-01 | 45 | 12:45 |
+| REVIEWER-01 | REVIEWER | Review wave 1 (W2 → W1 → W3) | done (W2 changes, W1 approved, W3 changes) | wave 1 | 40 | 13:20 |
 | W1-05 | W1 | v1.1 alignment (§1) ✅ 2fc97ef, eval hook mock-only (§4) ✅ 4a7f00b; §2 replaced by W1-06; §3 after W1-06 | review (§1,§4) | v1.1 | 45 | 13:25 |
 | W2-03 | W2 | v1.1 alignment, call accounting (freeze), narrator, scripted failure modes | review ✅ a2a511f | v1.1 | 45 | 13:25 |
+| W3-01-fix | W3 | **SECURITY: path traversal serves .env** + 4 review items | doing (priority) | REVIEWER 13:10 | 20 | 13:30 |
 | W3-03 | W3 | v1.1 alignment, chaos/kill/approve controls, eval page, replay | doing | v1.1 | 45 | 13:25 |
 | W1-06 | W1 | Adopt organisers' workbook limits (replaces W1-05 §2/§3 order) | doing | v1.2 | 40 | 13:40 |
 | W2-04 | W2 | Hard LLM call budget (ledger, RPM, no cascade), Flash-Lite, workbook charters | doing | W2-03 | 35 | 13:45 |
 | W3-04 | W3 | Challenge limits panel + LLM budget meter | todo | W3-03 | 25 | 13:50 |
-| INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | approved 12:58 (starts when W1-06 + W2-04 are reviewed) | wave 2 | 45 | |
+| INT-01 | W3 lead (+W1, W2, REVIEWER) | Live integration + 10-step smoke test | approved 12:58 (gates: W1-06, W2-04, W3-01-fix reviewed) | wave 2 | 45 | |
 
 ### Queued (needs phase approval)
 - W1-06 live eval N=30 + B0/B1 (B2/B3 if quota), sharded across keys
@@ -52,6 +53,7 @@ Rule (12:25, human): major decisions (new workers/roles, starting a major phase)
 Enforced in code by `agents/budget.py` (W2-04). QUOTA FREEZE: no live calls until MANAGER releases an allocation.
 
 ## Decisions & assumptions
+- 13:10 Security: REVIEWER found a path traversal serving `.env` via the API catch-all. The only running server was bound to 127.0.0.1:8001 (checked), so no off-machine exposure. Fix is a hard gate for INT-01; servers bind 127.0.0.1 only.
 - 13:05 Pitch/README wording (REVIEWER): status-quo cost is computed over the organisers' delayed-only file, so say "across the N qualifying delayed flights in the provided 2015 DOT data", never "all 2015 flights".
 - 12:58 Wave 2 had not started by 12:57 (relay gap). MANAGER now messages sessions directly (human-approved).
 - 12:50 (human) Organisers' workbook `challenge2_operational_constraints.xlsx` adopted as is. No external/full flights file. Deviations listed in `config.yaml: workbook_deviations`, shown in UI + README.
