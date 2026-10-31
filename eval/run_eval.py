@@ -1,14 +1,20 @@
 """Batch evaluation (proposal §8, CONTRACTS.md §6). Skeleton: B0 (FCFS) and B1 (optimiser) only, no LLM.
 
-  python -m eval.run_eval [--n 30] [--seed 42] [--out eval/results.json]
+  python -m eval.run_eval [--n 30] [--seed 42] [--llm none|mock|live] [--shard i/k] [--out PATH]
 
 Test set: N qualifying rows, stratified by delay type (WEATHER / LATE_AIRCRAFT, alternating) across the
-top-6 destination airports by qualifying volume, excluding data/dev_rows.json. Deterministic for a seed.
-Every number written is measured; fields that were not run are null (the LLM part plugs in at W1-05).
+top-6 destination airports by qualifying volume, excluding data/dev_rows.json and eval/hero_candidates.json. Deterministic for a seed.
+Every number written is measured; fields that were not run are null.
+
+  --llm none|mock|live   none = B0/B1 only; mock = agents MockLLMClient (offline); live = Gemini (needs the
+                         human's approval, --confirm-live and agents/budget.py)
+  --keys 1,2,3 --shard i/k   split rows across teammates' keys; merge with python -m eval.merge_results
 """
 import argparse
+import asyncio
 import json
 import random
+import secrets
 from datetime import datetime, timezone
 
 import polars as pl
@@ -20,6 +26,15 @@ from core.scenario import _qualifying, airports, dev_scenario_ids, make_scenario
 N_AIRPORTS = 6
 
 
+def hero_scenario_ids() -> list[str]:
+    """Hero candidates (eval/pick_heroes.py) are demo rows, so they are excluded from the eval like dev rows."""
+    try:
+        with open(repo_path("eval/hero_candidates.json")) as fh:
+            return [h["scenario_id"] for h in json.load(fh)["candidates"]]
+    except (FileNotFoundError, KeyError, ValueError):
+        return []
+
+
 def select_test_set(n: int, seed: int) -> list[str]:
     q = _qualifying()
     known = list(airports())
@@ -27,7 +42,7 @@ def select_test_set(n: int, seed: int) -> list[str]:
     top = (q.group_by("DESTINATION_AIRPORT").len().sort(["len", "DESTINATION_AIRPORT"], descending=[True, False])
            .head(N_AIRPORTS)["DESTINATION_AIRPORT"].to_list())
     rng = random.Random(seed)
-    dev = set(dev_scenario_ids())
+    dev = set(dev_scenario_ids()) | set(hero_scenario_ids())
     weather = (pl.col("WEATHER_DELAY").fill_null(0) > 15)
     pools: dict[tuple[str, bool], list[str]] = {}
     for ap in top:
@@ -53,64 +68,199 @@ def _mean(xs: list[float]) -> float | None:
     return round(sum(xs) / len(xs), 2) if xs else None
 
 
-def run(n: int, seed: int) -> dict:
-    ids = select_test_set(n, seed)
-    per: list[dict] = []
-    for sid in ids:
+def _pct(xs: list[float], q: float) -> int | None:
+    if not xs:
+        return None
+    xs = sorted(xs)
+    return int(xs[min(len(xs) - 1, int(round(q * (len(xs) - 1))))])
+
+
+def _rate(rows: list[dict], pred) -> float | None:
+    return round(sum(1 for r in rows if pred(r)) / len(rows), 3) if rows else None
+
+
+def _new_run_id() -> str:
+    return f"run_{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}_{secrets.token_hex(3)}"
+
+
+def make_llm(kind: str, keys: list[int] | None):
+    """kind 'none' -> None (B0/B1 only), 'mock' -> agents MockLLMClient, 'live' -> GeminiClient restricted
+    to the selected keys (1-based: 1=GEMINI_API_KEY, 2=_2, 3=_3)."""
+    if kind == "none":
+        return None
+    if kind == "mock":
+        from agents.client import MockLLMClient
+        return MockLLMClient(config=load_config())
+    try:
+        import agents.budget  # noqa: F401  (the hard budget guard must exist before any live call)
+    except ImportError as e:
+        raise SystemExit("refusing --llm live: agents/budget.py (LLM budget guard, CONTRACTS §4.4) is missing") from e
+    from agents.client import GeminiClient
+    client = GeminiClient(load_config())
+    if keys:
+        client._clients = [client._clients[i - 1] for i in keys if 0 < i <= len(client._clients)]
+        client.keys = [client.keys[i - 1] for i in keys if 0 < i <= len(client.keys)]
+        if not client._clients:
+            raise SystemExit(f"none of keys {keys} are configured")
+    return client
+
+
+async def _negotiate(bundle, llm) -> dict:
+    """Run the real coordinator on one bundle and extract every §8.3 metric from its event stream."""
+    from agents.coordinator import Coordinator
+    from core.constraints import check_option
+    run_id = _new_run_id()
+    coord = Coordinator(bundle, run_id, config=load_config(), llm=llm)
+    ev: list[dict] = [e async for e in coord.run()]
+    by = lambda t: [e["data"] for e in ev if e["type"] == t]  # noqa: E731
+    ended = (by("run_ended") or [{}])[-1]
+    msgs = by("agent_position")
+    plan = None
+    consensus_round = None
+    if by("consensus"):
+        c = by("consensus")[-1]
+        plan, consensus_round = c["plan"], c["round"]
+    elif by("fallback"):
+        plan = by("fallback")[-1]["plan"]
+    unsafe_blocked = sum(len(v["agents"]) for v in by("veto")) + sum(
+        1 for c in by("counter_checked") if c.get("failed"))
+    unsafe_exec = 0
+    plan_metrics = None
+    if plan is not None:
+        from core.types import Option
+        opt = Option.model_validate(plan)
+        unsafe_exec = 0 if check_option(bundle.scenario, opt).feasible else 1  # re-checked independently
+        plan_metrics = opt.metrics
+    toks = [(m.get("tokens_in") or 0) + (m.get("tokens_out") or 0) for m in msgs]
+    return {
+        "run_id": run_id, "final_state": ended.get("final_state"), "rounds_used": ended.get("rounds_used"),
+        "consensus_round": consensus_round, "option_id": plan["option_id"] if plan else None,
+        "J": plan_metrics.cost_J if plan_metrics else None, "unsafe_blocked": unsafe_blocked,
+        "unsafe_executed": unsafe_exec, "latency_ms": ended.get("latency_ms"),
+        "n_llm_calls": ended.get("n_llm_calls"), "n_messages": len(msgs),
+        "n_schema_fail": sum(1 for m in msgs if m.get("status") == "schema_fail"),
+        "n_retried": sum(1 for m in msgs if (m.get("retries") or 0) > 0),
+        "tokens": sum(toks) if any(toks) else None,
+        "plan_bank_delay_added_min": plan_metrics.bank_delay_added_min if plan_metrics else None,
+        "plan_misconnected_pax": plan_metrics.misconnected_pax if plan_metrics else None,
+        "plan_ramp_overtime_min": plan_metrics.ramp_overtime_min if plan_metrics else None,
+    }
+
+
+def evaluate_row(sid: str, llm) -> dict:
+    try:
+        b = build_bundle(sid)
+    except Exception as e:  # noqa: BLE001 - record and continue; the eval must not die on one row
+        return {"scenario_id": sid, "error": f"{type(e).__name__}: {e}"}
+    f, m0 = b.fallback, b.fcfs.metrics
+    row = {
+        "scenario_id": sid, "final_state": None, "rounds_used": None, "option_id": None, "J": None,
+        "J_B0": m0.cost_J, "J_B1": f.cost_J, "unsafe_blocked": None, "latency_ms": None, "run_id": None,
+        "disruption_type": b.scenario.disruption_type, "destination": b.scenario.destination.iata,
+        "B0_feasible": b.checks["opt_fcfs"].feasible, "B1_status": f.status, "B1_option_id": f.option_id,
+        "n_options": len(b.options), "n_feasible": sum(b.checks[o.option_id].feasible for o in b.options),
+        "B0_bank_delay_added_min": m0.bank_delay_added_min, "B0_misconnected_pax": m0.misconnected_pax,
+        "B0_ramp_overtime_min": m0.ramp_overtime_min,
+    }
+    if llm is not None:
         try:
-            b = build_bundle(sid)
-        except Exception as e:  # noqa: BLE001 - record and continue; the eval must not die on one row
-            per.append({"scenario_id": sid, "error": f"{type(e).__name__}: {e}"})
-            continue
-        f = b.fallback
-        per.append({
-            "scenario_id": sid, "final_state": None, "rounds_used": None, "option_id": None, "J": None,
-            "J_B0": b.fcfs.metrics.cost_J, "J_B1": f.cost_J, "unsafe_blocked": None, "latency_ms": None,
-            "run_id": None,
-            "disruption_type": b.scenario.disruption_type, "destination": b.scenario.destination.iata,
-            "B0_feasible": b.checks["opt_fcfs"].feasible, "B1_status": f.status, "B1_option_id": f.option_id,
-            "n_options": len(b.options), "n_feasible": sum(b.checks[o.option_id].feasible for o in b.options),
-        })
+            row.update(asyncio.run(_negotiate(b, llm)))
+        except Exception as e:  # noqa: BLE001
+            row["error"] = f"negotiation {type(e).__name__}: {e}"
+    return row
+
+
+def summarize(per: list[dict], llm_kind: str) -> dict:
     ok = [p for p in per if "error" not in p]
+    neg = [p for p in ok if p.get("final_state") is not None]
+    msgs = sum(p.get("n_messages") or 0 for p in neg)
+    planned = [p for p in neg if p.get("J") is not None]
+    with_b1 = [p for p in planned if p.get("J_B1") is not None]
+
+    def vs_b0(k: str) -> float | None:
+        xs = [p[f"plan_{k}"] - p[f"B0_{k}"] for p in planned if p.get(f"plan_{k}") is not None]
+        return _mean(xs)
+
+    toks = [p["tokens"] for p in neg if p.get("tokens") is not None]
+    return {
+        "consensus_rate": _rate(neg, lambda p: p["final_state"] == "CONSENSUS"),
+        "consensus_by_r2": _rate(neg, lambda p: p["final_state"] == "CONSENSUS" and (p["consensus_round"] or 9) <= 2),
+        "consensus_by_r3": _rate(neg, lambda p: p["final_state"] == "CONSENSUS" and (p["consensus_round"] or 9) <= 3),
+        "fallback_rate": _rate(neg, lambda p: p["final_state"] == "FALLBACK"),
+        "escalate_rate": _rate(neg, lambda p: p["final_state"] == "ESCALATE"),
+        "unsafe_proposals_blocked": sum(p["unsafe_blocked"] for p in neg) if neg else None,
+        "unsafe_plans_executed": sum(p["unsafe_executed"] for p in neg) if neg else None,
+        "schema_failure_rate": round(sum(p["n_schema_fail"] for p in neg) / msgs, 3) if msgs else None,
+        "retry_rate": round(sum(p["n_retried"] for p in neg) / msgs, 3) if msgs else None,
+        "latency_p50_ms": _pct([p["latency_ms"] for p in neg if p.get("latency_ms") is not None], 0.5),
+        "latency_p95_ms": _pct([p["latency_ms"] for p in neg if p.get("latency_ms") is not None], 0.95),
+        "tokens_per_resolution": int(_mean(toks)) if toks else None,
+        "J_mean": {"accord": _mean([p["J"] for p in planned]), "B0_fcfs": _mean([p["J_B0"] for p in ok]),
+                   "B1_optimizer": _mean([p["J_B1"] for p in ok if p["J_B1"] is not None])},
+        "regret_vs_B1_mean": _mean([p["J"] - p["J_B1"] for p in with_b1]),
+        "vs_B0": {k: vs_b0(k) for k in ("bank_delay_added_min", "misconnected_pax", "ramp_overtime_min")},
+        "B1_escalate_rate": _rate(ok, lambda p: p["B1_status"] == "ESCALATE"),
+        "B0_infeasible_rate": _rate(ok, lambda p: not p["B0_feasible"]),
+        "n_errors": len(per) - len(ok),
+        "llm": llm_kind,
+    }
+
+
+def assemble(per: list[dict], seed: int, llm_kind: str, shard: str | None = None) -> dict:
     with open(repo_path("data/status_quo.json")) as fh:
         sq = json.load(fh)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
-        "n": len(ok), "n_dev": len(dev_scenario_ids()), "seed": seed,
+        "n": len([p for p in per if "error" not in p]), "n_dev": len(dev_scenario_ids()), "seed": seed,
         "status_quo": {k: sq[k] for k in ("qualifying_flights", "weather_delay_min", "late_aircraft_delay_min")},
-        "summary": {
-            "consensus_rate": None, "consensus_by_r2": None, "consensus_by_r3": None,
-            "fallback_rate": None,
-            "escalate_rate": None,
-            "unsafe_proposals_blocked": None, "unsafe_plans_executed": None,
-            "schema_failure_rate": None, "retry_rate": None,
-            "latency_p50_ms": None, "latency_p95_ms": None, "tokens_per_resolution": None,
-            "J_mean": {"accord": None, "B0_fcfs": _mean([p["J_B0"] for p in ok]),
-                       "B1_optimizer": _mean([p["J_B1"] for p in ok if p["J_B1"] is not None])},
-            "regret_vs_B1_mean": None,
-            "vs_B0": {"bank_delay_added_min": None, "misconnected_pax": None, "ramp_overtime_min": None},
-            "B1_escalate_rate": round(sum(p["B1_status"] == "ESCALATE" for p in ok) / len(ok), 3) if ok else None,
-            "B0_infeasible_rate": round(sum(not p["B0_feasible"] for p in ok) / len(ok), 3) if ok else None,
-            "n_errors": len(per) - len(ok),
-        },
+        "summary": summarize(per, llm_kind),
         "ablations": {"B2_single_agent": None, "B3_model": None},
         "per_scenario": per,
         "measured": True,
+        "llm": llm_kind,
+        "shard": shard,
     }
+
+
+def run(n: int, seed: int, llm_kind: str = "none", keys: list[int] | None = None,
+        shard: tuple[int, int] | None = None) -> dict:
+    ids = select_test_set(n, seed)
+    if shard:
+        i, k = shard
+        ids = [sid for j, sid in enumerate(ids) if j % k == i - 1]
+    llm = make_llm(llm_kind, keys)
+    per = []
+    for sid in ids:
+        if llm is not None and hasattr(llm, "_countered"):  # fresh mock state per scenario
+            llm = make_llm(llm_kind, keys)
+        per.append(evaluate_row(sid, llm))
+    return assemble(per, seed, llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=30)
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--out", default=load_config()["paths"]["eval_results"])
+    ap.add_argument("--llm", choices=["none", "mock", "live"], default="none")
+    ap.add_argument("--keys", default="", help="live only: comma-separated 1-based key indices, e.g. 1,2,3")
+    ap.add_argument("--shard", default="", help="i/k: run rows with index %% k == i-1")
+    ap.add_argument("--confirm-live", action="store_true", help="required with --llm live (spends quota)")
+    ap.add_argument("--out", default="")
     a = ap.parse_args()
-    res = run(a.n, a.seed)
-    with open(repo_path(a.out), "w", encoding="utf-8") as fh:
+    if a.llm == "live" and not a.confirm_live:
+        raise SystemExit("--llm live spends Gemini quota; it needs the human's approval and --confirm-live")
+    shard = tuple(int(x) for x in a.shard.split("/")) if a.shard else None
+    keys = [int(x) for x in a.keys.split(",") if x.strip()] or None
+    out = a.out or (f"eval/results_partial_{shard[0]}of{shard[1]}.json" if shard
+                    else load_config()["paths"]["eval_results"])
+    res = run(a.n, a.seed, a.llm, keys, shard)
+    with open(repo_path(out), "w", encoding="utf-8") as fh:
         json.dump(res, fh, indent=1)
     s = res["summary"]
-    print(f"wrote {a.out}: n={res['n']} errors={s['n_errors']} J_mean={s['J_mean']} "
-          f"B1_escalate={s['B1_escalate_rate']} B0_infeasible={s['B0_infeasible_rate']}")
+    print(f"wrote {out}: n={res['n']} llm={a.llm} errors={s['n_errors']} consensus={s['consensus_rate']} "
+          f"by_r2={s['consensus_by_r2']} fallback={s['fallback_rate']} escalate={s['escalate_rate']} "
+          f"unsafe_blocked={s['unsafe_proposals_blocked']} unsafe_exec={s['unsafe_plans_executed']} "
+          f"J_mean={s['J_mean']} regret_vs_B1={s['regret_vs_B1_mean']}")
 
 
 if __name__ == "__main__":
