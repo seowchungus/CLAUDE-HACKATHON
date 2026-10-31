@@ -19,8 +19,23 @@ cd web && npm install && npm run dev
 ```
 Offline demo with no data or key: `MOCK=1 uvicorn api.server:app --port 8000`.
 
-## Status
-Under construction (hackathon build). Evaluation results and limitations are filled in from measured runs.
+## Evaluation (measured; `eval/results.json`)
+Held-out set frozen before any run: `eval/eval_set.json` (N=30, 6 hubs, 15 weather / 15 late-aircraft, seed 42, sha256 `4474f237…`). Dev rows and hero scenarios are excluded.
+
+| | ACCORD (live LLM) | B1 optimiser (fallback) | B0 FCFS |
+|---|---|---|---|
+| Mean cost J (lower is better) | ⏳ | 71.36 | 68.74 |
+| Plans breaking a hard rule | ⏳ (must be 0) | 0 | 40% of rows |
+| Consensus / by round 2 / fallback | ⏳ | n/a | n/a |
+| Unsafe proposals blocked by the checker | ⏳ | n/a | n/a |
+
+B0 has the lowest mean J because it ignores hard constraints on 40% of rows; its cost is not comparable to a legal plan's.
+
+**Bad day (deterministic baselines only, no LLM):** ATL, 2015-12-30, 438 qualifying arrivals (`python -m eval.bad_day`). FCFS breaks a hard rule on 161. On the 424 flights where the optimiser found a legal plan, it cuts knock-on bank delay from 5,443 to 2,973 min, with more misconnected passengers (28,222 → 29,241) and ramp overtime (1,305 → 2,170 min). 14 flights have no safe automated plan and escalate to the human.
+
+**Status quo:** across the 358,774 qualifying delayed flights in the provided 2015 DOT data, 2,895,086 min of weather delay and 21,558,009 min of late-aircraft delay (`data/status_quo.json`).
+
+**Live checks (INT-01):** three live runs (UA1575 DEN-ORD, DL2463 ICT-ATL, OO6476 AUS-SFO) reached consensus in round 2 on feasible plans, three separate calls per round, hash chains verified. None of them produced a veto; checker vetoes are demonstrated with **scripted** agents (labelled SCRIPTED in the console).
 
 ## Known limitations
 - Fuel, gates, wake categories, crew and turbulence are **synthetic** and tagged as such in the UI and the log. Results show coordination behaviour, not operational accuracy.
