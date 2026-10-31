@@ -65,9 +65,9 @@ thresholds:
   flight_crew_max_duty_min: 780         # H5 [WB: 13 h from report time]
   ground_shift_min: 480                 # [WB: 8 h shift]
   ground_overtime_cost_multiplier: 1.5  # [WB: overtime costs 1.5x] -> applied in cost_J
-  ramp_overtime_hard_cap_min: 60        # LEGACY until W1-06 lands: workbook has no cap; W1-06 makes ramp overtime cost-only
   gate_change_notice_min: 20            # H4 [WB: gate change at least 20 min before arrival]
   turbulence_severe: 0.7                # H7 (ours; workbook silent)
+  min_turnaround_min: 35                # fallback ONLY for scenarios without workbook limits (hand-made fixtures); real scenarios use the airport's workbook value
   wake_separation_s:                    # H1 [WB wake_separation, min_time_s]. H=Heavy, M=Large, L=Small
     H-H: 120
     H-M: 120
@@ -83,7 +83,6 @@ thresholds:
     light: 0.85    # WEATHER_DELAY 16-30
     moderate: 0.7  # 31-60
     severe: 0.5    # > 60
-  min_turnaround_min: 35                # LEGACY default until W1-06 lands; then per airport from the workbook (35/45)
 
 workbook_deviations:                    # shown in the UI "Challenge limits" panel and the README
   - "Arrival capacity = 50% of the workbook's max runway ops per hour (the rest is departures); weather reduces it by 0.85/0.7/0.5 by WEATHER_DELAY band (our rule)."
@@ -91,6 +90,7 @@ workbook_deviations:                    # shown in the UI "Challenge limits" pan
   - "Gate-change notice is measured from the decision time (aircraft at the arrival fix, synthetic, 15-25 min before ETA)."
   - "Severe turbulence threshold (H7) is ours; the workbook doesn't define one."
   - "Flight crew duty already used before this leg is synthetic (seeded); the 13 h cap is the workbook's."
+  - "Remaining flight-crew duty is floored at a seeded 10-40 min: a crew already out of duty would not have been dispatched."
 
 fallback_weights:                    # J = sum(w * metric); shown in UI
   w_d_bank_delay_added: 1.0
