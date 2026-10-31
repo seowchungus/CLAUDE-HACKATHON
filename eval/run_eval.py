@@ -331,6 +331,49 @@ def run(n: int, llm_kind: str = "none", keys: list[int] | None = None,
     return assemble(per, es["seed"], llm_kind, f"{shard[0]}/{shard[1]}" if shard else None)
 
 
+def had_llm_error(row: dict) -> bool:
+    """True when the row's run log ended in the LLM_ERROR fallback (the agents never negotiated)."""
+    try:
+        with open(repo_path(f"runs/{row['run_id']}.jsonl")) as fh:
+            return any('"LLM_ERROR"' in line for line in fh)
+    except (OSError, KeyError, TypeError):
+        return False
+
+
+def rerun_errors(base_path: str, keys: list[int] | None, stop_at_used: int | None) -> dict:
+    """Re-run only rows whose fallback was LLM_ERROR, on the frozen set; other rows are kept untouched.
+    Rows not re-run (budget) stay as LLM_ERROR and are counted in the note. Nothing is dropped or extrapolated."""
+    with open(repo_path(base_path)) as fh:
+        base = json.load(fh)
+    es = load_eval_set()
+    if base.get("eval_set_sha256") != es["sha256"]:
+        raise SystemExit("base results were not run on the frozen set")
+    todo = [r["scenario_id"] for r in base["per_scenario"] if r.get("final_state") == "FALLBACK" and had_llm_error(r)]
+    llm = make_llm("live", keys)
+    by_id = {r["scenario_id"]: r for r in base["per_scenario"]}
+    done, first_error_run = 0, None
+    for sid in todo:
+        if stop_at_used is not None and _used((keys or [1])[0]) + ROW_CALL_MARGIN > stop_at_used:
+            print(f"budget ceiling {stop_at_used} reached; {len(todo) - done} rows left as LLM_ERROR")
+            break
+        new = evaluate_row(sid, llm)
+        print(f"[{done + 1}/{len(todo)}] {sid} {new.get('final_state') or new.get('error')} "
+              f"used={_used((keys or [1])[0])}", flush=True)
+        if done == 0 and had_llm_error(new):
+            raise SystemExit("first re-run row still LLM_ERROR: the client fix is not in this process; stopping")
+        new["rerun_of"] = by_id[sid]["run_id"]
+        new["first_pass_llm_error"] = had_llm_error(new)
+        by_id[sid] = new
+        done += 1
+    per = [by_id[r["scenario_id"]] for r in base["per_scenario"]]
+    res = assemble(per, base["seed"], "live", base.get("shard"))
+    res["n_negotiated"] = sum(1 for p in per if p.get("final_state") and not had_llm_error(p))
+    res["first_pass_note"] = (f"first pass: {len(todo)}/{len(per)} rows LLM_ERROR from a client event-loop bug "
+                              f"(fixed cac78e9), re-run {done}/{len(todo)} at "
+                              f"{datetime.now().strftime('%H:%M')} +08")
+    return res
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--n", type=int, default=30)
@@ -341,6 +384,8 @@ def main() -> None:
     ap.add_argument("--shard", default="", help="i/k: run rows with index %% k == i-1")
     ap.add_argument("--confirm-live", action="store_true", help="required with --llm live (spends quota)")
     ap.add_argument("--out", default="")
+    ap.add_argument("--rerun-errors", metavar="RESULTS_JSON", default="",
+                    help="live: re-run only the LLM_ERROR fallback rows of this results file (frozen set)")
     ap.add_argument("--stop-at-used", type=int, default=None,
                     help="live: stop before a row if the first key's ledger would pass this (e.g. 229+189=418)")
     a = ap.parse_args()
@@ -351,6 +396,16 @@ def main() -> None:
         return
     if a.llm == "live" and not a.confirm_live:
         raise SystemExit("--llm live spends Gemini quota; it needs the human's approval and --confirm-live")
+    if a.rerun_errors:
+        if a.llm != "live" or not a.confirm_live:
+            raise SystemExit("--rerun-errors needs --llm live --confirm-live")
+        keys = [int(x) for x in a.keys.split(",") if x.strip()] or None
+        res = rerun_errors(a.rerun_errors, keys, a.stop_at_used)
+        out = a.out or "eval/results_partial_rerun.json"
+        with open(repo_path(out), "w", encoding="utf-8") as fh:
+            json.dump(res, fh, indent=1)
+        print(f"wrote {out}: n={res['n']} negotiated={res['n_negotiated']} {res['first_pass_note']}")
+        return
     shard = tuple(int(x) for x in a.shard.split("/")) if a.shard else None
     keys = [int(x) for x in a.keys.split(",") if x.strip()] or None
     # a mock run is scripted, never "measured" results: it never goes to eval/results.json

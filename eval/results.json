@@ -36,7 +36,9 @@
   "B1_escalate_rate": 0.0,
   "B0_infeasible_rate": 0.4,
   "n_errors": 0,
-  "llm": "live"
+  "llm": "live",
+  "n_negotiated": 18,
+  "n_llm_error": 12
  },
  "ablations": {
   "B2_single_agent": null,
@@ -1122,5 +1124,9 @@
   "b1_escalate": 14,
   "notes": "each arrival replayed independently with its own seeded synthetic scenario; B0 totals include FCFS plans that break a hard rule (b0_infeasible); B1 totals cover PLAN rows only, so compare B1 with B0_on_B1_planned",
   "generated_at": "2026-10-31T05:48:32Z"
- }
+ },
+ "notes": [
+  "12/30 rows LLM_ERROR in round 1 from a client event-loop bug (fixed cac78e9 after the run started); not re-run (time/quota). Agent metrics on the 18 negotiated rows: 18/18 CONSENSUS R2.",
+  "A re-run was started and cancelled after 4 of the 12 rows (24 calls, ledger 373->397); its results were not merged, so every value in this file is from the first pass."
+ ]
 }
