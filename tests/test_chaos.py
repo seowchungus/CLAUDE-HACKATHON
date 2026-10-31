@@ -73,3 +73,21 @@ def test_golden_files_match_generator():
             sid = x["bundle"]["scenario"]["scenario_id"]
             assert build_bundle(sid).model_dump(mode="json") == x["bundle"], f"stale golden {f}"
             assert map_payload(build_bundle(sid).scenario).model_dump(mode="json") == x["map"], f"stale map {f}"
+
+
+def test_taxiway_block_keeps_an_h6_option_for_the_checker_to_catch():
+    """After chaos the regenerated option set still contains an option over the blocked taxiway (fails H6) and the
+    fallback never picks it."""
+    for sid in DEV:
+        b0 = build_bundle(sid)
+        plan = next((o for o in b0.options if o.option_id == b0.fallback.option_id), None)
+        if plan is None:
+            continue
+        tw = next(g for g in b0.scenario.gates if g.gate_id == plan.gate).taxi_path[0]
+        b = build_bundle(sid, [ChaosEvent(kind="TAXIWAY_BLOCK", params={"taxiway": tw})])
+        gates = {g.gate_id: g for g in b.scenario.gates}
+        over = [o for o in b.options if tw in gates[o.gate].taxi_path]
+        assert over, sid
+        assert all("H6_taxiway_reachability" in [r.constraint_id for r in b.checks[o.option_id].results if not r.passed]
+                   for o in over)
+        assert b.fallback.option_id not in {o.option_id for o in over}

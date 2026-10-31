@@ -200,6 +200,8 @@ async def _negotiate(bundle, llm) -> dict:
         "n_llm_calls": ended.get("n_llm_calls"), "n_messages": len(msgs),
         "n_schema_fail": sum(1 for m in msgs if m.get("status") == "schema_fail"),
         "n_retried": sum(1 for m in msgs if (m.get("retries") or 0) > 0),
+        "n_ok_positions": sum(1 for m in msgs if m.get("status") == "ok"),
+        "n_ungrounded": sum(1 for m in msgs if m.get("status") == "ok" and m.get("ungrounded")),
         "tokens": sum(toks) if any(toks) else None,
         "plan_bank_delay_added_min": plan_metrics.bank_delay_added_min if plan_metrics else None,
         "plan_misconnected_pax": plan_metrics.misconnected_pax if plan_metrics else None,
@@ -252,6 +254,10 @@ def summarize(per: list[dict], llm_kind: str) -> dict:
         "unsafe_plans_executed": sum(p["unsafe_executed"] for p in neg) if neg else None,
         "schema_failure_rate": round(sum(p["n_schema_fail"] for p in neg) / msgs, 3) if msgs else None,
         "retry_rate": round(sum(p["n_retried"] for p in neg) / msgs, 3) if msgs else None,
+        # ungrounded agent_positions / ok positions (rationale number not in a cited metric; flag only)
+        "ungrounded_rate": (round(sum(p.get("n_ungrounded", 0) for p in neg)
+                                  / sum(p.get("n_ok_positions", 0) for p in neg), 3)
+                            if sum(p.get("n_ok_positions", 0) for p in neg) else None),
         "latency_p50_ms": _pct([p["latency_ms"] for p in neg if p.get("latency_ms") is not None], 0.5),
         "latency_p95_ms": _pct([p["latency_ms"] for p in neg if p.get("latency_ms") is not None], 0.95),
         "tokens_per_resolution": int(_mean(toks)) if toks else None,

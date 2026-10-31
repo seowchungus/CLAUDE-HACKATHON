@@ -20,3 +20,12 @@ def test_eval_shards_partition():
     b = run(4, "none", shard=(2, 2))["per_scenario"]
     ids = {p["scenario_id"] for p in a} | {p["scenario_id"] for p in b}
     assert len(ids) == 4 and not ({p["scenario_id"] for p in a} & {p["scenario_id"] for p in b})
+
+
+def test_ungrounded_rate_null_without_llm_and_counted_with_mock(monkeypatch):
+    assert run(2, "none")["summary"]["ungrounded_rate"] is None
+    monkeypatch.setenv("MOCK", "1")
+    res = run(2, "mock")
+    s, per = res["summary"], res["per_scenario"]
+    ok = sum(p["n_ok_positions"] for p in per)
+    assert ok > 0 and s["ungrounded_rate"] == round(sum(p["n_ungrounded"] for p in per) / ok, 3)

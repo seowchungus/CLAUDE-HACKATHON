@@ -119,6 +119,8 @@ def generate_options(s: Scenario) -> list[Option]:
     # infeasible-but-tempting: prefer a gate-validity (H4) and a fuel (H3) single failure, then any other,
     # lowest J first; if the feasible set is thin, top up with infeasible options until n_min
     prio = {"H4_gate_validity": 0, "H3_fuel_reserve": 1}
+    if s.blocked_taxiways:  # chaos: keep one option that routes over the blocked taxiway so H6 has something to catch
+        prio = {"H6_taxiway_reachability": -1, **prio}
     singles = sorted((x for x in infeasible if len(x[1]) == 1), key=lambda x: (prio.get(x[1][0], 2), J(x[0])))
     used: set[str] = set()
     for o, fails in singles:
