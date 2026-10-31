@@ -199,6 +199,7 @@ class MockLLMClient:
         self.top_k = top_k
         self.n_calls = 0
         self._countered: set[str] = set()
+        self._acceptable: dict[str, list[str]] = {}   # per role, fixed in R1 (stable preferences)
 
     def model_for(self, role: str) -> str:
         return "mock"
@@ -216,7 +217,13 @@ class MockLLMClient:
         feasible = [o for o in opts if checks[o.option_id].feasible]
         ranked = sorted(opts, key=_role_key(role))
         acceptable = [o.option_id for o in sorted(feasible, key=_role_key(role))[: self.top_k]]
+        if round == 1 or role not in self._acceptable:
+            self._acceptable[role] = acceptable
+        else:
+            acceptable = [i for i in self._acceptable[role] if i in v["candidates"]]
         ranking = [o.option_id for o in ranked]
+        if round >= 2:   # after R1 the mock only ranks options the checker passed
+            ranking = [i for i in ranking if checks[i].feasible]
         tentative = v["tentative"]
         counter = None
         red = {"ATC": ["H1_wake_separation", "H2_runway_capacity"], "PILOT": ["H3_fuel_reserve"],
