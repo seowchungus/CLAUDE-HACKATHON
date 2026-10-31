@@ -27,8 +27,14 @@ class LLMBudget(BaseModel):
     resets_at: str          # ISO time of the next daily reset
 
 
+LEDGER_ENV = "ACCORD_LLM_LEDGER"   # overrides llm_budget.ledger (tests point it at a tmp file)
+
+
 def _bcfg(cfg: dict | None) -> dict:
-    return (cfg or load_config())["llm_budget"]
+    b = dict((cfg or load_config())["llm_budget"])
+    if os.environ.get(LEDGER_ENV):
+        b["ledger"] = os.environ[LEDGER_ENV]
+    return b
 
 
 def _tz(b: dict) -> ZoneInfo:

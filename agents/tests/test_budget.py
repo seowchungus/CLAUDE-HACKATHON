@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 import threading
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -37,7 +38,7 @@ def test_fresh_ledger_starts_from_dashboard(cfg):
     st = budget.budget_status(cfg, now=NOON)
     assert st.keys["GEMINI_API_KEY"] == {"used_today": 211, "cap": 480, "remaining": 269, "rpm_cap": 10_000}
     assert st.resets_at.startswith("2026-10-31T00:00:00")
-    assert "test-not-a-key" not in json.dumps(json.load(open(cfg["llm_budget"]["ledger"])))
+    assert "test-not-a-key" not in json.dumps(json.load(open(os.environ[budget.LEDGER_ENV])))
 
 
 def test_concurrent_reserve_never_exceeds_cap(cfg):
@@ -144,3 +145,16 @@ def test_narrator_template_uses_no_calls(cfg):
         return [e async for e in c.run()]
     evs = asyncio.run(go())
     assert any(e["type"] == "narration" for e in evs) and llm.n_calls == 6
+
+
+def test_tests_never_touch_real_ledger(tmp_path):
+    import hashlib
+    import os
+    from core.config import repo_path
+    real = repo_path(load_config()["llm_budget"]["ledger"])
+    digest = lambda: hashlib.sha256(open(real, "rb").read()).hexdigest() if os.path.exists(real) else None  # noqa: E731
+    before = digest()
+    assert budget.reserve("GEMINI_API_KEY")                 # default config, no explicit ledger path
+    budget.set_used("GEMINI_API_KEY_2", 1)
+    assert digest() == before
+    assert os.path.exists(os.environ[budget.LEDGER_ENV]) and os.environ[budget.LEDGER_ENV] != real
