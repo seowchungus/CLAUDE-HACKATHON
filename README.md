@@ -3,7 +3,7 @@
 **Autonomous Cross-domain Coordination for Operational Resolution of Disruptions.**
 Autonomous SG 2026 · AI & Aerospace Track · Airbus Challenge #2.
 
-It consists of Three AI agents (ATC, Pilot, Ground Ops), each in its own LLM call with its own private data, negotiate a revised arrival time, gate and flight-plan adjustment for a disrupted flight in at most 3 rounds. A deterministic checker (H1–H7) enforces hard constraints, and a deterministic optimiser takes over if the agents don't agree or the LLM is off. A duty manager approves the result. Every step goes into a hash-chained log.
+Three AI agents (ATC, Pilot, Ground Ops), each in its own LLM call with its own private data, negotiate a revised arrival time, gate and flight-plan adjustment for a disrupted flight in at most 3 rounds. A deterministic checker (H1–H7) enforces hard constraints, and a deterministic optimiser takes over if the agents don't agree or the LLM is off. A duty manager approves the result. Every step goes into a hash-chained log.
 
 Spec: [ACCORD_proposal.md](ACCORD_proposal.md) · Interfaces: [docs/CONTRACTS.md](docs/CONTRACTS.md) · **Console user guide: [docs/CONSOLE_GUIDE.md](docs/CONSOLE_GUIDE.md)**
 
